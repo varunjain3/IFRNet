@@ -18,7 +18,7 @@ import logging
 import wandb
 
 
-
+# Implements Cosine Annealing Scheduler
 def get_lr(args, iters):
     ratio = 0.5 * (1.0 + np.cos(iters / (args.epochs * args.iters_per_epoch) * math.pi))
     lr = (args.lr_start - args.lr_end) * ratio + args.lr_end
@@ -29,8 +29,13 @@ def set_lr(optimizer, lr):
     for param_group in optimizer.param_groups:
         param_group['lr'] = lr
 
+def generate_true_labels(batch_size, label_smoothing):
+    labels = torch.ones(batch_size)
+    smoothing = torch.empty(batch_size)
+    smoothing.random_(to=label_smoothing)
+    return labels + smoothing
 
-def train(args, ddp_model,model):
+def train(args, ddp_generator,model, ddp_discriminator):
     local_rank = args.local_rank
     print('Distributed Data Parallel Training IFRNet on Rank {}'.format(local_rank))
 
@@ -52,7 +57,7 @@ def train(args, ddp_model,model):
         logger.addHandler(fhlr)
         logger.info(args)
 
-    vimeo90k_dir = '/ocean/projects/cis220078p/vjain1/data/vimeo_triplet'
+    vimeo90k_dir = '/ocean/projects/cis220078p/vjain1/data/vimeo_triplet' # TODO: change to data directory
     dataset_train = Vimeo90K_Train_Dataset(dataset_dir=vimeo90k_dir, augment=True)
     sampler = DistributedSampler(dataset_train)
     dataloader_train = DataLoader(dataset_train, batch_size=args.batch_size, num_workers=args.num_workers, pin_memory=True, drop_last=True, sampler=sampler)
@@ -60,14 +65,17 @@ def train(args, ddp_model,model):
     iters = args.resume_epoch * args.iters_per_epoch
     
     dataset_val = Vimeo90K_Test_Dataset(dataset_dir=vimeo90k_dir)
-    dataloader_val = DataLoader(dataset_val, batch_size=16, num_workers=16, pin_memory=True, shuffle=False, drop_last=True)
+    dataloader_val = DataLoader(dataset_val, batch_size=16, num_workers=2, pin_memory=True, shuffle=False, drop_last=True)
 
-    optimizer = optim.AdamW(ddp_model.parameters(), lr=args.lr_start, weight_decay=0)
+    gen_optimizer = optim.AdamW(ddp_generator.parameters(), lr=args.lr_start, weight_decay=0)
+    # Additions: Discriminator optimizer
+    disc_optimizer = optim.AdamW(ddp_discriminator.parameters(), lr=args.lr_start, weight_decay=0)
+    GAN_loss = JSD()
 
     time_stamp = time.time()
     avg_rec = AverageMeter()
-    avg_geo = AverageMeter()
-    avg_dis = AverageMeter()
+    avg_vae = AverageMeter()
+    avg_gan = AverageMeter()
     best_psnr = 0.0
 
     for epoch in range(args.resume_epoch, args.epochs):
@@ -81,55 +89,84 @@ def train(args, ddp_model,model):
             time_stamp = time.time()
 
             lr = get_lr(args, iters)
-            set_lr(optimizer, lr)
+            set_lr(gen_optimizer, lr)
 
-            optimizer.zero_grad()
-            imgt_pred, loss_rec, loss_geo, loss_dis = ddp_model(img0, img1, embt, imgt, flow)
+            gen_optimizer.zero_grad()
+            disc_optimizer.zero_grad()
+            # GAN Training Flow derived from 
+            # https://www.run.ai/guides/deep-learning-for-computer-vision/pytorch-gan#GAN-Tutorial
+            # If run into difficulties: use https://github.com/soumith/ganhacks
+            # Generator Training Step
+            imgt_pred, loss_rec, loss_kl = ddp_generator(img0, img1, embt, imgt, flow)
+            discriminator_logits = ddp_discriminator(imgt_pred)
+            true_labels = generate_true_labels(args.batch_size, args.label_smoothing).to(args.device)
+            loss_adv = GAN_loss(true_labels, discriminator_logits)
+            generator_loss = loss_rec + loss_kl + loss_adv
+            generator_loss.backward()
+            gen_optimizer.step()
+
+            # Discriminator Training Step
+            disc_optimizer.zero_grad()
+            true_labels = generate_true_labels(args.batch_size, args.label_smoothing).to(args.device)
+
+            true_discriminator_out = ddp_discriminator(imgt)
+            true_disc_loss = GAN_loss(true_labels, true_discriminator_out)
+            # TODO: Check if this is the correct order of the arguments.
+
+            gen_discriminator_out = ddp_discriminator(imgt_pred.detach())
+            gen_disc_loss = GAN_loss(1-true_disc_loss, gen_discriminator_out)
             
-            loss = loss_rec + loss_geo + loss_dis
-            loss.backward()
-            optimizer.step()
+            loss_disc = (true_disc_loss + gen_disc_loss) / 2
+            loss_disc.backward()
+            disc_optimizer.step()
+
+            # loss = loss_rec + loss_kl
+            # loss.backward()
+            # gen_optimizer.step()
 
             avg_rec.update(loss_rec.cpu().data)
-            avg_geo.update(loss_geo.cpu().data)
-            avg_dis.update(loss_dis.cpu().data)
+            avg_vae.update(loss_kl.cpu().data)
+            avg_gan.update(loss_disc.cpu().data)
             train_time_interval = time.time() - time_stamp
             
 
             if (iters+1) % 100 == 0 and local_rank == 0:
                 wandb.log({
                     "loss_rec": loss_rec,
-                    "loss_geo": loss_geo,
-                    "loss_dis": loss_dis,
-                    "loss": loss,
+                    "loss_kl": loss_kl,
+                    "loss_dis": loss_disc,
+                    # "loss": loss,
                     "example": [wandb.Image(img0[0]), wandb.Image(imgt[0]), wandb.Image(img1[0]), wandb.Image(imgt_pred[0])],
                     "flow": [wandb.Image(flow[0]), wandb.Image(embt[0])],
                     "epoch": epoch+1,
                     "iter": iters+1,
                     "lr" : lr,
                 })
-                logger.info('epoch:{}/{} iter:{}/{} time:{:.2f}+{:.2f} lr:{:.5e} loss_rec:{:.4e} loss_geo:{:.4e} loss_dis:{:.4e}'.format(epoch+1, args.epochs, iters+1, args.epochs * args.iters_per_epoch, data_time_interval, train_time_interval, lr, avg_rec.avg, avg_geo.avg, avg_dis.avg))
+                logger.info('epoch:{}/{} iter:{}/{} time:{:.2f}+{:.2f} lr:{:.5e} loss_rec:{:.4e} loss_geo:{:.4e} loss_dis:{:.4e}'.format(
+                    epoch+1, args.epochs, iters+1, args.epochs * args.iters_per_epoch,
+                    data_time_interval, train_time_interval, lr, 
+                    avg_rec.avg, avg_vae.avg, avg_gan.avg))
                 avg_rec.reset()
-                avg_geo.reset()
-                avg_dis.reset()
+                avg_vae.reset()
+                avg_gan.reset()
 
             iters += 1
             time_stamp = time.time()
 
         if (epoch+1) % args.eval_interval == 0 and local_rank == 0:
-            psnr = evaluate(args, ddp_model, dataloader_val, epoch, logger)
+            psnr = evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, epoch, logger)
             if psnr > best_psnr:
                 best_psnr = psnr
-                torch.save(ddp_model.module.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'best'))
-            torch.save(ddp_model.module.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'latest'))
+                torch.save(ddp_generator.module.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'best'))
+            torch.save(ddp_generator.module.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'latest'))
 
         dist.barrier()
 
 
-def evaluate(args, ddp_model, dataloader_val, epoch, logger):
+def evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, epoch, logger):
     loss_rec_list = []
-    loss_geo_list = []
-    loss_dis_list = []
+    loss_vae_list = []
+    loss_disc_list = []
     psnr_list = []
     time_stamp = time.time()
     for i, data in enumerate(dataloader_val):
@@ -138,11 +175,20 @@ def evaluate(args, ddp_model, dataloader_val, epoch, logger):
         img0, imgt, img1, flow, embt = data
 
         with torch.no_grad():
-            imgt_pred, loss_rec, loss_geo, loss_dis = ddp_model(img0, img1, embt, imgt, flow)
+            imgt_pred, loss_rec, loss_kl = ddp_generator(img0, img1, embt, imgt, flow)
+            true_labels = generate_true_labels(args.batch_size, 0).to(args.device)
+
+            true_discriminator_out = ddp_discriminator(imgt)
+            true_disc_loss = GAN_loss(true_labels, true_discriminator_out)
+
+            gen_discriminator_out = ddp_discriminator(imgt_pred.detach())
+            gen_disc_loss = GAN_loss(1-true_disc_loss, gen_discriminator_out)
+            
+            loss_disc = (true_disc_loss + gen_disc_loss) / 2
 
         loss_rec_list.append(loss_rec.cpu().numpy())
-        loss_geo_list.append(loss_geo.cpu().numpy())
-        loss_dis_list.append(loss_dis.cpu().numpy())
+        loss_vae_list.append(loss_kl.cpu().numpy())
+        loss_disc_list.append(loss_disc.cpu().numpy())
 
         for j in range(img0.shape[0]):
             psnr = calculate_psnr(imgt_pred[j].unsqueeze(0), imgt[j].unsqueeze(0)).cpu().data
@@ -150,7 +196,10 @@ def evaluate(args, ddp_model, dataloader_val, epoch, logger):
 
     eval_time_interval = time.time() - time_stamp
     
-    logger.info('eval epoch:{}/{} time:{:.2f} loss_rec:{:.4e} loss_geo:{:.4e} loss_dis:{:.4e} psnr:{:.3f}'.format(epoch+1, args.epochs, eval_time_interval, np.array(loss_rec_list).mean(), np.array(loss_geo_list).mean(), np.array(loss_dis_list).mean(), np.array(psnr_list).mean()))
+    logger.info('eval epoch:{}/{} time:{:.2f} loss_rec:{:.4e} loss_geo:{:.4e} loss_dis:{:.4e} psnr:{:.3f}'.format(
+        epoch+1, args.epochs, eval_time_interval, 
+        np.array(loss_rec_list).mean(), np.array(loss_vae_list).mean(), 
+        np.array(loss_disc_list).mean(), np.array(psnr_list).mean()))
     return np.array(psnr_list).mean()
 
 
@@ -171,6 +220,7 @@ if __name__ == '__main__':
     parser.add_argument('--log_path', default='checkpoint', type=str)
     parser.add_argument('--resume_epoch', default=0, type=int)
     parser.add_argument('--resume_path', default=None, type=str)
+    parser.add_argument('--label_smoothing', default=0, type=float)
     args = parser.parse_args()
 
     dist.init_process_group(backend='nccl', world_size=args.world_size)
@@ -185,16 +235,16 @@ if __name__ == '__main__':
     torch.backends.cudnn.benchmark = True
 
     if args.model_name == 'IFRNet':
-        from models.IFRNet import Model
-    elif args.model_name == 'IFRNet_L':
-        from models.IFRNet_L import Model
-    elif args.model_name == 'IFRNet_S':
-        from models.IFRNet_S import Model
+        from models.IFRNet import Generator, ConvNeXt, JSD
+    elif args.model_name == 'IFRNet_L': # not supported
+        from models.IFRNet_L import Generator
+    elif args.model_name == 'IFRNet_S': # not supported
+        from models.IFRNet_S import Generator
 
     args.log_path = args.log_path + '/' + args.model_name
-    args.num_workers = 10 #args.batch_size
+    args.num_workers = 4#10 #args.batch_size
 
-    model = Model().to(args.device)
+    model = Generator().to(args.device)
     
     if args.local_rank == 0:
         wandb.init(project="IDL Project", entity="11785_cmu")
@@ -203,9 +253,10 @@ if __name__ == '__main__':
     if args.resume_epoch != 0:
         model.load_state_dict(torch.load(args.resume_path, map_location='cpu'))
     
-    ddp_model = DDP(model, device_ids=[args.local_rank], output_device=args.local_rank)
+    ddp_generator = DDP(model, device_ids=[args.local_rank], output_device=args.local_rank)
+    discriminator = ConvNeXt(96, [3,3,9,3], [0.0,0.0,0.0,0.0]).to(args.device)
+    ddp_discriminator = DDP(model, device_ids=[args.local_rank], output_device=args.local_rank)
     
-    
-    train(args, ddp_model,model)
+    train(args, ddp_generator, model, ddp_discriminator)
     
     dist.destroy_process_group()

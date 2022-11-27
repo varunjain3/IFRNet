@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import torchvision
 from utils import warp, get_robust_weight
 from loss import *
 
@@ -82,7 +83,8 @@ class Decoder4(nn.Module):
         self.convblock = nn.Sequential(
             convrelu(192+1, 192), 
             ResBlock(192, 32), 
-            nn.ConvTranspose2d(192, 76, 4, 2, 1, bias=True)
+            # MODIFIED: Force Decoder 4 to output mean and variance of the features
+            nn.ConvTranspose2d(192, 72* 2 + 2 * 2, 4, 2, 1, bias=True)
         )
         
     def forward(self, f0, f1, embt):
@@ -143,10 +145,132 @@ class Decoder1(nn.Module):
         f_out = self.convblock(f_in)
         return f_out
 
+class ConvNeXt_Block(torch.nn.Module):
 
-class Model(nn.Module):
+    def __init__(self, chan_ct, prob, downsample = False):
+        super().__init__()
+        if downsample: # used at the boundary between block groups
+            stride = 2
+        else:
+            stride = 1
+            
+        self.conv = torch.nn.Sequential(
+            torch.nn.Conv2d(in_channels = chan_ct // stride, out_channels = chan_ct, kernel_size = 7, stride = stride, groups = chan_ct // stride, padding = 3, bias = True),
+            torch.nn.BatchNorm2d(chan_ct),
+            torch.nn.Conv2d(in_channels = chan_ct, out_channels = chan_ct * 4, kernel_size = 1, bias = True),
+            torch.nn.GELU(), # TODO: Consider Prelu/LeakyReLU?
+            torch.nn.Conv2d(in_channels = chan_ct * 4, out_channels = chan_ct, kernel_size = 1, bias = True),
+        )
+        # self.conv.apply(self.init_blocks)
+
+        self.StochDepth = torchvision.ops.StochasticDepth(p = prob, mode ='batch')
+
+        if downsample:
+            self.shortcut = torch.nn.Conv2d(in_channels = chan_ct // 2, out_channels = chan_ct, kernel_size = 2, stride = stride, groups = chan_ct // 2, bias = False)
+            # self.shortcut.apply(self.init_blocks)
+        else:
+            self.shortcut = torch.nn.Identity()
+
+    def init_blocks(self, m):
+        if isinstance(m, torch.nn.Conv2d):
+            torch.nn.init.xavier_uniform_(m.weight)#, mode = 'fan_out')
+
+    # Initialize the projections to identity (theoretical ideal for residual learning).
+    def init_shortcuts(self, m):
+        if isinstance(m, torch.nn.Conv2d):
+            torch.nn.init.xavier_uniform_(m.weight, gain = 2 ** 0.5)
+    
+    def forward(self, x):
+        return self.shortcut(x) + self.StochDepth(self.conv(x))
+
+class ConvNeXt(torch.nn.Module):
+    def __init__(self, root_channels, block_pattern, p_pattern, num_classes = 1):
+        super().__init__()
+
+        # Init backbone: stem and body
+        # Stem layer
+        self.stem = torch.nn.Conv2d(in_channels = 3, out_channels = root_channels, kernel_size = 4, stride = 4, bias = True)
+        # self.stem.apply(self.init_conv)
+
+        self.stem_norm = torch.nn.BatchNorm2d(root_channels)
+
+        # Main Body
+        blocks = []
+        self.shortcuts = []
+        downsample = False # first block does not downsample
+        chan_ct = root_channels
+        for i, block_count in enumerate(block_pattern):
+            depth_p = p_pattern[i]
+            for j in range(block_count):
+                blocks.append(ConvNeXt_Block(chan_ct, depth_p, downsample))
+            
+                # All non-first blocks of the block group will not downsample
+                if downsample:
+                    downsample = False
+            chan_ct *= 2
+            downsample = True # make sure first block of next block group downsamples
+
+        self.blocks = torch.nn.ModuleList(blocks)
+        
+        chan_ct //= 2
+        self.avg_pool = nn.AdaptiveAvgPool2D((1,1)) # overflow safe
+        self.avg_norm = torch.nn.BatchNorm2d(chan_ct)
+        self.flatten = torch.nn.Flatten()
+        
+        self.cls_layer = torch.nn.Linear(chan_ct, num_classes)
+        # self.cls_layer.apply(self.init_linear)
+
+    def init_conv(self, m):
+        if isinstance(m, torch.nn.Conv2d):
+            torch.nn.init.xavier_uniform_(m.weight)
+
+    def init_linear(self, m):
+        if isinstance(m, torch.nn.Linear):
+            torch.nn.init.xavier_uniform_(m.weight)
+
+    def forward(self, x, return_feats = False):
+        # Pass through backbone
+        printed = False
+        z = x
+        z = self.stem_norm(self.stem(z))
+        if torch.any(torch.isnan(z)) and not printed:
+                printed = True
+                print(f"Nan after stem")
+
+        for i, block in enumerate(self.blocks):
+            z = block(z)
+            if torch.any(torch.isnan(z)) and not printed:
+                printed = True
+                print(f"Nan in block {i}")
+        z = self.avg_norm(self.avg_pool(z))
+        if torch.any(torch.isnan(z)) and not printed:
+                printed = True
+                print(f"Nan after average")
+        feats = self.flatten(z)
+
+        if not return_feats:
+            logits = self.cls_layer(feats)
+            return logits, feats # We need feats to apply metric loss
+        else:
+            return feats
+
+# Jensen-Shannon Divergence.
+# Source: https://discuss.pytorch.org/t/jensen-shannon-divergence/2626/13
+class JSD(nn.Module):
+    def __init__(self):
+        super(JSD, self).__init__()
+        self.kl = nn.KLDivLoss(reduction='batchmean', log_target=True)
+
+    # p - prob values between [0,1]. This is the ground truth label
+    # q - logit values in the real values [-inf, inf]. This is the discriminator output
+    def forward(self, p: torch.tensor, q: torch.tensor):
+        p, q = p.view(-1, p.size(-1)).log(-1), q.view(-1, q.size(-1)).log_softmax(-1)
+        m = (0.5 * (p + q))
+        return 0.5 * (self.kl(m, p) + self.kl(m, q))
+
+class Generator(nn.Module):
     def __init__(self, local_rank=-1, lr=1e-4):
-        super(Model, self).__init__()
+        super(Generator, self).__init__()
         self.encoder = Encoder()
         self.decoder4 = Decoder4()
         self.decoder3 = Decoder3()
@@ -157,6 +281,14 @@ class Model(nn.Module):
         self.rb_loss = Charbonnier_Ada()
         self.gc_loss = Geometry(3)
 
+        # MODIFIED: For VAE reparametrization
+        self.N = torch.distributions.Normal(0, 1)
+        self.N.loc = self.N.loc.cuda()
+        self.N.scale = self.N.scale.cuda()
+        self.kl = 0
+
+        # MODIFIED: For GAN Loss
+        self.discriminator = ConvNeXt(96, [3,3,9,3], [0.0,0.0,0.0,0.0])
         
     def inference(self, img0, img1, embt, scale_factor=1.0):
         mean_ = torch.cat([img0, img1], 2).mean(1, keepdim=True).mean(2, keepdim=True).mean(3, keepdim=True)
@@ -172,7 +304,11 @@ class Model(nn.Module):
         out4 = self.decoder4(f0_4, f1_4, embt)
         up_flow0_4 = out4[:, 0:2]
         up_flow1_4 = out4[:, 2:4]
-        ft_3_ = out4[:, 4:]
+        # MODIFIED: VAE Variational Reparametrization
+        # Source: https://medium.com/dataseries/variational-autoencoder-with-pytorch-2d359cbf027b
+        ft_3_mean = out4[:, 4:4+72]
+        ft_3_var = torch.exp(out4[:, 4+72:4+72*2]) # snap to positive values
+        ft_3_ = ft_3_mean + ft_3_var * self.N.sample(ft_3_mean.shape)
 
         out3 = self.decoder3(ft_3_, f0_3, f1_3, up_flow0_4, up_flow1_4)
         up_flow0_3 = out3[:, 0:2] + 2.0 * resize(up_flow0_4, scale_factor=2.0)
@@ -207,16 +343,24 @@ class Model(nn.Module):
         mean_ = torch.cat([img0, img1], 2).mean(1, keepdim=True).mean(2, keepdim=True).mean(3, keepdim=True)
         img0 = img0 - mean_
         img1 = img1 - mean_
-        imgt_ = imgt - mean_
+        # imgt_ = imgt - mean_
 
         f0_1, f0_2, f0_3, f0_4 = self.encoder(img0)
         f1_1, f1_2, f1_3, f1_4 = self.encoder(img1)
-        ft_1, ft_2, ft_3, ft_4 = self.encoder(imgt_)
+        # ft_1, ft_2, ft_3, ft_4 = self.encoder(imgt_)
 
         out4 = self.decoder4(f0_4, f1_4, embt)
         up_flow0_4 = out4[:, 0:2]
         up_flow1_4 = out4[:, 2:4]
-        ft_3_ = out4[:, 4:]
+        # MODIFIED: VAE Variational Reparametrization
+        # Source: https://medium.com/dataseries/variational-autoencoder-with-pytorch-2d359cbf027b
+        ft_3_mean = out4[:, 4:4+72]
+        ft_3_var = torch.exp(out4[:, 4+72:4+72*2]) # snap to positive values
+        ft_3_ = ft_3_mean + ft_3_var * self.N.sample(ft_3_mean.shape)
+        # KL Loss: Constrain intermediate features to look like standard Normal distributions
+        # New paradigm: the encoder should not just condense information about the input images but also fuse them
+        # It should take both images in at once and then output information that is decoded into an intermediate frame
+        self.kl = (ft_3_var ** 2 + ft_3_mean ** 2 - torch.log(ft_3_var) - 1/2).sum()
 
         out3 = self.decoder3(ft_3_, f0_3, f1_3, up_flow0_4, up_flow1_4)
         up_flow0_3 = out3[:, 0:2] + 2.0 * resize(up_flow0_4, scale_factor=2.0)
@@ -239,16 +383,21 @@ class Model(nn.Module):
         imgt_merge = up_mask_1 * img0_warp + (1 - up_mask_1) * img1_warp + mean_
         imgt_pred = imgt_merge + up_res_1
         imgt_pred = torch.clamp(imgt_pred, 0, 1)
-
+        # Reconstruction Loss: Enforces closeness between the target image and the predicted
         loss_rec = self.l1_loss(imgt_pred - imgt) + self.tr_loss(imgt_pred, imgt)
-        loss_geo = 0.01 * (self.gc_loss(ft_1_, ft_1) + self.gc_loss(ft_2_, ft_2) + self.gc_loss(ft_3_, ft_3))
-        if flow is not None:
-            robust_weight0 = get_robust_weight(up_flow0_1, flow[:, 0:2], beta=0.3)
-            robust_weight1 = get_robust_weight(up_flow1_1, flow[:, 2:4], beta=0.3)
-            loss_dis = 0.01 * (self.rb_loss(2.0 * resize(up_flow0_2, 2.0) - flow[:, 0:2], weight=robust_weight0) + self.rb_loss(2.0 * resize(up_flow1_2, 2.0) - flow[:, 2:4], weight=robust_weight1))
-            loss_dis += 0.01 * (self.rb_loss(4.0 * resize(up_flow0_3, 4.0) - flow[:, 0:2], weight=robust_weight0) + self.rb_loss(4.0 * resize(up_flow1_3, 4.0) - flow[:, 2:4], weight=robust_weight1))
-            loss_dis += 0.01 * (self.rb_loss(8.0 * resize(up_flow0_4, 8.0) - flow[:, 0:2], weight=robust_weight0) + self.rb_loss(8.0 * resize(up_flow1_4, 8.0) - flow[:, 2:4], weight=robust_weight1))
-        else:
-            loss_dis = 0.00 * loss_geo
+        # Feature Space Geometry Consistency Loss: Enforces consistency between the encoder and decoder features
+        # loss_geo = 0.00 * (self.gc_loss(ft_1_, ft_1) + self.gc_loss(ft_2_, ft_2) + self.gc_loss(ft_3_, ft_3))
+        # if flow is not None:
+        #     robust_weight0 = get_robust_weight(up_flow0_1, flow[:, 0:2], beta=0.3)
+        #     robust_weight1 = get_robust_weight(up_flow1_1, flow[:, 2:4], beta=0.3)
+            # Enforces closeness between predicted flow fields and LiteFlowNet answers
+            # loss_dis = 0.01 * (self.rb_loss(2.0 * resize(up_flow0_2, 2.0) - flow[:, 0:2], weight=robust_weight0) + self.rb_loss(2.0 * resize(up_flow1_2, 2.0) - flow[:, 2:4], weight=robust_weight1))
+            # loss_dis += 0.01 * (self.rb_loss(4.0 * resize(up_flow0_3, 4.0) - flow[:, 0:2], weight=robust_weight0) + self.rb_loss(4.0 * resize(up_flow1_3, 4.0) - flow[:, 2:4], weight=robust_weight1))
+            # loss_dis += 0.01 * (self.rb_loss(8.0 * resize(up_flow0_4, 8.0) - flow[:, 0:2], weight=robust_weight0) + self.rb_loss(8.0 * resize(up_flow1_4, 8.0) - flow[:, 2:4], weight=robust_weight1))
+        # else:
+            # loss_dis = 0.00 * loss_geo
 
-        return imgt_pred, loss_rec, loss_geo, loss_dis
+        # discriminator_out = self.ConvNeXt(imgt_pred)
+
+        # return imgt_pred, loss_rec, loss_geo, loss_dis
+        return imgt_pred, loss_rec, self.kl
