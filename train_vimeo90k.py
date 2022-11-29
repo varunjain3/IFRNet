@@ -37,7 +37,7 @@ def generate_true_labels(batch_size, label_smoothing):
     return labels + smoothing
 
 def train(args, ddp_generator,model, ddp_discriminator):
-    model.train()
+    # ddp_generator.train()
     local_rank = args.local_rank
     print('Distributed Data Parallel Training IFRNet on Rank {}'.format(local_rank))
 
@@ -82,6 +82,8 @@ def train(args, ddp_generator,model, ddp_discriminator):
 
     for epoch in range(args.resume_epoch, args.epochs):
         sampler.set_epoch(epoch)
+        ddp_discriminator.train()
+        ddp_generator.train()
         for i, data in enumerate(dataloader_train):
             for l in range(len(data)):
                 data[l] = data[l].to(args.device)
@@ -96,6 +98,7 @@ def train(args, ddp_generator,model, ddp_discriminator):
 
             gen_optimizer.zero_grad()
             disc_optimizer.zero_grad()
+            
             # GAN Training Flow derived from 
             # https://www.run.ai/guides/deep-learning-for-computer-vision/pytorch-gan#GAN-Tutorial
             # If run into difficulties: use https://github.com/soumith/ganhacks
@@ -113,11 +116,13 @@ def train(args, ddp_generator,model, ddp_discriminator):
             print("Discriminator Training")
             disc_optimizer.zero_grad()
             # gen_optimizer.zero_grad()
+
+            # One-sided label-smoothing
             true_labels2 = generate_true_labels(args.batch_size, args.label_smoothing).to(args.device)
-            false_labels = 1-true_labels2
+            false_labels = 1-generate_true_labels(args.batch_size, 0).to(args.device)
 
             # Training set
-            full_training_set = torch.concat([imgt, imgt_pred.detach()])
+            full_training_set = torch.concat([imgt, imgt_pred.clone().detach()])
             full_training_labels = torch.concat([true_labels2, false_labels])
             discriminator_out = ddp_discriminator(full_training_set)
             loss_disc = GAN_loss(full_training_labels, discriminator_out)
