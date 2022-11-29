@@ -252,7 +252,7 @@ if __name__ == '__main__':
     
     if args.resume_epoch != 0:
         model.load_state_dict(torch.load(args.resume_path, map_location='cpu'))
-    
+    # TODO: Will DDP react well to being used as a non-distributed model
     ddp_generator = DDP(model, device_ids=[args.local_rank], output_device=args.local_rank)
     discriminator = ConvNeXt(96, [3,3,9,3], [0.0,0.0,0.0,0.0]).to(args.device)
     ddp_discriminator = DDP(model, device_ids=[args.local_rank], output_device=args.local_rank)
