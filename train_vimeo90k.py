@@ -86,7 +86,7 @@ def train(args, ddp_generator,model, ddp_discriminator):
             for l in range(len(data)):
                 data[l] = data[l].to(args.device)
             img0, imgt, img1, flow, embt = data
-
+            print(f"Iteration {i}")
             data_time_interval = time.time() - time_stamp
             time_stamp = time.time()
 
@@ -95,10 +95,12 @@ def train(args, ddp_generator,model, ddp_discriminator):
             set_lr(disc_optimizer, lr)
 
             gen_optimizer.zero_grad()
+            disc_optimizer.zero_grad()
             # GAN Training Flow derived from 
             # https://www.run.ai/guides/deep-learning-for-computer-vision/pytorch-gan#GAN-Tutorial
             # If run into difficulties: use https://github.com/soumith/ganhacks
             # Generator Training Step
+            print("Generator Training")
             imgt_pred, loss_rec, loss_kl = ddp_generator(img0, img1, embt, imgt, flow, ret_loss = True)
             discriminator_logits = ddp_discriminator(imgt_pred)
             true_labels = generate_true_labels(args.batch_size, args.label_smoothing).to(args.device).float()
@@ -108,19 +110,19 @@ def train(args, ddp_generator,model, ddp_discriminator):
             gen_optimizer.step()
 
             # Discriminator Training Step
+            print("Discriminator Training")
             disc_optimizer.zero_grad()
-            gen_optimizer.zero_grad()
-            true_labels2 = generate_true_labels(args.batch_size, args.label_smoothing).to(args.device).float()
-
-            true_discriminator_out = ddp_discriminator(imgt)
-            true_disc_loss = GAN_loss(true_labels2, true_discriminator_out)
-            # TODO: Check if this is the correct order of the arguments.
-            # imgt_pred2 = ddp_generator(img0, img1, embt, imgt, flow, ret_loss = False)
-            gen_discriminator_out = ddp_discriminator(imgt_pred.detach())
+            # gen_optimizer.zero_grad()
+            true_labels2 = generate_true_labels(args.batch_size, args.label_smoothing).to(args.device)
             false_labels = 1-true_labels2
-            gen_disc_loss = GAN_loss(false_labels, gen_discriminator_out)
+
+            # Training set
+            full_training_set = torch.concat([imgt, imgt_pred.detach()])
+            full_training_labels = torch.concat([true_labels2, false_labels])
+            discriminator_out = ddp_discriminator(full_training_set)
+            loss_disc = GAN_loss(full_training_labels, discriminator_out)
+            # TODO: Check if this is the correct order of the arguments.
             
-            loss_disc = (true_disc_loss + gen_disc_loss) / 2
             loss_disc.backward()
             disc_optimizer.step()
 
@@ -180,7 +182,7 @@ def evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, e
             data[l] = data[l].to(args.device)
         img0, imgt, img1, flow, embt = data
 
-        with torch.no_grad():
+        with torch.inference_mode():
             imgt_pred, loss_rec, loss_kl = ddp_generator(img0, img1, embt, imgt, flow)
             true_labels = generate_true_labels(args.batch_size, 0).to(args.device)
 
@@ -259,9 +261,9 @@ if __name__ == '__main__':
     if args.resume_epoch != 0:
         model.load_state_dict(torch.load(args.resume_path, map_location='cpu'))
     # TODO: Will DDP react well to being used as a non-distributed model
-    ddp_generator = DDP(model, device_ids=[args.local_rank], output_device=args.local_rank)
+    ddp_generator = DDP(model, device_ids=[args.local_rank], output_device=args.local_rank)#, find_unused_parameters=True)
     discriminator = ConvNeXt(96, [3,3,9,3], [0.0,0.0,0.0,0.0]).to(args.device)
-    ddp_discriminator = DDP(discriminator, device_ids=[args.local_rank], output_device=args.local_rank)
+    ddp_discriminator = DDP(discriminator, device_ids=[args.local_rank])#, find_unused_parameters=True)
     
     train(args, ddp_generator, model, ddp_discriminator)
     

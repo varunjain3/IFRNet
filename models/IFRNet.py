@@ -234,8 +234,8 @@ class ConvNeXt(torch.nn.Module):
         z = x
         z = self.stem_norm(self.stem(z))
         if torch.any(torch.isnan(z)) and not printed:
-                printed = True
-                print(f"Nan after stem")
+            printed = True
+            print(f"Nan after stem")
 
         for i, block in enumerate(self.blocks):
             z = block(z)
@@ -244,13 +244,15 @@ class ConvNeXt(torch.nn.Module):
                 print(f"Nan in block {i}")
         z = self.avg_norm(self.avg_pool(z))
         if torch.any(torch.isnan(z)) and not printed:
-                printed = True
-                print(f"Nan after average")
+            printed = True
+            print(f"Nan after average")
         feats = self.flatten(z) # N x 768
-        print(feats.shape)
+        # weight of cls: 768 x 1
+        # dz/dW = X (N x 768)
+        # dz/dX = W^T (1 x 768)
+        # dz/db = 1
 
         logits = self.cls_layer(feats)
-        print(logits.shape)
         return logits
 
 # Jensen-Shannon Divergence.
@@ -258,14 +260,14 @@ class ConvNeXt(torch.nn.Module):
 class JSD(nn.Module):
     def __init__(self):
         super(JSD, self).__init__()
-        self.kl = nn.KLDivLoss(reduction='batchmean', log_target=True)
+        self.kl = nn.KLDivLoss(reduction='batchmean', log_target=False)
 
     # p - prob values between [0,1]. This is the ground truth label
     # q - logit values in the real values [-inf, inf]. This is the discriminator output
     def forward(self, p: torch.tensor, q: torch.tensor):
-        p, q = p.view(-1, p.size(-1)), q.view(-1, q.size(-1)).log_softmax(-1)
+        p, q = p.view(-1, p.size(-1)), q.view(-1, q.size(-1)).sigmoid()
         m = (0.5 * (p + q))
-        # print(f"m: {m}, p: {p}, q: {q}")
+        print(f"m: {m}, p: {p}, q: {q}")
         return 0.5 * (self.kl(m, p) + self.kl(m, q))
 
 class Generator(nn.Module):
