@@ -1,0 +1,88 @@
+
+Distributed Data Parallel Training IFRNet on Rank 0
+2022-11-28 23:11:54:INFO:Namespace(batch_size=55, device=device(type='cuda', index=0), epochs=300, eval_interval=1, label_smoothing=0, local_rank=0, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=10, resume_epoch=0, resume_path=None, world_size=2)
+torch.Size([55, 1])
+torch.Size([55, 1])
+torch.Size([55, 1])
+torch.Size([55, 1])
+tensor([[0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.],
+        [0.]], device='cuda:0')
+torch.Size([55, 1])
+torch.Size([55, 1])
+2022-11-28 23:12:06:INFO:Reducer buckets have been rebuilt in this iteration.
+/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/autograd/__init__.py:199: UserWarning: Error detected in LogSoftmaxBackward0. Traceback of forward call that caused the error:
+  File "train_vimeo90k.py", line 263, in <module>
+    train(args, ddp_generator, model, ddp_discriminator)
+  File "train_vimeo90k.py", line 120, in train
+    gen_disc_loss = GAN_loss(false_labels, gen_discriminator_out)
+  File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/nn/modules/module.py", line 1190, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/jet/home/kliu8/project/IFRNet/models/IFRNet.py", line 266, in forward
+    p, q = p.view(-1, p.size(-1)).log(), q.view(-1, q.size(-1)).log_softmax(-1)
+  File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/fx/traceback.py", line 57, in format_stack
+    return traceback.format_stack()
+ (Triggered internally at /opt/conda/conda-bld/pytorch_1666643004612/work/torch/csrc/autograd/python_anomaly_mode.cpp:114.)
+  allow_unreachable=True, accumulate_grad=True)  # Calls into the C++ engine to run the backward pass
+Traceback (most recent call last):
+  File "train_vimeo90k.py", line 263, in <module>
+    train(args, ddp_generator, model, ddp_discriminator)
+  File "train_vimeo90k.py", line 123, in train
+    loss_disc.backward()
+  File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/_tensor.py", line 488, in backward
+    self, gradient, retain_graph, create_graph, inputs=inputs
+  File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/autograd/__init__.py", line 199, in backward
+    allow_unreachable=True, accumulate_grad=True)  # Calls into the C++ engine to run the backward pass
+RuntimeError: Function 'LogSoftmaxBackward0' returned nan values in its 0th output.

@@ -1,0 +1,2 @@
+2022-11-28 23:10:20:INFO:Namespace(batch_size=55, device=device(type='cuda', index=0), epochs=300, eval_interval=1, label_smoothing=0, local_rank=0, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=10, resume_epoch=0, resume_path=None, world_size=2)
+2022-11-28 23:10:32:INFO:Reducer buckets have been rebuilt in this iteration.

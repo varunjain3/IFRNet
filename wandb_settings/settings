@@ -1,0 +1,5 @@
+[default]
+entity = 11785_cmu
+project = IDL Project
+base_url = https://api.wandb.ai
+

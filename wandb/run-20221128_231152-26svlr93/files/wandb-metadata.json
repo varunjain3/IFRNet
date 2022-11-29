@@ -1,0 +1,263 @@
+{
+    "os": "Linux-4.18.0-193.28.1.el8_2.x86_64-x86_64-with-centos-8.2.2004-Core",
+    "python": "3.7.15",
+    "heartbeatAt": "2022-11-29T04:11:52.801990",
+    "startedAt": "2022-11-29T04:11:52.370340",
+    "docker": null,
+    "cuda": null,
+    "args": [
+        "--local_rank=0",
+        "--world_size",
+        "2",
+        "--model_name",
+        "IFRNet",
+        "--epochs",
+        "300",
+        "--batch_size",
+        "55",
+        "--lr_start",
+        "1e-4",
+        "--lr_end",
+        "1e-5"
+    ],
+    "state": "running",
+    "program": "train_vimeo90k.py",
+    "codePath": "train_vimeo90k.py",
+    "git": {
+        "remote": "https://github.com/varunjain3/IFRNet.git",
+        "commit": "1ccae4403870628649d8ce3cfc3cc884a3e13465"
+    },
+    "email": null,
+    "root": "/jet/home/kliu8/project/IFRNet",
+    "host": "v001.ib.bridges2.psc.edu",
+    "username": "kliu8",
+    "executable": "/jet/home/kliu8/miniconda3/envs/torch/bin/python",
+    "cpu_count": 40,
+    "cpu_count_logical": 40,
+    "cpu_freq": {
+        "current": 2661.3640000000005,
+        "min": 0.0,
+        "max": 0.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 1312.755,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2609.934,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2611.805,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2616.917,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3292.176,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2629.684,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.144,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2642.725,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2922.343,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2908.6,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2891.054,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2667.668,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3337.382,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2680.298,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2173.872,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 1999.676,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 1950.614,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3410.998,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2139.521,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2286.164,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3837.683,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3003.92,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2598.921,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2600.995,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2607.511,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2618.118,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2626.653,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2630.288,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2630.628,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2655.68,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2642.176,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2651.873,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2646.586,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2974.209,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2655.409,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2642.429,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2652.076,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2674.251,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2673.993,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2701.831,
+            "min": 0.0,
+            "max": 0.0
+        }
+    ],
+    "disk": {
+        "total": 295.29296875,
+        "used": 22.39260482788086
+    },
+    "gpu": "Tesla V100-SXM2-32GB",
+    "gpu_count": 2,
+    "gpu_devices": [
+        {
+            "name": "Tesla V100-SXM2-32GB",
+            "memory_total": 34089730048
+        },
+        {
+            "name": "Tesla V100-SXM2-32GB",
+            "memory_total": 34089730048
+        }
+    ],
+    "memory": {
+        "total": 503.56007385253906
+    }
+}

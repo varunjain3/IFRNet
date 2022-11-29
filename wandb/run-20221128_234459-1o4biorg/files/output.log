@@ -1,0 +1,39 @@
+
+Distributed Data Parallel Training IFRNet on Rank 0
+2022-11-28 23:45:01:INFO:Namespace(batch_size=55, device=device(type='cuda', index=0), epochs=300, eval_interval=1, label_smoothing=0, local_rank=0, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=10, resume_epoch=0, resume_path=None, world_size=2)
+2022-11-28 23:45:13:INFO:Reducer buckets have been rebuilt in this iteration.
+/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/autograd/__init__.py:199: UserWarning: Error detected in CudnnBatchNormBackward0. Traceback of forward call that caused the error:
+  File "train_vimeo90k.py", line 262, in <module>
+    train(args, ddp_generator, model, ddp_discriminator)
+  File "train_vimeo90k.py", line 113, in train
+    true_discriminator_out = ddp_discriminator(imgt.clone())
+  File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/nn/modules/module.py", line 1190, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/nn/parallel/distributed.py", line 1040, in forward
+    output = self._run_ddp_forward(*inputs, **kwargs)
+  File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/nn/parallel/distributed.py", line 1000, in _run_ddp_forward
+    return module_to_run(*inputs[0], **kwargs[0])
+  File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/nn/modules/module.py", line 1190, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/jet/home/kliu8/project/IFRNet/models/IFRNet.py", line 245, in forward
+    z = self.avg_norm(self.avg_pool(z))
+  File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/nn/modules/module.py", line 1190, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/nn/modules/batchnorm.py", line 182, in forward
+    self.eps,
+  File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/nn/functional.py", line 2451, in batch_norm
+    input, weight, bias, running_mean, running_var, training, momentum, eps, torch.backends.cudnn.enabled
+  File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/fx/traceback.py", line 57, in format_stack
+    return traceback.format_stack()
+ (Triggered internally at /opt/conda/conda-bld/pytorch_1666643004612/work/torch/csrc/autograd/python_anomaly_mode.cpp:114.)
+  allow_unreachable=True, accumulate_grad=True)  # Calls into the C++ engine to run the backward pass
+Traceback (most recent call last):
+  File "train_vimeo90k.py", line 262, in <module>
+    train(args, ddp_generator, model, ddp_discriminator)
+  File "train_vimeo90k.py", line 122, in train
+    loss_disc.backward()
+  File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/_tensor.py", line 488, in backward
+    self, gradient, retain_graph, create_graph, inputs=inputs
+  File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/autograd/__init__.py", line 199, in backward
+    allow_unreachable=True, accumulate_grad=True)  # Calls into the C++ engine to run the backward pass
+RuntimeError: one of the variables needed for gradient computation has been modified by an inplace operation: [torch.cuda.FloatTensor [768]] is at version 4; expected version 3 instead. Hint: the backtrace further above shows the operation that failed to compute its gradient. The variable in question was changed in there or anywhere later. Good luck!

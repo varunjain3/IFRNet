@@ -30,12 +30,14 @@ def set_lr(optimizer, lr):
         param_group['lr'] = lr
 
 def generate_true_labels(batch_size, label_smoothing):
-    labels = torch.ones(batch_size)
-    smoothing = torch.empty(batch_size)
-    smoothing.random_(to=label_smoothing)
+    labels = torch.ones((batch_size,1))
+    smoothing = torch.zeros((batch_size,1))
+    if label_smoothing > 0:
+        smoothing.random_(to=label_smoothing)
     return labels + smoothing
 
 def train(args, ddp_generator,model, ddp_discriminator):
+    model.train()
     local_rank = args.local_rank
     print('Distributed Data Parallel Training IFRNet on Rank {}'.format(local_rank))
 
@@ -90,16 +92,16 @@ def train(args, ddp_generator,model, ddp_discriminator):
 
             lr = get_lr(args, iters)
             set_lr(gen_optimizer, lr)
+            set_lr(disc_optimizer, lr)
 
             gen_optimizer.zero_grad()
-            disc_optimizer.zero_grad()
             # GAN Training Flow derived from 
             # https://www.run.ai/guides/deep-learning-for-computer-vision/pytorch-gan#GAN-Tutorial
             # If run into difficulties: use https://github.com/soumith/ganhacks
             # Generator Training Step
-            imgt_pred, loss_rec, loss_kl = ddp_generator(img0, img1, embt, imgt, flow)
+            imgt_pred, loss_rec, loss_kl = ddp_generator(img0, img1, embt, imgt, flow, ret_loss = True)
             discriminator_logits = ddp_discriminator(imgt_pred)
-            true_labels = generate_true_labels(args.batch_size, args.label_smoothing).to(args.device)
+            true_labels = generate_true_labels(args.batch_size, args.label_smoothing).to(args.device).float()
             loss_adv = GAN_loss(true_labels, discriminator_logits)
             generator_loss = loss_rec + loss_kl + loss_adv
             generator_loss.backward()
@@ -107,14 +109,16 @@ def train(args, ddp_generator,model, ddp_discriminator):
 
             # Discriminator Training Step
             disc_optimizer.zero_grad()
-            true_labels = generate_true_labels(args.batch_size, args.label_smoothing).to(args.device)
+            gen_optimizer.zero_grad()
+            true_labels2 = generate_true_labels(args.batch_size, args.label_smoothing).to(args.device).float()
 
             true_discriminator_out = ddp_discriminator(imgt)
-            true_disc_loss = GAN_loss(true_labels, true_discriminator_out)
+            true_disc_loss = GAN_loss(true_labels2, true_discriminator_out)
             # TODO: Check if this is the correct order of the arguments.
-
+            # imgt_pred2 = ddp_generator(img0, img1, embt, imgt, flow, ret_loss = False)
             gen_discriminator_out = ddp_discriminator(imgt_pred.detach())
-            gen_disc_loss = GAN_loss(1-true_disc_loss, gen_discriminator_out)
+            false_labels = 1-true_labels2
+            gen_disc_loss = GAN_loss(false_labels, gen_discriminator_out)
             
             loss_disc = (true_disc_loss + gen_disc_loss) / 2
             loss_disc.backward()
@@ -169,6 +173,8 @@ def evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, e
     loss_disc_list = []
     psnr_list = []
     time_stamp = time.time()
+    ddp_discriminator.eval()
+    ddp_generator.eval()
     for i, data in enumerate(dataloader_val):
         for l in range(len(data)):
             data[l] = data[l].to(args.device)
@@ -242,12 +248,12 @@ if __name__ == '__main__':
         from models.IFRNet_S import Generator
 
     args.log_path = args.log_path + '/' + args.model_name
-    args.num_workers = 4#10 #args.batch_size
+    args.num_workers = 10 #args.batch_size
 
     model = Generator().to(args.device)
     
     if args.local_rank == 0:
-        wandb.init(project="IDL Project", entity="11785_cmu")
+        wandb.init(name="VAN1", project="IDL Project", entity="11785_cmu")
         wandb.watch(model)
     
     if args.resume_epoch != 0:
@@ -255,7 +261,7 @@ if __name__ == '__main__':
     # TODO: Will DDP react well to being used as a non-distributed model
     ddp_generator = DDP(model, device_ids=[args.local_rank], output_device=args.local_rank)
     discriminator = ConvNeXt(96, [3,3,9,3], [0.0,0.0,0.0,0.0]).to(args.device)
-    ddp_discriminator = DDP(model, device_ids=[args.local_rank], output_device=args.local_rank)
+    ddp_discriminator = DDP(discriminator, device_ids=[args.local_rank], output_device=args.local_rank)
     
     train(args, ddp_generator, model, ddp_discriminator)
     

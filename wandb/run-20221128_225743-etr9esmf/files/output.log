@@ -1,0 +1,11 @@
+
+2022-11-28 22:57:45:INFO:Namespace(batch_size=55, device=device(type='cuda', index=0), epochs=300, eval_interval=1, label_smoothing=0, local_rank=0, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=10, resume_epoch=0, resume_path=None, world_size=2)
+Distributed Data Parallel Training IFRNet on Rank 0
+Traceback (most recent call last):
+  File "train_vimeo90k.py", line 260, in <module>
+    train(args, ddp_generator, model, ddp_discriminator)
+  File "train_vimeo90k.py", line 102, in train
+    true_labels = generate_true_labels(args.batch_size, args.label_smoothing).to(args.device)
+  File "train_vimeo90k.py", line 35, in generate_true_labels
+    smoothing.random_(to=label_smoothing)
+RuntimeError: random_ expects 'from' to be less than 'to', but got from=0 >= to=0

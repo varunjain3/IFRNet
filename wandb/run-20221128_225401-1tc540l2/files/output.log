@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "train_vimeo90k.py", line 256, in <module>
+    ddp_generator = DDP(model, device_ids=[args.local_rank], output_device=args.local_rank)
+  File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/nn/parallel/distributed.py", line 655, in __init__
+    _verify_param_shape_across_processes(self.process_group, parameters)
+  File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/distributed/utils.py", line 112, in _verify_param_shape_across_processes
+    return dist._verify_params_across_processes(process_group, tensors, logger)
+RuntimeError: NCCL error in: /opt/conda/conda-bld/pytorch_1666643004612/work/torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:1269, internal error, NCCL version 2.14.3
+ncclInternalError: Internal check failed.
+Last error:
+Duplicate GPU detected : rank 1 and rank 0 both on CUDA device 3a000

@@ -213,7 +213,7 @@ class ConvNeXt(torch.nn.Module):
         self.blocks = torch.nn.ModuleList(blocks)
         
         chan_ct //= 2
-        self.avg_pool = nn.AdaptiveAvgPool2D((1,1)) # overflow safe
+        self.avg_pool = torch.nn.AdaptiveAvgPool2d((1,1))
         self.avg_norm = torch.nn.BatchNorm2d(chan_ct)
         self.flatten = torch.nn.Flatten()
         
@@ -228,7 +228,7 @@ class ConvNeXt(torch.nn.Module):
         if isinstance(m, torch.nn.Linear):
             torch.nn.init.xavier_uniform_(m.weight)
 
-    def forward(self, x, return_feats = False):
+    def forward(self, x):
         # Pass through backbone
         printed = False
         z = x
@@ -246,13 +246,12 @@ class ConvNeXt(torch.nn.Module):
         if torch.any(torch.isnan(z)) and not printed:
                 printed = True
                 print(f"Nan after average")
-        feats = self.flatten(z)
+        feats = self.flatten(z) # N x 768
+        print(feats.shape)
 
-        if not return_feats:
-            logits = self.cls_layer(feats)
-            return logits, feats # We need feats to apply metric loss
-        else:
-            return feats
+        logits = self.cls_layer(feats)
+        print(logits.shape)
+        return logits
 
 # Jensen-Shannon Divergence.
 # Source: https://discuss.pytorch.org/t/jensen-shannon-divergence/2626/13
@@ -264,8 +263,9 @@ class JSD(nn.Module):
     # p - prob values between [0,1]. This is the ground truth label
     # q - logit values in the real values [-inf, inf]. This is the discriminator output
     def forward(self, p: torch.tensor, q: torch.tensor):
-        p, q = p.view(-1, p.size(-1)).log(-1), q.view(-1, q.size(-1)).log_softmax(-1)
+        p, q = p.view(-1, p.size(-1)), q.view(-1, q.size(-1)).log_softmax(-1)
         m = (0.5 * (p + q))
+        # print(f"m: {m}, p: {p}, q: {q}")
         return 0.5 * (self.kl(m, p) + self.kl(m, q))
 
 class Generator(nn.Module):
@@ -339,7 +339,7 @@ class Generator(nn.Module):
         return imgt_pred
 
 
-    def forward(self, img0, img1, embt, imgt, flow=None):
+    def forward(self, img0, img1, embt, imgt, flow=None, ret_loss = False):
         mean_ = torch.cat([img0, img1], 2).mean(1, keepdim=True).mean(2, keepdim=True).mean(3, keepdim=True)
         img0 = img0 - mean_
         img1 = img1 - mean_
@@ -400,4 +400,7 @@ class Generator(nn.Module):
         # discriminator_out = self.ConvNeXt(imgt_pred)
 
         # return imgt_pred, loss_rec, loss_geo, loss_dis
-        return imgt_pred, loss_rec, self.kl
+        if ret_loss:
+            return imgt_pred, loss_rec, self.kl
+        else:
+            return imgt_pred

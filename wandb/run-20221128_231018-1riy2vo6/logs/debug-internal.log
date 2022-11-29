@@ -1,0 +1,171 @@
+2022-11-28 23:10:18,117 INFO    StreamThr :34292 [internal.py:wandb_internal():91] W&B internal server running at pid: 34292, started at: 2022-11-28 23:10:18.116718
+2022-11-28 23:10:18,118 DEBUG   HandlerThread:34292 [handler.py:handle_request():139] handle_request: status
+2022-11-28 23:10:18,120 DEBUG   SenderThread:34292 [sender.py:send_request():317] send_request: status
+2022-11-28 23:10:18,122 DEBUG   SenderThread:34292 [sender.py:send():303] send: header
+2022-11-28 23:10:18,122 INFO    WriterThread:34292 [datastore.py:open_for_write():75] open: /jet/home/kliu8/project/IFRNet/wandb/run-20221128_231018-1riy2vo6/run-1riy2vo6.wandb
+2022-11-28 23:10:18,170 DEBUG   SenderThread:34292 [sender.py:send():303] send: run
+2022-11-28 23:10:18,401 DEBUG   HandlerThread:34292 [handler.py:handle_request():139] handle_request: check_version
+2022-11-28 23:10:18,404 INFO    SenderThread:34292 [dir_watcher.py:__init__():216] watching files in: /jet/home/kliu8/project/IFRNet/wandb/run-20221128_231018-1riy2vo6/files
+2022-11-28 23:10:18,404 INFO    SenderThread:34292 [sender.py:_start_run_threads():931] run started: 1riy2vo6 with start time 1669695018.117087
+2022-11-28 23:10:18,404 DEBUG   SenderThread:34292 [sender.py:send():303] send: summary
+2022-11-28 23:10:18,405 INFO    SenderThread:34292 [sender.py:_save_file():1171] saving file wandb-summary.json with policy end
+2022-11-28 23:10:18,406 DEBUG   SenderThread:34292 [sender.py:send_request():317] send_request: check_version
+2022-11-28 23:10:18,513 DEBUG   HandlerThread:34292 [handler.py:handle_request():139] handle_request: run_start
+2022-11-28 23:10:18,517 DEBUG   HandlerThread:34292 [system_info.py:__init__():31] System info init
+2022-11-28 23:10:18,517 DEBUG   HandlerThread:34292 [system_info.py:__init__():46] System info init done
+2022-11-28 23:10:18,517 INFO    HandlerThread:34292 [system_monitor.py:start():150] Starting system monitor
+2022-11-28 23:10:18,517 INFO    SystemMonitor:34292 [system_monitor.py:_start():116] Starting system asset monitoring threads
+2022-11-28 23:10:18,517 INFO    HandlerThread:34292 [system_monitor.py:probe():168] Collecting system info
+2022-11-28 23:10:18,517 INFO    SystemMonitor:34292 [interfaces.py:start():168] Started cpu
+2022-11-28 23:10:18,518 INFO    SystemMonitor:34292 [interfaces.py:start():168] Started disk
+2022-11-28 23:10:18,518 INFO    SystemMonitor:34292 [interfaces.py:start():168] Started gpu
+2022-11-28 23:10:18,518 INFO    SystemMonitor:34292 [interfaces.py:start():168] Started memory
+2022-11-28 23:10:18,519 INFO    SystemMonitor:34292 [interfaces.py:start():168] Started network
+2022-11-28 23:10:18,540 DEBUG   HandlerThread:34292 [system_info.py:probe():195] Probing system
+2022-11-28 23:10:18,547 DEBUG   HandlerThread:34292 [system_info.py:_probe_git():180] Probing git
+2022-11-28 23:10:18,565 DEBUG   HandlerThread:34292 [system_info.py:_probe_git():188] Probing git done
+2022-11-28 23:10:18,565 DEBUG   HandlerThread:34292 [system_info.py:probe():241] Probing system done
+2022-11-28 23:10:18,565 DEBUG   HandlerThread:34292 [system_monitor.py:probe():177] {'os': 'Linux-4.18.0-193.28.1.el8_2.x86_64-x86_64-with-centos-8.2.2004-Core', 'python': '3.7.15', 'heartbeatAt': '2022-11-29T04:10:18.540068', 'startedAt': '2022-11-29T04:10:18.102695', 'docker': None, 'cuda': None, 'args': ('--local_rank=0', '--world_size', '2', '--model_name', 'IFRNet', '--epochs', '300', '--batch_size', '55', '--lr_start', '1e-4', '--lr_end', '1e-5'), 'state': 'running', 'program': 'train_vimeo90k.py', 'codePath': 'train_vimeo90k.py', 'git': {'remote': 'https://github.com/varunjain3/IFRNet.git', 'commit': '1ccae4403870628649d8ce3cfc3cc884a3e13465'}, 'email': None, 'root': '/jet/home/kliu8/project/IFRNet', 'host': 'v001.ib.bridges2.psc.edu', 'username': 'kliu8', 'executable': '/jet/home/kliu8/miniconda3/envs/torch/bin/python', 'cpu_count': 40, 'cpu_count_logical': 40, 'cpu_freq': {'current': 2098.4496500000005, 'min': 0.0, 'max': 0.0}, 'cpu_freq_per_core': [{'current': 1988.121, 'min': 0.0, 'max': 0.0}, {'current': 2606.92, 'min': 0.0, 'max': 0.0}, {'current': 2943.43, 'min': 0.0, 'max': 0.0}, {'current': 2615.487, 'min': 0.0, 'max': 0.0}, {'current': 3277.109, 'min': 0.0, 'max': 0.0}, {'current': 2602.252, 'min': 0.0, 'max': 0.0}, {'current': 2643.016, 'min': 0.0, 'max': 0.0}, {'current': 2637.669, 'min': 0.0, 'max': 0.0}, {'current': 2645.943, 'min': 0.0, 'max': 0.0}, {'current': 2965.035, 'min': 0.0, 'max': 0.0}, {'current': 2658.307, 'min': 0.0, 'max': 0.0}, {'current': 2673.023, 'min': 0.0, 'max': 0.0}, {'current': 1934.232, 'min': 0.0, 'max': 0.0}, {'current': 3290.539, 'min': 0.0, 'max': 0.0}, {'current': 3671.644, 'min': 0.0, 'max': 0.0}, {'current': 2252.697, 'min': 0.0, 'max': 0.0}, {'current': 2675.726, 'min': 0.0, 'max': 0.0}, {'current': 1791.414, 'min': 0.0, 'max': 0.0}, {'current': 3319.386, 'min': 0.0, 'max': 0.0}, {'current': 3279.467, 'min': 0.0, 'max': 0.0}, {'current': 1493.703, 'min': 0.0, 'max': 0.0}, {'current': 1513.584, 'min': 0.0, 'max': 0.0}, {'current': 1492.084, 'min': 0.0, 'max': 0.0}, {'current': 1481.565, 'min': 0.0, 'max': 0.0}, {'current': 1498.432, 'min': 0.0, 'max': 0.0}, {'current': 1503.273, 'min': 0.0, 'max': 0.0}, {'current': 1483.063, 'min': 0.0, 'max': 0.0}, {'current': 1523.62, 'min': 0.0, 'max': 0.0}, {'current': 1474.146, 'min': 0.0, 'max': 0.0}, {'current': 1480.536, 'min': 0.0, 'max': 0.0}, {'current': 1599.758, 'min': 0.0, 'max': 0.0}, {'current': 1506.637, 'min': 0.0, 'max': 0.0}, {'current': 1495.699, 'min': 0.0, 'max': 0.0}, {'current': 1508.099, 'min': 0.0, 'max': 0.0}, {'current': 1489.361, 'min': 0.0, 'max': 0.0}, {'current': 1397.856, 'min': 0.0, 'max': 0.0}, {'current': 1385.773, 'min': 0.0, 'max': 0.0}, {'current': 1360.329, 'min': 0.0, 'max': 0.0}, {'current': 1381.107, 'min': 0.0, 'max': 0.0}, {'current': 1397.944, 'min': 0.0, 'max': 0.0}], 'disk': {'total': 295.29296875, 'used': 22.392459869384766}, 'gpu': 'Tesla V100-SXM2-32GB', 'gpu_count': 2, 'gpu_devices': [{'name': 'Tesla V100-SXM2-32GB', 'memory_total': 34089730048}, {'name': 'Tesla V100-SXM2-32GB', 'memory_total': 34089730048}], 'memory': {'total': 503.56007385253906}}
+2022-11-28 23:10:18,566 INFO    HandlerThread:34292 [system_monitor.py:probe():178] Finished collecting system info
+2022-11-28 23:10:18,566 INFO    HandlerThread:34292 [system_monitor.py:probe():181] Publishing system info
+2022-11-28 23:10:18,566 DEBUG   HandlerThread:34292 [system_info.py:_save_pip():52] Saving list of pip packages installed into the current environment
+2022-11-28 23:10:18,567 DEBUG   HandlerThread:34292 [system_info.py:_save_pip():67] Saving pip packages done
+2022-11-28 23:10:18,567 DEBUG   HandlerThread:34292 [system_info.py:_save_conda():75] Saving list of conda packages installed into the current environment
+2022-11-28 23:10:19,406 INFO    Thread-13 :34292 [dir_watcher.py:_on_file_created():275] file/dir created: /jet/home/kliu8/project/IFRNet/wandb/run-20221128_231018-1riy2vo6/files/conda-environment.yaml
+2022-11-28 23:10:19,406 INFO    Thread-13 :34292 [dir_watcher.py:_on_file_created():275] file/dir created: /jet/home/kliu8/project/IFRNet/wandb/run-20221128_231018-1riy2vo6/files/wandb-summary.json
+2022-11-28 23:10:19,406 INFO    Thread-13 :34292 [dir_watcher.py:_on_file_created():275] file/dir created: /jet/home/kliu8/project/IFRNet/wandb/run-20221128_231018-1riy2vo6/files/requirements.txt
+2022-11-28 23:10:19,999 DEBUG   HandlerThread:34292 [system_info.py:_save_conda():86] Saving conda packages done
+2022-11-28 23:10:20,002 INFO    HandlerThread:34292 [system_monitor.py:probe():183] Finished publishing system info
+2022-11-28 23:10:20,004 DEBUG   SenderThread:34292 [sender.py:send():303] send: files
+2022-11-28 23:10:20,005 INFO    SenderThread:34292 [sender.py:_save_file():1171] saving file wandb-metadata.json with policy now
+2022-11-28 23:10:20,010 DEBUG   HandlerThread:34292 [handler.py:handle_request():139] handle_request: stop_status
+2022-11-28 23:10:20,011 DEBUG   SenderThread:34292 [sender.py:send_request():317] send_request: stop_status
+2022-11-28 23:10:20,132 DEBUG   SenderThread:34292 [sender.py:send():303] send: telemetry
+2022-11-28 23:10:20,132 DEBUG   SenderThread:34292 [sender.py:send():303] send: telemetry
+2022-11-28 23:10:20,407 INFO    Thread-16 :34292 [upload_job.py:push():143] Uploaded file /tmp/tmp0sn27o3wwandb/38a9ncqx-wandb-metadata.json
+2022-11-28 23:10:20,408 INFO    Thread-13 :34292 [dir_watcher.py:_on_file_modified():292] file/dir modified: /jet/home/kliu8/project/IFRNet/wandb/run-20221128_231018-1riy2vo6/files/conda-environment.yaml
+2022-11-28 23:10:20,408 INFO    Thread-13 :34292 [dir_watcher.py:_on_file_created():275] file/dir created: /jet/home/kliu8/project/IFRNet/wandb/run-20221128_231018-1riy2vo6/files/output.log
+2022-11-28 23:10:20,408 INFO    Thread-13 :34292 [dir_watcher.py:_on_file_created():275] file/dir created: /jet/home/kliu8/project/IFRNet/wandb/run-20221128_231018-1riy2vo6/files/wandb-metadata.json
+2022-11-28 23:10:22,409 INFO    Thread-13 :34292 [dir_watcher.py:_on_file_modified():292] file/dir modified: /jet/home/kliu8/project/IFRNet/wandb/run-20221128_231018-1riy2vo6/files/output.log
+2022-11-28 23:10:30,414 INFO    Thread-13 :34292 [dir_watcher.py:_on_file_modified():292] file/dir modified: /jet/home/kliu8/project/IFRNet/wandb/run-20221128_231018-1riy2vo6/files/output.log
+2022-11-28 23:10:32,393 DEBUG   SenderThread:34292 [sender.py:send():303] send: exit
+2022-11-28 23:10:32,393 INFO    SenderThread:34292 [sender.py:send_exit():442] handling exit code: 1
+2022-11-28 23:10:32,393 INFO    SenderThread:34292 [sender.py:send_exit():444] handling runtime: 13
+2022-11-28 23:10:32,395 INFO    SenderThread:34292 [sender.py:_save_file():1171] saving file wandb-summary.json with policy end
+2022-11-28 23:10:32,395 INFO    SenderThread:34292 [sender.py:send_exit():450] send defer
+2022-11-28 23:10:32,395 DEBUG   HandlerThread:34292 [handler.py:handle_request():139] handle_request: defer
+2022-11-28 23:10:32,395 INFO    HandlerThread:34292 [handler.py:handle_request_defer():162] handle defer: 0
+2022-11-28 23:10:32,395 DEBUG   SenderThread:34292 [sender.py:send_request():317] send_request: defer
+2022-11-28 23:10:32,395 INFO    SenderThread:34292 [sender.py:send_request_defer():459] handle sender defer: 0
+2022-11-28 23:10:32,395 INFO    SenderThread:34292 [sender.py:transition_state():463] send defer: 1
+2022-11-28 23:10:32,396 DEBUG   HandlerThread:34292 [handler.py:handle_request():139] handle_request: defer
+2022-11-28 23:10:32,396 INFO    HandlerThread:34292 [handler.py:handle_request_defer():162] handle defer: 1
+2022-11-28 23:10:32,396 INFO    HandlerThread:34292 [system_monitor.py:finish():160] Stopping system monitor
+2022-11-28 23:10:32,396 DEBUG   SystemMonitor:34292 [system_monitor.py:_start():130] Starting system metrics aggregation loop
+2022-11-28 23:10:32,396 DEBUG   SystemMonitor:34292 [system_monitor.py:_start():137] Finished system metrics aggregation loop
+2022-11-28 23:10:32,396 INFO    HandlerThread:34292 [interfaces.py:finish():173] Joined cpu
+2022-11-28 23:10:32,396 DEBUG   SystemMonitor:34292 [system_monitor.py:_start():141] Publishing last batch of metrics
+2022-11-28 23:10:32,396 INFO    HandlerThread:34292 [interfaces.py:finish():173] Joined disk
+2022-11-28 23:10:32,446 INFO    Thread-13 :34292 [dir_watcher.py:_on_file_modified():292] file/dir modified: /jet/home/kliu8/project/IFRNet/wandb/run-20221128_231018-1riy2vo6/files/wandb-summary.json
+2022-11-28 23:10:32,446 INFO    Thread-13 :34292 [dir_watcher.py:_on_file_modified():292] file/dir modified: /jet/home/kliu8/project/IFRNet/wandb/run-20221128_231018-1riy2vo6/files/output.log
+2022-11-28 23:10:32,567 INFO    HandlerThread:34292 [interfaces.py:finish():173] Joined gpu
+2022-11-28 23:10:32,567 INFO    HandlerThread:34292 [interfaces.py:finish():173] Joined memory
+2022-11-28 23:10:32,568 INFO    HandlerThread:34292 [interfaces.py:finish():173] Joined network
+2022-11-28 23:10:32,568 DEBUG   SenderThread:34292 [sender.py:send_request():317] send_request: defer
+2022-11-28 23:10:32,568 INFO    SenderThread:34292 [sender.py:send_request_defer():459] handle sender defer: 1
+2022-11-28 23:10:32,568 INFO    SenderThread:34292 [sender.py:transition_state():463] send defer: 2
+2022-11-28 23:10:32,568 DEBUG   SenderThread:34292 [sender.py:send():303] send: stats
+2022-11-28 23:10:32,569 DEBUG   HandlerThread:34292 [handler.py:handle_request():139] handle_request: defer
+2022-11-28 23:10:32,569 INFO    HandlerThread:34292 [handler.py:handle_request_defer():162] handle defer: 2
+2022-11-28 23:10:32,569 DEBUG   SenderThread:34292 [sender.py:send_request():317] send_request: defer
+2022-11-28 23:10:32,569 INFO    SenderThread:34292 [sender.py:send_request_defer():459] handle sender defer: 2
+2022-11-28 23:10:32,569 INFO    SenderThread:34292 [sender.py:transition_state():463] send defer: 3
+2022-11-28 23:10:32,569 DEBUG   HandlerThread:34292 [handler.py:handle_request():139] handle_request: defer
+2022-11-28 23:10:32,569 INFO    HandlerThread:34292 [handler.py:handle_request_defer():162] handle defer: 3
+2022-11-28 23:10:32,569 DEBUG   SenderThread:34292 [sender.py:send_request():317] send_request: defer
+2022-11-28 23:10:32,569 INFO    SenderThread:34292 [sender.py:send_request_defer():459] handle sender defer: 3
+2022-11-28 23:10:32,569 INFO    SenderThread:34292 [sender.py:transition_state():463] send defer: 4
+2022-11-28 23:10:32,569 DEBUG   HandlerThread:34292 [handler.py:handle_request():139] handle_request: defer
+2022-11-28 23:10:32,569 INFO    HandlerThread:34292 [handler.py:handle_request_defer():162] handle defer: 4
+2022-11-28 23:10:32,570 DEBUG   SenderThread:34292 [sender.py:send():303] send: summary
+2022-11-28 23:10:32,571 INFO    SenderThread:34292 [sender.py:_save_file():1171] saving file wandb-summary.json with policy end
+2022-11-28 23:10:32,571 DEBUG   SenderThread:34292 [sender.py:send_request():317] send_request: defer
+2022-11-28 23:10:32,571 INFO    SenderThread:34292 [sender.py:send_request_defer():459] handle sender defer: 4
+2022-11-28 23:10:32,571 INFO    SenderThread:34292 [sender.py:transition_state():463] send defer: 5
+2022-11-28 23:10:32,571 DEBUG   HandlerThread:34292 [handler.py:handle_request():139] handle_request: defer
+2022-11-28 23:10:32,571 INFO    HandlerThread:34292 [handler.py:handle_request_defer():162] handle defer: 5
+2022-11-28 23:10:32,572 DEBUG   SenderThread:34292 [sender.py:send_request():317] send_request: defer
+2022-11-28 23:10:32,572 INFO    SenderThread:34292 [sender.py:send_request_defer():459] handle sender defer: 5
+2022-11-28 23:10:32,687 INFO    SenderThread:34292 [sender.py:transition_state():463] send defer: 6
+2022-11-28 23:10:32,688 DEBUG   HandlerThread:34292 [handler.py:handle_request():139] handle_request: defer
+2022-11-28 23:10:32,688 INFO    HandlerThread:34292 [handler.py:handle_request_defer():162] handle defer: 6
+2022-11-28 23:10:32,688 DEBUG   SenderThread:34292 [sender.py:send_request():317] send_request: defer
+2022-11-28 23:10:32,688 INFO    SenderThread:34292 [sender.py:send_request_defer():459] handle sender defer: 6
+2022-11-28 23:10:33,394 DEBUG   HandlerThread:34292 [handler.py:handle_request():139] handle_request: poll_exit
+2022-11-28 23:10:33,447 INFO    Thread-13 :34292 [dir_watcher.py:_on_file_modified():292] file/dir modified: /jet/home/kliu8/project/IFRNet/wandb/run-20221128_231018-1riy2vo6/files/config.yaml
+2022-11-28 23:10:34,448 INFO    Thread-13 :34292 [dir_watcher.py:_on_file_modified():292] file/dir modified: /jet/home/kliu8/project/IFRNet/wandb/run-20221128_231018-1riy2vo6/files/output.log
+2022-11-28 23:10:36,421 INFO    SenderThread:34292 [sender.py:transition_state():463] send defer: 7
+2022-11-28 23:10:36,421 DEBUG   SenderThread:34292 [sender.py:send_request():317] send_request: poll_exit
+2022-11-28 23:10:36,422 DEBUG   HandlerThread:34292 [handler.py:handle_request():139] handle_request: defer
+2022-11-28 23:10:36,422 INFO    HandlerThread:34292 [handler.py:handle_request_defer():162] handle defer: 7
+2022-11-28 23:10:36,422 DEBUG   SenderThread:34292 [sender.py:send_request():317] send_request: defer
+2022-11-28 23:10:36,422 INFO    SenderThread:34292 [sender.py:send_request_defer():459] handle sender defer: 7
+2022-11-28 23:10:36,422 INFO    SenderThread:34292 [dir_watcher.py:finish():362] shutting down directory watcher
+2022-11-28 23:10:36,450 INFO    SenderThread:34292 [dir_watcher.py:_on_file_modified():292] file/dir modified: /jet/home/kliu8/project/IFRNet/wandb/run-20221128_231018-1riy2vo6/files/output.log
+2022-11-28 23:10:36,450 INFO    SenderThread:34292 [dir_watcher.py:finish():392] scan: /jet/home/kliu8/project/IFRNet/wandb/run-20221128_231018-1riy2vo6/files
+2022-11-28 23:10:36,451 INFO    SenderThread:34292 [dir_watcher.py:finish():406] scan save: /jet/home/kliu8/project/IFRNet/wandb/run-20221128_231018-1riy2vo6/files/config.yaml config.yaml
+2022-11-28 23:10:36,451 INFO    SenderThread:34292 [dir_watcher.py:finish():406] scan save: /jet/home/kliu8/project/IFRNet/wandb/run-20221128_231018-1riy2vo6/files/wandb-metadata.json wandb-metadata.json
+2022-11-28 23:10:36,451 INFO    SenderThread:34292 [dir_watcher.py:finish():406] scan save: /jet/home/kliu8/project/IFRNet/wandb/run-20221128_231018-1riy2vo6/files/requirements.txt requirements.txt
+2022-11-28 23:10:36,451 INFO    SenderThread:34292 [dir_watcher.py:finish():406] scan save: /jet/home/kliu8/project/IFRNet/wandb/run-20221128_231018-1riy2vo6/files/wandb-summary.json wandb-summary.json
+2022-11-28 23:10:36,456 INFO    SenderThread:34292 [dir_watcher.py:finish():406] scan save: /jet/home/kliu8/project/IFRNet/wandb/run-20221128_231018-1riy2vo6/files/output.log output.log
+2022-11-28 23:10:36,456 INFO    SenderThread:34292 [dir_watcher.py:finish():406] scan save: /jet/home/kliu8/project/IFRNet/wandb/run-20221128_231018-1riy2vo6/files/conda-environment.yaml conda-environment.yaml
+2022-11-28 23:10:36,462 INFO    SenderThread:34292 [sender.py:transition_state():463] send defer: 8
+2022-11-28 23:10:36,465 DEBUG   HandlerThread:34292 [handler.py:handle_request():139] handle_request: defer
+2022-11-28 23:10:36,465 INFO    HandlerThread:34292 [handler.py:handle_request_defer():162] handle defer: 8
+2022-11-28 23:10:36,465 DEBUG   SenderThread:34292 [sender.py:send_request():317] send_request: defer
+2022-11-28 23:10:36,465 INFO    SenderThread:34292 [sender.py:send_request_defer():459] handle sender defer: 8
+2022-11-28 23:10:36,465 INFO    SenderThread:34292 [file_pusher.py:finish():168] shutting down file pusher
+2022-11-28 23:10:36,775 INFO    Thread-21 :34292 [upload_job.py:push():143] Uploaded file /jet/home/kliu8/project/IFRNet/wandb/run-20221128_231018-1riy2vo6/files/conda-environment.yaml
+2022-11-28 23:10:36,798 INFO    Thread-19 :34292 [upload_job.py:push():143] Uploaded file /jet/home/kliu8/project/IFRNet/wandb/run-20221128_231018-1riy2vo6/files/wandb-summary.json
+2022-11-28 23:10:36,873 INFO    Thread-17 :34292 [upload_job.py:push():143] Uploaded file /jet/home/kliu8/project/IFRNet/wandb/run-20221128_231018-1riy2vo6/files/config.yaml
+2022-11-28 23:10:36,954 INFO    Thread-18 :34292 [upload_job.py:push():143] Uploaded file /jet/home/kliu8/project/IFRNet/wandb/run-20221128_231018-1riy2vo6/files/requirements.txt
+2022-11-28 23:10:36,955 INFO    Thread-20 :34292 [upload_job.py:push():143] Uploaded file /jet/home/kliu8/project/IFRNet/wandb/run-20221128_231018-1riy2vo6/files/output.log
+2022-11-28 23:10:37,156 INFO    Thread-12 :34292 [sender.py:transition_state():463] send defer: 9
+2022-11-28 23:10:37,156 DEBUG   HandlerThread:34292 [handler.py:handle_request():139] handle_request: defer
+2022-11-28 23:10:37,156 INFO    HandlerThread:34292 [handler.py:handle_request_defer():162] handle defer: 9
+2022-11-28 23:10:37,156 DEBUG   SenderThread:34292 [sender.py:send_request():317] send_request: defer
+2022-11-28 23:10:37,157 INFO    SenderThread:34292 [sender.py:send_request_defer():459] handle sender defer: 9
+2022-11-28 23:10:37,157 INFO    SenderThread:34292 [file_pusher.py:join():173] waiting for file pusher
+2022-11-28 23:10:37,157 INFO    SenderThread:34292 [sender.py:transition_state():463] send defer: 10
+2022-11-28 23:10:37,157 DEBUG   HandlerThread:34292 [handler.py:handle_request():139] handle_request: defer
+2022-11-28 23:10:37,157 INFO    HandlerThread:34292 [handler.py:handle_request_defer():162] handle defer: 10
+2022-11-28 23:10:37,157 DEBUG   SenderThread:34292 [sender.py:send_request():317] send_request: defer
+2022-11-28 23:10:37,157 INFO    SenderThread:34292 [sender.py:send_request_defer():459] handle sender defer: 10
+2022-11-28 23:10:37,243 INFO    SenderThread:34292 [sender.py:transition_state():463] send defer: 11
+2022-11-28 23:10:37,244 DEBUG   HandlerThread:34292 [handler.py:handle_request():139] handle_request: defer
+2022-11-28 23:10:37,244 INFO    HandlerThread:34292 [handler.py:handle_request_defer():162] handle defer: 11
+2022-11-28 23:10:37,244 DEBUG   SenderThread:34292 [sender.py:send_request():317] send_request: defer
+2022-11-28 23:10:37,244 INFO    SenderThread:34292 [sender.py:send_request_defer():459] handle sender defer: 11
+2022-11-28 23:10:37,244 INFO    SenderThread:34292 [sender.py:transition_state():463] send defer: 12
+2022-11-28 23:10:37,244 DEBUG   SenderThread:34292 [sender.py:send():303] send: final
+2022-11-28 23:10:37,244 DEBUG   HandlerThread:34292 [handler.py:handle_request():139] handle_request: defer
+2022-11-28 23:10:37,244 DEBUG   SenderThread:34292 [sender.py:send():303] send: footer
+2022-11-28 23:10:37,245 INFO    HandlerThread:34292 [handler.py:handle_request_defer():162] handle defer: 12
+2022-11-28 23:10:37,245 DEBUG   SenderThread:34292 [sender.py:send_request():317] send_request: defer
+2022-11-28 23:10:37,245 INFO    SenderThread:34292 [sender.py:send_request_defer():459] handle sender defer: 12
+2022-11-28 23:10:37,245 DEBUG   HandlerThread:34292 [handler.py:handle_request():139] handle_request: poll_exit
+2022-11-28 23:10:37,245 DEBUG   SenderThread:34292 [sender.py:send_request():317] send_request: poll_exit
+2022-11-28 23:10:37,246 DEBUG   HandlerThread:34292 [handler.py:handle_request():139] handle_request: server_info
+2022-11-28 23:10:37,246 DEBUG   SenderThread:34292 [sender.py:send_request():317] send_request: server_info
+2022-11-28 23:10:37,248 DEBUG   HandlerThread:34292 [handler.py:handle_request():139] handle_request: get_summary
+2022-11-28 23:10:37,248 DEBUG   HandlerThread:34292 [handler.py:handle_request():139] handle_request: sampled_history
+2022-11-28 23:10:37,421 INFO    MainThread:34292 [wandb_run.py:_footer_history_summary_info():3377] rendering history
+2022-11-28 23:10:37,421 INFO    MainThread:34292 [wandb_run.py:_footer_history_summary_info():3409] rendering summary
+2022-11-28 23:10:37,421 INFO    MainThread:34292 [wandb_run.py:_footer_sync_info():3333] logging synced files
+2022-11-28 23:10:37,421 DEBUG   HandlerThread:34292 [handler.py:handle_request():139] handle_request: shutdown
+2022-11-28 23:10:37,421 INFO    HandlerThread:34292 [handler.py:finish():814] shutting down handler
+2022-11-28 23:10:38,245 INFO    WriterThread:34292 [datastore.py:close():279] close: /jet/home/kliu8/project/IFRNet/wandb/run-20221128_231018-1riy2vo6/run-1riy2vo6.wandb
+2022-11-28 23:10:38,420 INFO    SenderThread:34292 [sender.py:finish():1331] shutting down sender
+2022-11-28 23:10:38,421 INFO    SenderThread:34292 [file_pusher.py:finish():168] shutting down file pusher
+2022-11-28 23:10:38,421 INFO    SenderThread:34292 [file_pusher.py:join():173] waiting for file pusher
+2022-11-28 23:10:38,423 INFO    MainThread:34292 [internal.py:handle_exit():78] Internal process exited

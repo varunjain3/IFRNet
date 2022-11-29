@@ -1,0 +1,14 @@
+
+2022-11-28 23:04:48:INFO:Namespace(batch_size=55, device=device(type='cuda', index=0), epochs=300, eval_interval=1, label_smoothing=0, local_rank=0, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=10, resume_epoch=0, resume_path=None, world_size=2)
+Distributed Data Parallel Training IFRNet on Rank 0
+2022-11-28 23:04:59:INFO:Reducer buckets have been rebuilt in this iteration.
+Traceback (most recent call last):
+  File "train_vimeo90k.py", line 261, in <module>
+    train(args, ddp_generator, model, ddp_discriminator)
+  File "train_vimeo90k.py", line 118, in train
+    gen_disc_loss = GAN_loss(1-true_disc_loss, gen_discriminator_out)
+  File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/nn/modules/module.py", line 1190, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/jet/home/kliu8/project/IFRNet/models/IFRNet.py", line 264, in forward
+    p, q = p.view(-1, p.size(-1)).log(), q.view(-1, q.size(-1)).log_softmax(-1)
+IndexError: Dimension specified as -1 but tensor has no dimensions
