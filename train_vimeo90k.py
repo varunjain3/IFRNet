@@ -16,12 +16,19 @@ from metric import calculate_psnr, calculate_ssim
 from utils import AverageMeter
 import logging
 import wandb
+from tqdm import tqdm
 
 
 # Implements Cosine Annealing Scheduler
 def get_lr(args, iters):
-    ratio = 0.5 * (1.0 + np.cos(iters / (args.epochs * args.iters_per_epoch) * math.pi))
-    lr = (args.lr_start - args.lr_end) * ratio + args.lr_end
+    epoch = iters / args.iters_per_epoch
+    lr = 0
+    if epoch < 20: # Linear warm-up from 1e-8
+        lr = epoch * (args.lr_start - 1e-8) / 20 + 1e-8
+    else:
+        iters -= 20 * args.iters_per_epoch
+        ratio = 0.5 * (1.0 + np.cos(iters / (args.epochs * args.iters_per_epoch) * math.pi))
+        lr = (args.lr_start - args.lr_end) * ratio + args.lr_end
     return lr
 
 
@@ -81,14 +88,15 @@ def train(args, ddp_generator,model, ddp_discriminator):
     best_psnr = 0.0
 
     for epoch in range(args.resume_epoch, args.epochs):
+        print(f"Epoch {epoch}:")
         sampler.set_epoch(epoch)
         ddp_discriminator.train()
         ddp_generator.train()
+        batch_bar = tqdm(total=len(dataloader_train), dynamic_ncols=True, leave=False, position=0, desc='Train')
         for i, data in enumerate(dataloader_train):
             for l in range(len(data)):
                 data[l] = data[l].to(args.device)
             img0, imgt, img1, flow, embt = data
-            print(f"Iteration {i}")
             data_time_interval = time.time() - time_stamp
             time_stamp = time.time()
 
@@ -98,32 +106,32 @@ def train(args, ddp_generator,model, ddp_discriminator):
 
             gen_optimizer.zero_grad()
             disc_optimizer.zero_grad()
-            
+
             # GAN Training Flow derived from 
             # https://www.run.ai/guides/deep-learning-for-computer-vision/pytorch-gan#GAN-Tutorial
             # If run into difficulties: use https://github.com/soumith/ganhacks
             # Generator Training Step
-            print("Generator Training")
             imgt_pred, loss_rec, loss_kl = ddp_generator(img0, img1, embt, imgt, flow, ret_loss = True)
+            label_size = imgt_pred.size(0)
             discriminator_logits = ddp_discriminator(imgt_pred)
-            true_labels = generate_true_labels(args.batch_size, args.label_smoothing).to(args.device).float()
+            true_labels = generate_true_labels(label_size, args.label_smoothing).to(args.device).float()
             loss_adv = GAN_loss(true_labels, discriminator_logits)
             generator_loss = loss_rec + loss_kl + loss_adv
             generator_loss.backward()
             gen_optimizer.step()
 
             # Discriminator Training Step
-            print("Discriminator Training")
             disc_optimizer.zero_grad()
             # gen_optimizer.zero_grad()
 
             # One-sided label-smoothing
-            true_labels2 = generate_true_labels(args.batch_size, args.label_smoothing).to(args.device)
-            false_labels = 1-generate_true_labels(args.batch_size, 0).to(args.device)
+            true_labels2 = generate_true_labels(label_size, args.label_smoothing).to(args.device)
+            false_labels = 1-generate_true_labels(label_size, 0).to(args.device)
 
             # Training set
-            full_training_set = torch.concat([imgt, imgt_pred.clone().detach()])
+            full_training_set = torch.concat([imgt, imgt_pred.detach()])
             full_training_labels = torch.concat([true_labels2, false_labels])
+
             discriminator_out = ddp_discriminator(full_training_set)
             loss_disc = GAN_loss(full_training_labels, discriminator_out)
             # TODO: Check if this is the correct order of the arguments.
@@ -141,7 +149,7 @@ def train(args, ddp_generator,model, ddp_discriminator):
             train_time_interval = time.time() - time_stamp
             
 
-            if (iters+1) % 100 == 0 and local_rank == 0:
+            if (iters+1) == args.iters_per_epoch and local_rank == 0:
                 wandb.log({
                     "loss_rec": loss_rec,
                     "loss_kl": loss_kl,
@@ -162,8 +170,15 @@ def train(args, ddp_generator,model, ddp_discriminator):
                 avg_gan.reset()
 
             iters += 1
+            batch_bar.set_postfix(
+                rec_loss = f"{avg_rec.avg: .6f}",
+                vae_loss = f"{avg_vae.avg: .6f}",
+                gan_loss = f"{avg_gan.avg: .6f}"
+                )
+            batch_bar.update()
             time_stamp = time.time()
 
+        batch_bar.close()
         if (epoch+1) % args.eval_interval == 0 and local_rank == 0:
             psnr = evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, epoch, logger)
             if psnr > best_psnr:
@@ -188,14 +203,14 @@ def evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, e
         img0, imgt, img1, flow, embt = data
 
         with torch.inference_mode():
-            imgt_pred, loss_rec, loss_kl = ddp_generator(img0, img1, embt, imgt, flow)
-            true_labels = generate_true_labels(args.batch_size, 0).to(args.device)
+            imgt_pred, loss_rec, loss_kl = ddp_generator(img0, img1, embt, imgt, flow, ret_loss = True)
+            true_labels = generate_true_labels(imgt_pred.size(0), 0).to(args.device)
 
             true_discriminator_out = ddp_discriminator(imgt)
             true_disc_loss = GAN_loss(true_labels, true_discriminator_out)
 
             gen_discriminator_out = ddp_discriminator(imgt_pred.detach())
-            gen_disc_loss = GAN_loss(1-true_disc_loss, gen_discriminator_out)
+            gen_disc_loss = GAN_loss(1-true_labels, gen_discriminator_out)
             
             loss_disc = (true_disc_loss + gen_disc_loss) / 2
 
@@ -255,7 +270,7 @@ if __name__ == '__main__':
         from models.IFRNet_S import Generator
 
     args.log_path = args.log_path + '/' + args.model_name
-    args.num_workers = 10 #args.batch_size
+    args.num_workers = 2#10 #args.batch_size
 
     model = Generator().to(args.device)
     

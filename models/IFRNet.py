@@ -267,7 +267,6 @@ class JSD(nn.Module):
     def forward(self, p: torch.tensor, q: torch.tensor):
         p, q = p.view(-1, p.size(-1)), q.view(-1, q.size(-1)).sigmoid()
         m = (0.5 * (p + q))
-        print(f"m: {m}, p: {p}, q: {q}")
         return 0.5 * (self.kl(m, p) + self.kl(m, q))
 
 class Generator(nn.Module):
@@ -288,9 +287,6 @@ class Generator(nn.Module):
         self.N.loc = self.N.loc.cuda()
         self.N.scale = self.N.scale.cuda()
         self.kl = 0
-
-        # MODIFIED: For GAN Loss
-        self.discriminator = ConvNeXt(96, [3,3,9,3], [0.0,0.0,0.0,0.0])
         
     def inference(self, img0, img1, embt, scale_factor=1.0):
         mean_ = torch.cat([img0, img1], 2).mean(1, keepdim=True).mean(2, keepdim=True).mean(3, keepdim=True)
@@ -362,7 +358,7 @@ class Generator(nn.Module):
         # KL Loss: Constrain intermediate features to look like standard Normal distributions
         # New paradigm: the encoder should not just condense information about the input images but also fuse them
         # It should take both images in at once and then output information that is decoded into an intermediate frame
-        self.kl = (ft_3_var ** 2 + ft_3_mean ** 2 - torch.log(ft_3_var) - 1/2).sum()
+        kl = (ft_3_var ** 2 + ft_3_mean ** 2 - torch.log(ft_3_var) - 1/2).sum()
 
         out3 = self.decoder3(ft_3_, f0_3, f1_3, up_flow0_4, up_flow1_4)
         up_flow0_3 = out3[:, 0:2] + 2.0 * resize(up_flow0_4, scale_factor=2.0)
@@ -403,6 +399,6 @@ class Generator(nn.Module):
 
         # return imgt_pred, loss_rec, loss_geo, loss_dis
         if ret_loss:
-            return imgt_pred, loss_rec, self.kl
+            return imgt_pred, loss_rec, kl
         else:
             return imgt_pred
