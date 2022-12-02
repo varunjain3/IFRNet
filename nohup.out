@@ -1,32 +1,38 @@
-bash: watch_cpu.sh: No such file or directory
-bash: watch_cpu.sh: No such file or directory
-bash: watch_cpu.sh: No such file or directory
-bash: watch_cpu.sh: No such file or directory
-bash: watch_cpu.sh: No such file or directory
-bash: watch_cpu.sh: No such file or directory
-bash: watch_cpu.sh: No such file or directory
-bash: watch_cpu.sh: No such file or directory
-bash: watch_cpu.sh: No such file or directory
-bash: watch_cpu.sh: No such file or directory
-bash: watch_cpu.sh: No such file or directory
-bash: watch_cpu.sh: No such file or directory
-bash: watch_cpu.sh: No such file or directory
-bash: watch_cpu.sh: No such file or directory
-bash: watch_cpu.sh: No such file or directory
-bash: watch_cpu.sh: No such file or directory
-bash: watch_cpu.sh: No such file or directory
-bash: watch_cpu.sh: No such file or directory
-bash: watch_cpu.sh: No such file or directory
-bash: watch_cpu.sh: No such file or directory
-bash: watch_cpu.sh: No such file or directory
-bash: watch_cpu.sh: No such file or directory
-bash: watch_cpu.sh: No such file or directory
-bash: watch_cpu.sh: No such file or directory
-bash: watch_cpu.sh: No such file or directory
-bash: watch_cpu.sh: No such file or directory
-bash: watch_cpu.sh: No such file or directory
-bash: watch_cpu.sh: No such file or directory
-bash: watch_cpu.sh: No such file or directory
-bash: watch_cpu.sh: No such file or directory
-bash: watch_cpu.sh: No such file or directory
-bash: watch_cpu.sh: No such file or directory
+Python 3.7.15
+[W socket.cpp:426] [c10d] The server socket has failed to bind to [::]:29500 (errno: 98 - Address already in use).
+[W socket.cpp:426] [c10d] The server socket has failed to bind to 0.0.0.0:29500 (errno: 98 - Address already in use).
+[E socket.cpp:462] [c10d] The server socket has failed to listen on any local network address.
+Traceback (most recent call last):
+  File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/runpy.py", line 193, in _run_module_as_main
+    "__main__", mod_spec)
+  File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/runpy.py", line 85, in _run_code
+    exec(code, run_globals)
+  File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/distributed/run.py", line 766, in <module>
+    main()
+  File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 346, in wrapper
+    return f(*args, **kwargs)
+  File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/distributed/run.py", line 762, in main
+    run(args)
+  File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/distributed/run.py", line 756, in run
+    )(*cmd_args)
+  File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/distributed/launcher/api.py", line 132, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/distributed/launcher/api.py", line 237, in launch_agent
+    result = agent.run()
+  File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/distributed/elastic/metrics/api.py", line 129, in wrapper
+    result = f(*args, **kwargs)
+  File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/distributed/elastic/agent/server/api.py", line 709, in run
+    result = self._invoke_run(role)
+  File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/distributed/elastic/agent/server/api.py", line 844, in _invoke_run
+    self._initialize_workers(self._worker_group)
+  File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/distributed/elastic/metrics/api.py", line 129, in wrapper
+    result = f(*args, **kwargs)
+  File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/distributed/elastic/agent/server/api.py", line 678, in _initialize_workers
+    self._rendezvous(worker_group)
+  File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/distributed/elastic/metrics/api.py", line 129, in wrapper
+    result = f(*args, **kwargs)
+  File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/distributed/elastic/agent/server/api.py", line 538, in _rendezvous
+    store, group_rank, group_world_size = spec.rdzv_handler.next_rendezvous()
+  File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/distributed/elastic/rendezvous/static_tcp_rendezvous.py", line 61, in next_rendezvous
+    multi_tenant=True,
+RuntimeError: The server socket has failed to listen on any local network address. The server socket has failed to bind to [::]:29500 (errno: 98 - Address already in use). The server socket has failed to bind to 0.0.0.0:29500 (errno: 98 - Address already in use).

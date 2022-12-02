@@ -92,18 +92,26 @@ def train(args, ddp_generator,model, ddp_discriminator):
         sampler.set_epoch(epoch)
         ddp_discriminator.train()
         ddp_generator.train()
-        batch_bar = tqdm(total=len(dataloader_train), dynamic_ncols=True, leave=False, position=0, desc='Train')
+        if local_rank ==0:
+            batch_bar = tqdm(total=len(dataloader_train), dynamic_ncols=True, leave=False, position=0, desc='Train')
         for i, data in enumerate(dataloader_train):
+            print(f"New iteration {i}")
             for l in range(len(data)):
                 data[l] = data[l].to(args.device)
             img0, imgt, img1, flow, embt = data
+            if epoch == 1:
+                logger.info(f"{local_rank}: Getting time...")
             data_time_interval = time.time() - time_stamp
             time_stamp = time.time()
 
+            if epoch == 1:
+                logger.info(f"{local_rank}: Setting LR...")
             lr = get_lr(args, iters)
             set_lr(gen_optimizer, lr)
             set_lr(disc_optimizer, lr)
 
+            if epoch == 1:
+                logger.info(f"{local_rank}: Zeroing gradients")
             gen_optimizer.zero_grad()
             disc_optimizer.zero_grad()
 
@@ -111,16 +119,23 @@ def train(args, ddp_generator,model, ddp_discriminator):
             # https://www.run.ai/guides/deep-learning-for-computer-vision/pytorch-gan#GAN-Tutorial
             # If run into difficulties: use https://github.com/soumith/ganhacks
             # Generator Training Step
+            if epoch:
+                logger.info(f"{local_rank}: Generator Training Step...")
             imgt_pred, loss_rec, loss_kl = ddp_generator(img0, img1, embt, imgt, flow, ret_loss = True)
             label_size = imgt_pred.size(0)
             discriminator_logits = ddp_discriminator(imgt_pred)
             true_labels = generate_true_labels(label_size, args.label_smoothing).to(args.device).float()
             loss_adv = GAN_loss(true_labels, discriminator_logits)
             generator_loss = loss_rec + loss_kl + loss_adv
+
+            if epoch:
+                logger.info(f"{local_rank}: Generator Training Backward...")
             generator_loss.backward()
             gen_optimizer.step()
 
             # Discriminator Training Step
+            if epoch:
+                logger.info(f"{local_rank}: Discriminator Training Step...")
             disc_optimizer.zero_grad()
             # gen_optimizer.zero_grad()
 
@@ -156,7 +171,7 @@ def train(args, ddp_generator,model, ddp_discriminator):
                     "loss_dis": loss_disc,
                     # "loss": loss,
                     "example": [wandb.Image(img0[0]), wandb.Image(imgt[0]), wandb.Image(img1[0]), wandb.Image(imgt_pred[0])],
-                    "flow": [wandb.Image(flow[0]), wandb.Image(embt[0])],
+                    "flow": [wandb.Image(flow[0])],#, wandb.Image(embt[0])],
                     "epoch": epoch+1,
                     "iter": iters+1,
                     "lr" : lr,
@@ -170,15 +185,16 @@ def train(args, ddp_generator,model, ddp_discriminator):
                 avg_gan.reset()
 
             iters += 1
-            batch_bar.set_postfix(
-                rec_loss = f"{avg_rec.avg: .6f}",
-                vae_loss = f"{avg_vae.avg: .6f}",
-                gan_loss = f"{avg_gan.avg: .6f}"
-                )
-            batch_bar.update()
+            if local_rank ==0:
+                batch_bar.set_postfix(
+                    rec_loss = f"{avg_rec.avg: .6f}",
+                    vae_loss = f"{avg_vae.avg: .6f}",
+                    gan_loss = f"{avg_gan.avg: .6f}"
+                    )
+                batch_bar.update()
             time_stamp = time.time()
-
-        batch_bar.close()
+        if local_rank ==0:
+            batch_bar.close()
         if (epoch+1) % args.eval_interval == 0 and local_rank == 0:
             psnr = evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, epoch, logger)
             if psnr > best_psnr:
@@ -250,7 +266,7 @@ if __name__ == '__main__':
     parser.add_argument('--resume_path', default=None, type=str)
     parser.add_argument('--label_smoothing', default=0, type=float)
     args = parser.parse_args()
-
+    print(f"{args.local_rank}: before init_process_group")
     dist.init_process_group(backend='nccl', world_size=args.world_size)
     torch.cuda.set_device(args.local_rank)
     args.device = torch.device('cuda', args.local_rank)
