@@ -36,3 +36,964 @@ Traceback (most recent call last):
   File "/jet/home/kliu8/miniconda3/envs/torch/lib/python3.7/site-packages/torch/distributed/elastic/rendezvous/static_tcp_rendezvous.py", line 61, in next_rendezvous
     multi_tenant=True,
 RuntimeError: The server socket has failed to listen on any local network address. The server socket has failed to bind to [::]:29500 (errno: 98 - Address already in use). The server socket has failed to bind to 0.0.0.0:29500 (errno: 98 - Address already in use).
+Python 3.7.15
+0: before init_process_group
+1: before init_process_group
+wandb: Currently logged in as: nivek (11785_cmu). Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.13.5
+wandb: Run data is saved locally in /jet/home/aramakri/project/IFRNet/wandb/run-20221202_012422-131uc4fx
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run VAN1
+wandb: ⭐️ View project at https://wandb.ai/11785_cmu/IDL%20Project
+wandb: 🚀 View run at https://wandb.ai/11785_cmu/IDL%20Project/runs/131uc4fx
+Distributed Data Parallel Training IFRNet on Rank 0Distributed Data Parallel Training IFRNet on Rank 1
+
+2022-12-02 01:24:24:INFO:Namespace(batch_size=48, device=device(type='cuda', index=0), epochs=50, eval_interval=1, label_smoothing=0, local_rank=0, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=2, resume_epoch=0, resume_path=None, world_size=2)
+2022-12-02 01:24:24:INFO:Namespace(batch_size=48, device=device(type='cuda', index=1), epochs=50, eval_interval=1, label_smoothing=0, local_rank=1, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=2, resume_epoch=0, resume_path=None, world_size=2)
+2022-12-02 01:24:24:INFO:Namespace(batch_size=48, device=device(type='cuda', index=0), epochs=50, eval_interval=1, label_smoothing=0, local_rank=0, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=2, resume_epoch=0, resume_path=None, world_size=2)
+2022-12-02 01:24:24:INFO:Namespace(batch_size=48, device=device(type='cuda', index=1), epochs=50, eval_interval=1, label_smoothing=0, local_rank=1, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=2, resume_epoch=0, resume_path=None, world_size=2)
+2022-12-02 01:24:24:INFO:Namespace(batch_size=48, device=device(type='cuda', index=1), epochs=50, eval_interval=1, label_smoothing=0, local_rank=1, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=2, resume_epoch=0, resume_path=None, world_size=2)
+2022-12-02 01:24:24:INFO:Namespace(batch_size=48, device=device(type='cuda', index=0), epochs=50, eval_interval=1, label_smoothing=0, local_rank=0, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=2, resume_epoch=0, resume_path=None, world_size=2)
+Epoch 0:
+Epoch 0:
+Train:   0%|          | 0/534 [00:00<?, ?it/s]New iteration 0
+New iteration 0
+2022-12-02 01:24:40:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 01:24:40:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 01:24:40:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 01:24:40:INFO:Reducer buckets have been rebuilt in this iteration.
+New iteration 1
+Train:   0%|          | 0/534 [00:16<?, ?it/s, gan_loss=-0.495083, rec_loss=0.132726, vae_loss=0.502168]Train:   0%|          | 1/534 [00:16<2:26:28, 16.49s/it, gan_loss=-0.495083, rec_loss=0.132726, vae_loss=0.502168]New iteration 1
+2022-12-02 01:24:41:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 01:24:41:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 01:24:41:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 01:24:41:INFO:Reducer buckets have been rebuilt in this iteration.
+New iteration 2
+Train:   0%|          | 1/534 [00:17<2:26:28, 16.49s/it, gan_loss=-0.493081, rec_loss=0.123919, vae_loss=0.502168]Train:   0%|          | 2/534 [00:17<1:04:19,  7.26s/it, gan_loss=-0.493081, rec_loss=0.123919, vae_loss=0.502168]New iteration 2
+New iteration 3
+Train:   0%|          | 2/534 [00:18<1:04:19,  7.26s/it, gan_loss=-0.493113, rec_loss=0.121012, vae_loss=0.502168]Train:   1%|          | 3/534 [00:18<37:54,  4.28s/it, gan_loss=-0.493113, rec_loss=0.121012, vae_loss=0.502168]  New iteration 3
+Train:   1%|          | 3/534 [00:18<37:54,  4.28s/it, gan_loss=-0.493057, rec_loss=0.118044, vae_loss=0.502168]Train:   1%|          | 4/534 [00:18<25:30,  2.89s/it, gan_loss=-0.493057, rec_loss=0.118044, vae_loss=0.502168]New iteration 4
+New iteration 4
+Train:   1%|          | 4/534 [00:23<25:30,  2.89s/it, gan_loss=-0.493300, rec_loss=0.118011, vae_loss=0.502168]Train:   1%|          | 5/534 [00:23<31:21,  3.56s/it, gan_loss=-0.493300, rec_loss=0.118011, vae_loss=0.502168]New iteration 5
+New iteration 5
+Train:   1%|          | 5/534 [00:24<31:21,  3.56s/it, gan_loss=-0.493625, rec_loss=0.120454, vae_loss=0.502168]Train:   1%|          | 6/534 [00:24<24:20,  2.77s/it, gan_loss=-0.493625, rec_loss=0.120454, vae_loss=0.502168]New iteration 6
+New iteration 6
+New iteration 7
+Train:   1%|          | 6/534 [00:30<24:20,  2.77s/it, gan_loss=-0.493308, rec_loss=0.118432, vae_loss=0.502167]Train:   1%|▏         | 7/534 [00:30<34:11,  3.89s/it, gan_loss=-0.493308, rec_loss=0.118432, vae_loss=0.502167]New iteration 7
+Train:   1%|▏         | 7/534 [00:31<34:11,  3.89s/it, gan_loss=-0.493174, rec_loss=0.118760, vae_loss=0.502167]Train:   1%|▏         | 8/534 [00:31<25:21,  2.89s/it, gan_loss=-0.493174, rec_loss=0.118760, vae_loss=0.502167]New iteration 8
+New iteration 8
+Train:   1%|▏         | 8/534 [00:38<25:21,  2.89s/it, gan_loss=-0.493308, rec_loss=0.119674, vae_loss=0.502167]Train:   2%|▏         | 9/534 [00:38<35:20,  4.04s/it, gan_loss=-0.493308, rec_loss=0.119674, vae_loss=0.502167]New iteration 9
+New iteration 9
+Train:   2%|▏         | 9/534 [00:39<35:20,  4.04s/it, gan_loss=-0.493488, rec_loss=0.119935, vae_loss=0.502166]Train:   2%|▏         | 10/534 [00:39<28:24,  3.25s/it, gan_loss=-0.493488, rec_loss=0.119935, vae_loss=0.502166]New iteration 10
+New iteration 10
+Train:   2%|▏         | 10/534 [00:46<28:24,  3.25s/it, gan_loss=-0.493529, rec_loss=0.119843, vae_loss=0.502166]Train:   2%|▏         | 11/534 [00:46<37:27,  4.30s/it, gan_loss=-0.493529, rec_loss=0.119843, vae_loss=0.502166]New iteration 11
+New iteration 11
+Train:   2%|▏         | 11/534 [00:47<37:27,  4.30s/it, gan_loss=-0.493567, rec_loss=0.119090, vae_loss=0.502165]Train:   2%|▏         | 12/534 [00:47<29:04,  3.34s/it, gan_loss=-0.493567, rec_loss=0.119090, vae_loss=0.502165]New iteration 12
+New iteration 12
+Train:   2%|▏         | 12/534 [00:53<29:04,  3.34s/it, gan_loss=-0.493575, rec_loss=0.118578, vae_loss=0.502164]Train:   2%|▏         | 13/534 [00:53<36:05,  4.16s/it, gan_loss=-0.493575, rec_loss=0.118578, vae_loss=0.502164]New iteration 13
+New iteration 13
+Train:   2%|▏         | 13/534 [00:55<36:05,  4.16s/it, gan_loss=-0.493722, rec_loss=0.118550, vae_loss=0.502164]Train:   3%|▎         | 14/534 [00:55<28:59,  3.35s/it, gan_loss=-0.493722, rec_loss=0.118550, vae_loss=0.502164]New iteration 14
+New iteration 14
+Train:   3%|▎         | 14/534 [01:00<28:59,  3.35s/it, gan_loss=-0.493900, rec_loss=0.118536, vae_loss=0.502163]Train:   3%|▎         | 15/534 [01:00<34:35,  4.00s/it, gan_loss=-0.493900, rec_loss=0.118536, vae_loss=0.502163]New iteration 15
+New iteration 15
+Train:   3%|▎         | 15/534 [01:01<34:35,  4.00s/it, gan_loss=-0.494115, rec_loss=0.118461, vae_loss=0.502162]Train:   3%|▎         | 16/534 [01:01<27:41,  3.21s/it, gan_loss=-0.494115, rec_loss=0.118461, vae_loss=0.502162]New iteration 16
+New iteration 16
+Train:   3%|▎         | 16/534 [01:07<27:41,  3.21s/it, gan_loss=-0.494065, rec_loss=0.117990, vae_loss=0.502162]Train:   3%|▎         | 17/534 [01:07<33:57,  3.94s/it, gan_loss=-0.494065, rec_loss=0.117990, vae_loss=0.502162]New iteration 17
+New iteration 17
+Train:   3%|▎         | 17/534 [01:08<33:57,  3.94s/it, gan_loss=-0.494265, rec_loss=0.117802, vae_loss=0.502161]Train:   3%|▎         | 18/534 [01:08<26:23,  3.07s/it, gan_loss=-0.494265, rec_loss=0.117802, vae_loss=0.502161]New iteration 18
+New iteration 18
+Train:   3%|▎         | 18/534 [01:14<26:23,  3.07s/it, gan_loss=-0.494374, rec_loss=0.118468, vae_loss=0.502160]Train:   4%|▎         | 19/534 [01:14<33:24,  3.89s/it, gan_loss=-0.494374, rec_loss=0.118468, vae_loss=0.502160]New iteration 19
+New iteration 19
+Train:   4%|▎         | 19/534 [01:16<33:24,  3.89s/it, gan_loss=-0.494539, rec_loss=0.118303, vae_loss=0.502159]Train:   4%|▎         | 20/534 [01:16<28:01,  3.27s/it, gan_loss=-0.494539, rec_loss=0.118303, vae_loss=0.502159]New iteration 20
+New iteration 20
+Train:   4%|▎         | 20/534 [01:21<28:01,  3.27s/it, gan_loss=-0.494667, rec_loss=0.117953, vae_loss=0.502158]Train:   4%|▍         | 21/534 [01:21<34:00,  3.98s/it, gan_loss=-0.494667, rec_loss=0.117953, vae_loss=0.502158]New iteration 21
+New iteration 21
+Train:   4%|▍         | 21/534 [01:23<34:00,  3.98s/it, gan_loss=-0.494783, rec_loss=0.118195, vae_loss=0.502157]Train:   4%|▍         | 22/534 [01:23<28:51,  3.38s/it, gan_loss=-0.494783, rec_loss=0.118195, vae_loss=0.502157]New iteration 22
+New iteration 22
+Train:   4%|▍         | 22/534 [01:29<28:51,  3.38s/it, gan_loss=-0.494885, rec_loss=0.117879, vae_loss=0.502156]Train:   4%|▍         | 23/534 [01:29<33:40,  3.95s/it, gan_loss=-0.494885, rec_loss=0.117879, vae_loss=0.502156]New iteration 23
+New iteration 23
+Train:   4%|▍         | 23/534 [01:30<33:40,  3.95s/it, gan_loss=-0.495065, rec_loss=0.118057, vae_loss=0.502155]Train:   4%|▍         | 24/534 [01:30<27:24,  3.22s/it, gan_loss=-0.495065, rec_loss=0.118057, vae_loss=0.502155]New iteration 24
+New iteration 24
+Train:   4%|▍         | 24/534 [01:36<27:24,  3.22s/it, gan_loss=-0.495272, rec_loss=0.117866, vae_loss=0.502154]Train:   5%|▍         | 25/534 [01:36<32:59,  3.89s/it, gan_loss=-0.495272, rec_loss=0.117866, vae_loss=0.502154]New iteration 25
+New iteration 25
+Train:   5%|▍         | 25/534 [01:38<32:59,  3.89s/it, gan_loss=-0.495565, rec_loss=0.117787, vae_loss=0.502153]Train:   5%|▍         | 26/534 [01:38<28:56,  3.42s/it, gan_loss=-0.495565, rec_loss=0.117787, vae_loss=0.502153]New iteration 26
+New iteration 26
+Train:   5%|▍         | 26/534 [01:43<28:56,  3.42s/it, gan_loss=-0.495834, rec_loss=0.117649, vae_loss=0.502151]Train:   5%|▌         | 27/534 [01:43<32:09,  3.80s/it, gan_loss=-0.495834, rec_loss=0.117649, vae_loss=0.502151]New iteration 27
+New iteration 27
+Train:   5%|▌         | 27/534 [01:46<32:09,  3.80s/it, gan_loss=-0.496007, rec_loss=0.117486, vae_loss=0.502150]Train:   5%|▌         | 28/534 [01:46<30:47,  3.65s/it, gan_loss=-0.496007, rec_loss=0.117486, vae_loss=0.502150]New iteration 28
+New iteration 28
+Train:   5%|▌         | 28/534 [01:51<30:47,  3.65s/it, gan_loss=-0.496301, rec_loss=0.117776, vae_loss=0.502149]Train:   5%|▌         | 29/534 [01:51<32:58,  3.92s/it, gan_loss=-0.496301, rec_loss=0.117776, vae_loss=0.502149]New iteration 29
+New iteration 29
+Train:   5%|▌         | 29/534 [01:54<32:58,  3.92s/it, gan_loss=-0.496520, rec_loss=0.117895, vae_loss=0.502148]Train:   6%|▌         | 30/534 [01:54<30:36,  3.64s/it, gan_loss=-0.496520, rec_loss=0.117895, vae_loss=0.502148]New iteration 30
+New iteration 30
+New iteration 31
+Train:   6%|▌         | 30/534 [02:00<30:36,  3.64s/it, gan_loss=-0.496765, rec_loss=0.117969, vae_loss=0.502146]Train:   6%|▌         | 31/534 [02:00<37:15,  4.44s/it, gan_loss=-0.496765, rec_loss=0.117969, vae_loss=0.502146]New iteration 31
+Train:   6%|▌         | 31/534 [02:03<37:15,  4.44s/it, gan_loss=-0.496972, rec_loss=0.117823, vae_loss=0.502145]Train:   6%|▌         | 32/534 [02:03<34:41,  4.15s/it, gan_loss=-0.496972, rec_loss=0.117823, vae_loss=0.502145]New iteration 32
+New iteration 32
+New iteration 33
+Train:   6%|▌         | 32/534 [02:08<34:41,  4.15s/it, gan_loss=-0.497269, rec_loss=0.117575, vae_loss=0.502143]Train:   6%|▌         | 33/534 [02:08<34:51,  4.17s/it, gan_loss=-0.497269, rec_loss=0.117575, vae_loss=0.502143]New iteration 33
+Train:   6%|▌         | 33/534 [02:10<34:51,  4.17s/it, gan_loss=-0.497514, rec_loss=0.117607, vae_loss=0.502142]Train:   6%|▋         | 34/534 [02:10<31:21,  3.76s/it, gan_loss=-0.497514, rec_loss=0.117607, vae_loss=0.502142]New iteration 34
+New iteration 34
+Train:   6%|▋         | 34/534 [02:15<31:21,  3.76s/it, gan_loss=-0.497750, rec_loss=0.117559, vae_loss=0.502140]Train:   7%|▋         | 35/534 [02:15<33:08,  3.98s/it, gan_loss=-0.497750, rec_loss=0.117559, vae_loss=0.502140]New iteration 35
+New iteration 35
+Train:   7%|▋         | 35/534 [02:18<33:08,  3.98s/it, gan_loss=-0.498073, rec_loss=0.117720, vae_loss=0.502139]Train:   7%|▋         | 36/534 [02:18<30:42,  3.70s/it, gan_loss=-0.498073, rec_loss=0.117720, vae_loss=0.502139]New iteration 36
+New iteration 36
+New iteration 37
+Train:   7%|▋         | 36/534 [02:29<30:42,  3.70s/it, gan_loss=-0.498360, rec_loss=0.117881, vae_loss=0.502137]Train:   7%|▋         | 37/534 [02:29<48:51,  5.90s/it, gan_loss=-0.498360, rec_loss=0.117881, vae_loss=0.502137]New iteration 37
+New iteration 38
+Train:   7%|▋         | 37/534 [02:30<48:51,  5.90s/it, gan_loss=-0.498588, rec_loss=0.117807, vae_loss=0.502135]Train:   7%|▋         | 38/534 [02:30<35:58,  4.35s/it, gan_loss=-0.498588, rec_loss=0.117807, vae_loss=0.502135]New iteration 38
+New iteration 39
+Train:   7%|▋         | 38/534 [02:36<35:58,  4.35s/it, gan_loss=-0.498801, rec_loss=0.117638, vae_loss=0.502133]Train:   7%|▋         | 39/534 [02:36<40:58,  4.97s/it, gan_loss=-0.498801, rec_loss=0.117638, vae_loss=0.502133]New iteration 39
+New iteration 40
+Train:   7%|▋         | 39/534 [02:37<40:58,  4.97s/it, gan_loss=-0.499141, rec_loss=0.117736, vae_loss=0.502132]Train:   7%|▋         | 40/534 [02:37<30:27,  3.70s/it, gan_loss=-0.499141, rec_loss=0.117736, vae_loss=0.502132]New iteration 40
+New iteration 41
+Train:   7%|▋         | 40/534 [02:43<30:27,  3.70s/it, gan_loss=-0.499383, rec_loss=0.117641, vae_loss=0.502130]Train:   8%|▊         | 41/534 [02:43<37:10,  4.53s/it, gan_loss=-0.499383, rec_loss=0.117641, vae_loss=0.502130]New iteration 41
+New iteration 42
+Train:   8%|▊         | 41/534 [02:44<37:10,  4.53s/it, gan_loss=-0.499748, rec_loss=0.117762, vae_loss=0.502128]Train:   8%|▊         | 42/534 [02:44<27:48,  3.39s/it, gan_loss=-0.499748, rec_loss=0.117762, vae_loss=0.502128]New iteration 42
+New iteration 43
+Train:   8%|▊         | 42/534 [02:51<27:48,  3.39s/it, gan_loss=-0.500043, rec_loss=0.117793, vae_loss=0.502126]Train:   8%|▊         | 43/534 [02:51<36:21,  4.44s/it, gan_loss=-0.500043, rec_loss=0.117793, vae_loss=0.502126]New iteration 43
+New iteration 44
+Train:   8%|▊         | 43/534 [02:52<36:21,  4.44s/it, gan_loss=-0.500294, rec_loss=0.117802, vae_loss=0.502124]Train:   8%|▊         | 44/534 [02:52<27:14,  3.34s/it, gan_loss=-0.500294, rec_loss=0.117802, vae_loss=0.502124]New iteration 44
+New iteration 45
+Train:   8%|▊         | 44/534 [02:58<27:14,  3.34s/it, gan_loss=-0.500561, rec_loss=0.117814, vae_loss=0.502122]Train:   8%|▊         | 45/534 [02:58<34:06,  4.19s/it, gan_loss=-0.500561, rec_loss=0.117814, vae_loss=0.502122]New iteration 45
+New iteration 46
+Train:   8%|▊         | 45/534 [02:59<34:06,  4.19s/it, gan_loss=-0.500836, rec_loss=0.117878, vae_loss=0.502120]Train:   9%|▊         | 46/534 [02:59<25:38,  3.15s/it, gan_loss=-0.500836, rec_loss=0.117878, vae_loss=0.502120]New iteration 46
+New iteration 47
+Train:   9%|▊         | 46/534 [03:05<25:38,  3.15s/it, gan_loss=-0.501080, rec_loss=0.117757, vae_loss=0.502118]Train:   9%|▉         | 47/534 [03:05<34:47,  4.29s/it, gan_loss=-0.501080, rec_loss=0.117757, vae_loss=0.502118]New iteration 47
+New iteration 48
+Train:   9%|▉         | 47/534 [03:06<34:47,  4.29s/it, gan_loss=-0.501367, rec_loss=0.117505, vae_loss=0.502116]Train:   9%|▉         | 48/534 [03:06<26:07,  3.23s/it, gan_loss=-0.501367, rec_loss=0.117505, vae_loss=0.502116]New iteration 48
+New iteration 49
+Train:   9%|▉         | 48/534 [03:13<26:07,  3.23s/it, gan_loss=-0.501683, rec_loss=0.117491, vae_loss=0.502113]Train:   9%|▉         | 49/534 [03:13<35:40,  4.41s/it, gan_loss=-0.501683, rec_loss=0.117491, vae_loss=0.502113]New iteration 49
+New iteration 50
+Train:   9%|▉         | 49/534 [03:14<35:40,  4.41s/it, gan_loss=-0.501982, rec_loss=0.117563, vae_loss=0.502111]Train:   9%|▉         | 50/534 [03:14<26:43,  3.31s/it, gan_loss=-0.501982, rec_loss=0.117563, vae_loss=0.502111]New iteration 50
+New iteration 51
+Train:   9%|▉         | 50/534 [03:21<26:43,  3.31s/it, gan_loss=-0.502295, rec_loss=0.117512, vae_loss=0.502109]Train:  10%|▉         | 51/534 [03:21<36:21,  4.52s/it, gan_loss=-0.502295, rec_loss=0.117512, vae_loss=0.502109]New iteration 51
+New iteration 52
+Train:  10%|▉         | 51/534 [03:22<36:21,  4.52s/it, gan_loss=-0.502465, rec_loss=0.117482, vae_loss=0.502107]Train:  10%|▉         | 52/534 [03:22<27:11,  3.38s/it, gan_loss=-0.502465, rec_loss=0.117482, vae_loss=0.502107]New iteration 52
+New iteration 53
+Train:  10%|▉         | 52/534 [03:29<27:11,  3.38s/it, gan_loss=-0.502788, rec_loss=0.117389, vae_loss=0.502104]Train:  10%|▉         | 53/534 [03:29<35:23,  4.41s/it, gan_loss=-0.502788, rec_loss=0.117389, vae_loss=0.502104]New iteration 53
+New iteration 54
+Train:  10%|▉         | 53/534 [03:30<35:23,  4.41s/it, gan_loss=-0.503084, rec_loss=0.117452, vae_loss=0.502102]Train:  10%|█         | 54/534 [03:30<26:31,  3.32s/it, gan_loss=-0.503084, rec_loss=0.117452, vae_loss=0.502102]New iteration 54
+New iteration 55
+Train:  10%|█         | 54/534 [03:36<26:31,  3.32s/it, gan_loss=-0.503388, rec_loss=0.117252, vae_loss=0.502099]Train:  10%|█         | 55/534 [03:36<34:08,  4.28s/it, gan_loss=-0.503388, rec_loss=0.117252, vae_loss=0.502099]New iteration 55
+New iteration 56
+Train:  10%|█         | 55/534 [03:37<34:08,  4.28s/it, gan_loss=-0.503653, rec_loss=0.117172, vae_loss=0.502097]Train:  10%|█         | 56/534 [03:37<25:38,  3.22s/it, gan_loss=-0.503653, rec_loss=0.117172, vae_loss=0.502097]New iteration 56
+New iteration 57
+Train:  10%|█         | 56/534 [03:44<25:38,  3.22s/it, gan_loss=-0.503935, rec_loss=0.117260, vae_loss=0.502094]Train:  11%|█         | 57/534 [03:44<33:18,  4.19s/it, gan_loss=-0.503935, rec_loss=0.117260, vae_loss=0.502094]New iteration 57
+Train:  11%|█         | 57/534 [03:44<33:18,  4.19s/it, gan_loss=-0.504209, rec_loss=0.117364, vae_loss=0.502091]New iteration 58
+Train:  11%|█         | 58/534 [03:44<25:01,  3.16s/it, gan_loss=-0.504209, rec_loss=0.117364, vae_loss=0.502091]New iteration 58
+New iteration 59
+Train:  11%|█         | 58/534 [03:51<25:01,  3.16s/it, gan_loss=-0.504516, rec_loss=0.117250, vae_loss=0.502089]Train:  11%|█         | 59/534 [03:51<33:04,  4.18s/it, gan_loss=-0.504516, rec_loss=0.117250, vae_loss=0.502089]New iteration 59
+New iteration 60
+Train:  11%|█         | 59/534 [03:52<33:04,  4.18s/it, gan_loss=-0.504735, rec_loss=0.117163, vae_loss=0.502086]Train:  11%|█         | 60/534 [03:52<24:52,  3.15s/it, gan_loss=-0.504735, rec_loss=0.117163, vae_loss=0.502086]New iteration 60
+New iteration 61
+Train:  11%|█         | 60/534 [03:59<24:52,  3.15s/it, gan_loss=-0.504987, rec_loss=0.117191, vae_loss=0.502083]Train:  11%|█▏        | 61/534 [03:59<34:01,  4.32s/it, gan_loss=-0.504987, rec_loss=0.117191, vae_loss=0.502083]New iteration 61
+New iteration 62
+Train:  11%|█▏        | 61/534 [03:59<34:01,  4.32s/it, gan_loss=-0.505258, rec_loss=0.117132, vae_loss=0.502080]Train:  12%|█▏        | 62/534 [03:59<25:31,  3.25s/it, gan_loss=-0.505258, rec_loss=0.117132, vae_loss=0.502080]New iteration 62
+New iteration 63
+Train:  12%|█▏        | 62/534 [04:06<25:31,  3.25s/it, gan_loss=-0.505553, rec_loss=0.116905, vae_loss=0.502078]Train:  12%|█▏        | 63/534 [04:06<33:42,  4.29s/it, gan_loss=-0.505553, rec_loss=0.116905, vae_loss=0.502078]New iteration 63
+New iteration 64
+Train:  12%|█▏        | 63/534 [04:07<33:42,  4.29s/it, gan_loss=-0.505838, rec_loss=0.116731, vae_loss=0.502075]Train:  12%|█▏        | 64/534 [04:07<25:19,  3.23s/it, gan_loss=-0.505838, rec_loss=0.116731, vae_loss=0.502075]New iteration 64
+New iteration 65
+Train:  12%|█▏        | 64/534 [04:13<25:19,  3.23s/it, gan_loss=-0.506083, rec_loss=0.116593, vae_loss=0.502072]Train:  12%|█▏        | 65/534 [04:13<32:49,  4.20s/it, gan_loss=-0.506083, rec_loss=0.116593, vae_loss=0.502072]New iteration 65
+New iteration 66
+Train:  12%|█▏        | 65/534 [04:14<32:49,  4.20s/it, gan_loss=-0.506349, rec_loss=0.116760, vae_loss=0.502069]Train:  12%|█▏        | 66/534 [04:14<24:41,  3.16s/it, gan_loss=-0.506349, rec_loss=0.116760, vae_loss=0.502069]New iteration 66
+New iteration 67
+Train:  12%|█▏        | 66/534 [04:21<24:41,  3.16s/it, gan_loss=-0.506584, rec_loss=0.116692, vae_loss=0.502066]Train:  13%|█▎        | 67/534 [04:21<32:29,  4.18s/it, gan_loss=-0.506584, rec_loss=0.116692, vae_loss=0.502066]New iteration 67
+New iteration 68
+Train:  13%|█▎        | 67/534 [04:21<32:29,  4.18s/it, gan_loss=-0.506855, rec_loss=0.116694, vae_loss=0.502062]Train:  13%|█▎        | 68/534 [04:21<24:25,  3.15s/it, gan_loss=-0.506855, rec_loss=0.116694, vae_loss=0.502062]New iteration 68
+New iteration 69
+Train:  13%|█▎        | 68/534 [04:28<24:25,  3.15s/it, gan_loss=-0.507136, rec_loss=0.116673, vae_loss=0.502059]Train:  13%|█▎        | 69/534 [04:28<32:32,  4.20s/it, gan_loss=-0.507136, rec_loss=0.116673, vae_loss=0.502059]New iteration 69
+New iteration 70
+Train:  13%|█▎        | 69/534 [04:29<32:32,  4.20s/it, gan_loss=-0.507405, rec_loss=0.116676, vae_loss=0.502056]Train:  13%|█▎        | 70/534 [04:29<24:27,  3.16s/it, gan_loss=-0.507405, rec_loss=0.116676, vae_loss=0.502056]New iteration 70
+New iteration 71
+Train:  13%|█▎        | 70/534 [04:35<24:27,  3.16s/it, gan_loss=-0.507688, rec_loss=0.116743, vae_loss=0.502053]Train:  13%|█▎        | 71/534 [04:35<32:15,  4.18s/it, gan_loss=-0.507688, rec_loss=0.116743, vae_loss=0.502053]New iteration 71
+New iteration 72
+Train:  13%|█▎        | 71/534 [04:36<32:15,  4.18s/it, gan_loss=-0.507968, rec_loss=0.116665, vae_loss=0.502050]Train:  13%|█▎        | 72/534 [04:36<24:15,  3.15s/it, gan_loss=-0.507968, rec_loss=0.116665, vae_loss=0.502050]New iteration 72
+New iteration 73
+Train:  13%|█▎        | 72/534 [04:44<24:15,  3.15s/it, gan_loss=-0.508232, rec_loss=0.116637, vae_loss=0.502046]Train:  14%|█▎        | 73/534 [04:44<34:09,  4.45s/it, gan_loss=-0.508232, rec_loss=0.116637, vae_loss=0.502046]New iteration 73
+Train:  14%|█▎        | 73/534 [04:44<34:09,  4.45s/it, gan_loss=-0.508487, rec_loss=0.116702, vae_loss=0.502043]Train:  14%|█▍        | 74/534 [04:44<25:34,  3.34s/it, gan_loss=-0.508487, rec_loss=0.116702, vae_loss=0.502043]New iteration 74
+New iteration 74
+New iteration 75
+Train:  14%|█▍        | 74/534 [04:51<25:34,  3.34s/it, gan_loss=-0.508735, rec_loss=0.116670, vae_loss=0.502040]Train:  14%|█▍        | 75/534 [04:51<33:43,  4.41s/it, gan_loss=-0.508735, rec_loss=0.116670, vae_loss=0.502040]New iteration 75
+New iteration 76
+Train:  14%|█▍        | 75/534 [04:52<33:43,  4.41s/it, gan_loss=-0.508983, rec_loss=0.116594, vae_loss=0.502036]Train:  14%|█▍        | 76/534 [04:52<25:16,  3.31s/it, gan_loss=-0.508983, rec_loss=0.116594, vae_loss=0.502036]New iteration 76
+New iteration 77
+Train:  14%|█▍        | 76/534 [04:59<25:16,  3.31s/it, gan_loss=-0.509246, rec_loss=0.116548, vae_loss=0.502033]Train:  14%|█▍        | 77/534 [04:59<34:44,  4.56s/it, gan_loss=-0.509246, rec_loss=0.116548, vae_loss=0.502033]New iteration 77
+New iteration 78
+Train:  14%|█▍        | 77/534 [05:00<34:44,  4.56s/it, gan_loss=-0.509521, rec_loss=0.116473, vae_loss=0.502029]Train:  15%|█▍        | 78/534 [05:00<25:58,  3.42s/it, gan_loss=-0.509521, rec_loss=0.116473, vae_loss=0.502029]New iteration 78
+Train:  15%|█▍        | 78/534 [05:07<25:58,  3.42s/it, gan_loss=-0.509768, rec_loss=0.116535, vae_loss=0.502025]New iteration 79
+Train:  15%|█▍        | 79/534 [05:07<33:29,  4.42s/it, gan_loss=-0.509768, rec_loss=0.116535, vae_loss=0.502025]New iteration 79
+Train:  15%|█▍        | 79/534 [05:08<33:29,  4.42s/it, gan_loss=-0.510023, rec_loss=0.116593, vae_loss=0.502022]Train:  15%|█▍        | 80/534 [05:08<25:07,  3.32s/it, gan_loss=-0.510023, rec_loss=0.116593, vae_loss=0.502022]New iteration 80
+New iteration 80
+New iteration 81
+Train:  15%|█▍        | 80/534 [05:14<25:07,  3.32s/it, gan_loss=-0.510209, rec_loss=0.116503, vae_loss=0.502018]Train:  15%|█▌        | 81/534 [05:14<32:38,  4.32s/it, gan_loss=-0.510209, rec_loss=0.116503, vae_loss=0.502018]New iteration 81
+New iteration 82
+Train:  15%|█▌        | 81/534 [05:15<32:38,  4.32s/it, gan_loss=-0.510443, rec_loss=0.116402, vae_loss=0.502014]Train:  15%|█▌        | 82/534 [05:15<24:28,  3.25s/it, gan_loss=-0.510443, rec_loss=0.116402, vae_loss=0.502014]New iteration 82
+New iteration 83
+Train:  15%|█▌        | 82/534 [05:22<24:28,  3.25s/it, gan_loss=-0.510688, rec_loss=0.116351, vae_loss=0.502010]Train:  16%|█▌        | 83/534 [05:22<33:28,  4.45s/it, gan_loss=-0.510688, rec_loss=0.116351, vae_loss=0.502010]New iteration 83
+New iteration 84
+Train:  16%|█▌        | 83/534 [05:23<33:28,  4.45s/it, gan_loss=-0.510906, rec_loss=0.116342, vae_loss=0.502007]Train:  16%|█▌        | 84/534 [05:23<25:03,  3.34s/it, gan_loss=-0.510906, rec_loss=0.116342, vae_loss=0.502007]New iteration 84
+New iteration 85
+Train:  16%|█▌        | 84/534 [05:30<25:03,  3.34s/it, gan_loss=-0.511142, rec_loss=0.116262, vae_loss=0.502003]Train:  16%|█▌        | 85/534 [05:30<33:22,  4.46s/it, gan_loss=-0.511142, rec_loss=0.116262, vae_loss=0.502003]New iteration 85
+New iteration 86
+Train:  16%|█▌        | 85/534 [05:31<33:22,  4.46s/it, gan_loss=-0.511371, rec_loss=0.116203, vae_loss=0.501999]Train:  16%|█▌        | 86/534 [05:31<25:00,  3.35s/it, gan_loss=-0.511371, rec_loss=0.116203, vae_loss=0.501999]New iteration 86
+New iteration 87
+Train:  16%|█▌        | 86/534 [05:37<25:00,  3.35s/it, gan_loss=-0.511570, rec_loss=0.116081, vae_loss=0.501995]Train:  16%|█▋        | 87/534 [05:37<32:10,  4.32s/it, gan_loss=-0.511570, rec_loss=0.116081, vae_loss=0.501995]New iteration 87
+New iteration 88
+Train:  16%|█▋        | 87/534 [05:38<32:10,  4.32s/it, gan_loss=-0.511796, rec_loss=0.116012, vae_loss=0.501991]Train:  16%|█▋        | 88/534 [05:38<24:08,  3.25s/it, gan_loss=-0.511796, rec_loss=0.116012, vae_loss=0.501991]New iteration 88
+New iteration 89
+Train:  16%|█▋        | 88/534 [05:45<24:08,  3.25s/it, gan_loss=-0.512013, rec_loss=0.115933, vae_loss=0.501987]Train:  17%|█▋        | 89/534 [05:45<32:06,  4.33s/it, gan_loss=-0.512013, rec_loss=0.115933, vae_loss=0.501987]New iteration 89
+New iteration 90
+Train:  17%|█▋        | 89/534 [05:46<32:06,  4.33s/it, gan_loss=-0.512244, rec_loss=0.115769, vae_loss=0.501982]Train:  17%|█▋        | 90/534 [05:46<24:05,  3.26s/it, gan_loss=-0.512244, rec_loss=0.115769, vae_loss=0.501982]New iteration 90
+New iteration 91
+Train:  17%|█▋        | 90/534 [05:53<24:05,  3.26s/it, gan_loss=-0.512465, rec_loss=0.115646, vae_loss=0.501978]Train:  17%|█▋        | 91/534 [05:53<32:17,  4.37s/it, gan_loss=-0.512465, rec_loss=0.115646, vae_loss=0.501978]New iteration 91
+New iteration 92
+Train:  17%|█▋        | 91/534 [05:54<32:17,  4.37s/it, gan_loss=-0.512689, rec_loss=0.115690, vae_loss=0.501974]Train:  17%|█▋        | 92/534 [05:54<24:13,  3.29s/it, gan_loss=-0.512689, rec_loss=0.115690, vae_loss=0.501974]New iteration 92
+New iteration 93
+Train:  17%|█▋        | 92/534 [06:00<24:13,  3.29s/it, gan_loss=-0.512905, rec_loss=0.115544, vae_loss=0.501970]Train:  17%|█▋        | 93/534 [06:00<31:47,  4.33s/it, gan_loss=-0.512905, rec_loss=0.115544, vae_loss=0.501970]New iteration 93
+New iteration 94
+Train:  17%|█▋        | 93/534 [06:01<31:47,  4.33s/it, gan_loss=-0.513132, rec_loss=0.115448, vae_loss=0.501965]Train:  18%|█▊        | 94/534 [06:01<23:51,  3.25s/it, gan_loss=-0.513132, rec_loss=0.115448, vae_loss=0.501965]New iteration 94
+New iteration 95
+Train:  18%|█▊        | 94/534 [06:08<23:51,  3.25s/it, gan_loss=-0.513304, rec_loss=0.115381, vae_loss=0.501961]Train:  18%|█▊        | 95/534 [06:08<31:24,  4.29s/it, gan_loss=-0.513304, rec_loss=0.115381, vae_loss=0.501961]New iteration 95
+New iteration 96
+Train:  18%|█▊        | 95/534 [06:09<31:24,  4.29s/it, gan_loss=-0.513514, rec_loss=0.115377, vae_loss=0.501957]Train:  18%|█▊        | 96/534 [06:09<23:34,  3.23s/it, gan_loss=-0.513514, rec_loss=0.115377, vae_loss=0.501957]New iteration 96
+New iteration 97
+Train:  18%|█▊        | 96/534 [06:17<23:34,  3.23s/it, gan_loss=-0.513712, rec_loss=0.115360, vae_loss=0.501952]Train:  18%|█▊        | 97/534 [06:17<36:00,  4.94s/it, gan_loss=-0.513712, rec_loss=0.115360, vae_loss=0.501952]New iteration 97
+New iteration 98
+Train:  18%|█▊        | 97/534 [06:18<36:00,  4.94s/it, gan_loss=-0.513908, rec_loss=0.115254, vae_loss=0.501947]Train:  18%|█▊        | 98/534 [06:18<26:47,  3.69s/it, gan_loss=-0.513908, rec_loss=0.115254, vae_loss=0.501947]New iteration 98
+New iteration 99
+Train:  18%|█▊        | 98/534 [06:33<26:47,  3.69s/it, gan_loss=-0.514064, rec_loss=0.115217, vae_loss=0.501943]Train:  19%|█▊        | 99/534 [06:33<49:49,  6.87s/it, gan_loss=-0.514064, rec_loss=0.115217, vae_loss=0.501943]New iteration 99
+New iteration 100
+Train:  19%|█▊        | 99/534 [06:33<49:49,  6.87s/it, gan_loss=-0.514199, rec_loss=0.115320, vae_loss=0.501938]Train:  19%|█▊        | 100/534 [06:33<36:25,  5.04s/it, gan_loss=-0.514199, rec_loss=0.115320, vae_loss=0.501938]New iteration 100
+New iteration 101
+Train:  19%|█▊        | 100/534 [06:40<36:25,  5.04s/it, gan_loss=-0.514389, rec_loss=0.115350, vae_loss=0.501934]Train:  19%|█▉        | 101/534 [06:40<40:46,  5.65s/it, gan_loss=-0.514389, rec_loss=0.115350, vae_loss=0.501934]New iteration 101
+New iteration 102
+Train:  19%|█▉        | 101/534 [06:41<40:46,  5.65s/it, gan_loss=-0.514567, rec_loss=0.115424, vae_loss=0.501929]Train:  19%|█▉        | 102/534 [06:41<30:15,  4.20s/it, gan_loss=-0.514567, rec_loss=0.115424, vae_loss=0.501929]New iteration 102
+New iteration 103
+Train:  19%|█▉        | 102/534 [06:55<30:15,  4.20s/it, gan_loss=-0.514729, rec_loss=0.115371, vae_loss=0.501924]Train:  19%|█▉        | 103/534 [06:55<51:25,  7.16s/it, gan_loss=-0.514729, rec_loss=0.115371, vae_loss=0.501924]New iteration 103
+New iteration 104
+Train:  19%|█▉        | 103/534 [06:56<51:25,  7.16s/it, gan_loss=-0.514906, rec_loss=0.115338, vae_loss=0.501919]Train:  19%|█▉        | 104/534 [06:56<37:31,  5.24s/it, gan_loss=-0.514906, rec_loss=0.115338, vae_loss=0.501919]New iteration 104
+New iteration 105
+Train:  19%|█▉        | 104/534 [07:03<37:31,  5.24s/it, gan_loss=-0.515074, rec_loss=0.115309, vae_loss=0.501914]Train:  20%|█▉        | 105/534 [07:03<41:39,  5.83s/it, gan_loss=-0.515074, rec_loss=0.115309, vae_loss=0.501914]New iteration 105
+New iteration 106
+Train:  20%|█▉        | 105/534 [07:04<41:39,  5.83s/it, gan_loss=-0.515243, rec_loss=0.115281, vae_loss=0.501909]Train:  20%|█▉        | 106/534 [07:04<30:41,  4.30s/it, gan_loss=-0.515243, rec_loss=0.115281, vae_loss=0.501909]New iteration 106
+New iteration 107
+Train:  20%|█▉        | 106/534 [07:11<30:41,  4.30s/it, gan_loss=-0.515389, rec_loss=0.115246, vae_loss=0.501904]Train:  20%|██        | 107/534 [07:11<36:38,  5.15s/it, gan_loss=-0.515389, rec_loss=0.115246, vae_loss=0.501904]New iteration 107
+New iteration 108
+Train:  20%|██        | 107/534 [07:12<36:38,  5.15s/it, gan_loss=-0.515558, rec_loss=0.115354, vae_loss=0.501899]Train:  20%|██        | 108/534 [07:12<27:11,  3.83s/it, gan_loss=-0.515558, rec_loss=0.115354, vae_loss=0.501899]New iteration 108
+New iteration 109
+Train:  20%|██        | 108/534 [07:19<27:11,  3.83s/it, gan_loss=-0.515715, rec_loss=0.115283, vae_loss=0.501894]Train:  20%|██        | 109/534 [07:19<34:44,  4.90s/it, gan_loss=-0.515715, rec_loss=0.115283, vae_loss=0.501894]New iteration 109
+New iteration 110
+Train:  20%|██        | 109/534 [07:20<34:44,  4.90s/it, gan_loss=-0.515853, rec_loss=0.115223, vae_loss=0.501889]Train:  21%|██        | 110/534 [07:20<25:50,  3.66s/it, gan_loss=-0.515853, rec_loss=0.115223, vae_loss=0.501889]New iteration 110
+New iteration 111
+Train:  21%|██        | 110/534 [07:26<25:50,  3.66s/it, gan_loss=-0.516012, rec_loss=0.115218, vae_loss=0.501884]Train:  21%|██        | 111/534 [07:26<31:34,  4.48s/it, gan_loss=-0.516012, rec_loss=0.115218, vae_loss=0.501884]New iteration 111
+New iteration 112
+Train:  21%|██        | 111/534 [07:27<31:34,  4.48s/it, gan_loss=-0.516168, rec_loss=0.115198, vae_loss=0.501879]Train:  21%|██        | 112/534 [07:27<23:37,  3.36s/it, gan_loss=-0.516168, rec_loss=0.115198, vae_loss=0.501879]New iteration 112
+New iteration 113
+Train:  21%|██        | 112/534 [07:34<23:37,  3.36s/it, gan_loss=-0.516301, rec_loss=0.115190, vae_loss=0.501873]Train:  21%|██        | 113/534 [07:34<31:20,  4.47s/it, gan_loss=-0.516301, rec_loss=0.115190, vae_loss=0.501873]New iteration 113
+New iteration 114
+Train:  21%|██        | 113/534 [07:35<31:20,  4.47s/it, gan_loss=-0.516441, rec_loss=0.115102, vae_loss=0.501868]Train:  21%|██▏       | 114/534 [07:35<23:28,  3.35s/it, gan_loss=-0.516441, rec_loss=0.115102, vae_loss=0.501868]New iteration 114
+Train:  21%|██▏       | 114/534 [07:48<23:28,  3.35s/it, gan_loss=-0.516586, rec_loss=0.115058, vae_loss=0.501863]New iteration 115
+Train:  22%|██▏       | 115/534 [07:48<44:39,  6.39s/it, gan_loss=-0.516586, rec_loss=0.115058, vae_loss=0.501863]New iteration 115
+New iteration 116
+Train:  22%|██▏       | 115/534 [07:49<44:39,  6.39s/it, gan_loss=-0.516752, rec_loss=0.115001, vae_loss=0.501857]Train:  22%|██▏       | 116/534 [07:49<32:54,  4.72s/it, gan_loss=-0.516752, rec_loss=0.115001, vae_loss=0.501857]New iteration 116
+New iteration 117
+Train:  22%|██▏       | 116/534 [07:56<32:54,  4.72s/it, gan_loss=-0.516877, rec_loss=0.114931, vae_loss=0.501852]Train:  22%|██▏       | 117/534 [07:56<36:14,  5.21s/it, gan_loss=-0.516877, rec_loss=0.114931, vae_loss=0.501852]New iteration 117
+New iteration 118
+Train:  22%|██▏       | 117/534 [07:56<36:14,  5.21s/it, gan_loss=-0.517028, rec_loss=0.114839, vae_loss=0.501846]Train:  22%|██▏       | 118/534 [07:56<26:51,  3.87s/it, gan_loss=-0.517028, rec_loss=0.114839, vae_loss=0.501846]New iteration 118
+New iteration 119
+Train:  22%|██▏       | 118/534 [08:03<26:51,  3.87s/it, gan_loss=-0.517169, rec_loss=0.114774, vae_loss=0.501840]Train:  22%|██▏       | 119/534 [08:03<33:01,  4.77s/it, gan_loss=-0.517169, rec_loss=0.114774, vae_loss=0.501840]New iteration 119
+Train:  22%|██▏       | 119/534 [08:04<33:01,  4.77s/it, gan_loss=-0.517315, rec_loss=0.114719, vae_loss=0.501835]Train:  22%|██▏       | 120/534 [08:04<24:37,  3.57s/it, gan_loss=-0.517315, rec_loss=0.114719, vae_loss=0.501835]New iteration 120
+New iteration 120
+New iteration 121
+Train:  22%|██▏       | 120/534 [08:11<24:37,  3.57s/it, gan_loss=-0.517469, rec_loss=0.114731, vae_loss=0.501829]Train:  23%|██▎       | 121/534 [08:11<30:57,  4.50s/it, gan_loss=-0.517469, rec_loss=0.114731, vae_loss=0.501829]New iteration 121
+New iteration 122
+Train:  23%|██▎       | 121/534 [08:11<30:57,  4.50s/it, gan_loss=-0.517607, rec_loss=0.114655, vae_loss=0.501823]Train:  23%|██▎       | 122/534 [08:11<23:09,  3.37s/it, gan_loss=-0.517607, rec_loss=0.114655, vae_loss=0.501823]New iteration 122
+New iteration 123
+Train:  23%|██▎       | 122/534 [08:18<23:09,  3.37s/it, gan_loss=-0.517740, rec_loss=0.114636, vae_loss=0.501817]Train:  23%|██▎       | 123/534 [08:18<29:45,  4.34s/it, gan_loss=-0.517740, rec_loss=0.114636, vae_loss=0.501817]New iteration 123
+New iteration 124
+Train:  23%|██▎       | 123/534 [08:19<29:45,  4.34s/it, gan_loss=-0.517834, rec_loss=0.114652, vae_loss=0.501812]Train:  23%|██▎       | 124/534 [08:19<22:20,  3.27s/it, gan_loss=-0.517834, rec_loss=0.114652, vae_loss=0.501812]New iteration 124
+New iteration 125
+Train:  23%|██▎       | 124/534 [08:25<22:20,  3.27s/it, gan_loss=-0.517971, rec_loss=0.114576, vae_loss=0.501806]Train:  23%|██▎       | 125/534 [08:25<28:36,  4.20s/it, gan_loss=-0.517971, rec_loss=0.114576, vae_loss=0.501806]New iteration 125
+Train:  23%|██▎       | 125/534 [08:26<28:36,  4.20s/it, gan_loss=-0.518104, rec_loss=0.114495, vae_loss=0.501800]Train:  24%|██▎       | 126/534 [08:26<21:33,  3.17s/it, gan_loss=-0.518104, rec_loss=0.114495, vae_loss=0.501800]New iteration 126
+New iteration 126
+Train:  24%|██▎       | 126/534 [08:33<21:33,  3.17s/it, gan_loss=-0.518242, rec_loss=0.114407, vae_loss=0.501794]Train:  24%|██▍       | 127/534 [08:33<29:05,  4.29s/it, gan_loss=-0.518242, rec_loss=0.114407, vae_loss=0.501794]New iteration 127
+New iteration 127
+Train:  24%|██▍       | 127/534 [08:34<29:05,  4.29s/it, gan_loss=-0.518379, rec_loss=0.114366, vae_loss=0.501787]Train:  24%|██▍       | 128/534 [08:34<21:50,  3.23s/it, gan_loss=-0.518379, rec_loss=0.114366, vae_loss=0.501787]New iteration 128
+New iteration 128
+Train:  24%|██▍       | 128/534 [08:41<21:50,  3.23s/it, gan_loss=-0.518477, rec_loss=0.114367, vae_loss=0.501781]Train:  24%|██▍       | 129/534 [08:41<29:49,  4.42s/it, gan_loss=-0.518477, rec_loss=0.114367, vae_loss=0.501781]New iteration 129
+New iteration 129
+Train:  24%|██▍       | 129/534 [08:42<29:49,  4.42s/it, gan_loss=-0.518605, rec_loss=0.114348, vae_loss=0.501775]Train:  24%|██▍       | 130/534 [08:42<22:20,  3.32s/it, gan_loss=-0.518605, rec_loss=0.114348, vae_loss=0.501775]New iteration 130
+New iteration 130
+New iteration 131
+Train:  24%|██▍       | 130/534 [08:48<22:20,  3.32s/it, gan_loss=-0.518722, rec_loss=0.114274, vae_loss=0.501769]Train:  25%|██▍       | 131/534 [08:48<29:29,  4.39s/it, gan_loss=-0.518722, rec_loss=0.114274, vae_loss=0.501769]New iteration 131
+New iteration 132
+Train:  25%|██▍       | 131/534 [08:49<29:29,  4.39s/it, gan_loss=-0.518838, rec_loss=0.114198, vae_loss=0.501763]Train:  25%|██▍       | 132/534 [08:49<22:07,  3.30s/it, gan_loss=-0.518838, rec_loss=0.114198, vae_loss=0.501763]New iteration 132
+New iteration 133
+Train:  25%|██▍       | 132/534 [08:55<22:07,  3.30s/it, gan_loss=-0.518953, rec_loss=0.114190, vae_loss=0.501756]Train:  25%|██▍       | 133/534 [08:55<28:00,  4.19s/it, gan_loss=-0.518953, rec_loss=0.114190, vae_loss=0.501756]New iteration 133
+New iteration 134
+Train:  25%|██▍       | 133/534 [08:56<28:00,  4.19s/it, gan_loss=-0.519069, rec_loss=0.114133, vae_loss=0.501750]Train:  25%|██▌       | 134/534 [08:56<21:04,  3.16s/it, gan_loss=-0.519069, rec_loss=0.114133, vae_loss=0.501750]New iteration 134
+New iteration 135
+Train:  25%|██▌       | 134/534 [09:03<21:04,  3.16s/it, gan_loss=-0.519191, rec_loss=0.114094, vae_loss=0.501743]Train:  25%|██▌       | 135/534 [09:03<29:17,  4.41s/it, gan_loss=-0.519191, rec_loss=0.114094, vae_loss=0.501743]New iteration 135
+New iteration 136
+Train:  25%|██▌       | 135/534 [09:04<29:17,  4.41s/it, gan_loss=-0.519289, rec_loss=0.114127, vae_loss=0.501737]Train:  25%|██▌       | 136/534 [09:04<21:56,  3.31s/it, gan_loss=-0.519289, rec_loss=0.114127, vae_loss=0.501737]New iteration 136
+New iteration 137
+Train:  25%|██▌       | 136/534 [09:11<21:56,  3.31s/it, gan_loss=-0.519404, rec_loss=0.114086, vae_loss=0.501730]Train:  26%|██▌       | 137/534 [09:11<28:52,  4.37s/it, gan_loss=-0.519404, rec_loss=0.114086, vae_loss=0.501730]New iteration 137
+New iteration 138
+Train:  26%|██▌       | 137/534 [09:12<28:52,  4.37s/it, gan_loss=-0.519524, rec_loss=0.114013, vae_loss=0.501723]Train:  26%|██▌       | 138/534 [09:12<21:38,  3.28s/it, gan_loss=-0.519524, rec_loss=0.114013, vae_loss=0.501723]New iteration 138
+New iteration 139
+Train:  26%|██▌       | 138/534 [09:19<21:38,  3.28s/it, gan_loss=-0.519629, rec_loss=0.113958, vae_loss=0.501717]Train:  26%|██▌       | 139/534 [09:19<28:20,  4.30s/it, gan_loss=-0.519629, rec_loss=0.113958, vae_loss=0.501717]New iteration 139
+New iteration 140
+Train:  26%|██▌       | 139/534 [09:19<28:20,  4.30s/it, gan_loss=-0.519731, rec_loss=0.113884, vae_loss=0.501710]Train:  26%|██▌       | 140/534 [09:19<21:14,  3.23s/it, gan_loss=-0.519731, rec_loss=0.113884, vae_loss=0.501710]New iteration 140
+Train:  26%|██▌       | 140/534 [09:26<21:14,  3.23s/it, gan_loss=-0.519852, rec_loss=0.113844, vae_loss=0.501703]Train:  26%|██▋       | 141/534 [09:26<28:10,  4.30s/it, gan_loss=-0.519852, rec_loss=0.113844, vae_loss=0.501703]New iteration 141
+New iteration 141
+New iteration 142
+Train:  26%|██▋       | 141/534 [09:27<28:10,  4.30s/it, gan_loss=-0.519948, rec_loss=0.113883, vae_loss=0.501696]Train:  27%|██▋       | 142/534 [09:27<21:07,  3.23s/it, gan_loss=-0.519948, rec_loss=0.113883, vae_loss=0.501696]New iteration 142
+New iteration 143
+Train:  27%|██▋       | 142/534 [09:33<21:07,  3.23s/it, gan_loss=-0.520058, rec_loss=0.113822, vae_loss=0.501689]Train:  27%|██▋       | 143/534 [09:33<27:38,  4.24s/it, gan_loss=-0.520058, rec_loss=0.113822, vae_loss=0.501689]New iteration 143
+New iteration 144
+Train:  27%|██▋       | 143/534 [09:34<27:38,  4.24s/it, gan_loss=-0.520162, rec_loss=0.113753, vae_loss=0.501682]Train:  27%|██▋       | 144/534 [09:34<20:45,  3.19s/it, gan_loss=-0.520162, rec_loss=0.113753, vae_loss=0.501682]New iteration 144
+New iteration 145
+Train:  27%|██▋       | 144/534 [09:41<20:45,  3.19s/it, gan_loss=-0.520258, rec_loss=0.113706, vae_loss=0.501675]Train:  27%|██▋       | 145/534 [09:41<27:55,  4.31s/it, gan_loss=-0.520258, rec_loss=0.113706, vae_loss=0.501675]New iteration 145
+New iteration 146
+Train:  27%|██▋       | 145/534 [09:42<27:55,  4.31s/it, gan_loss=-0.520353, rec_loss=0.113670, vae_loss=0.501668]Train:  27%|██▋       | 146/534 [09:42<20:57,  3.24s/it, gan_loss=-0.520353, rec_loss=0.113670, vae_loss=0.501668]New iteration 146
+New iteration 147
+Train:  27%|██▋       | 146/534 [09:48<20:57,  3.24s/it, gan_loss=-0.520460, rec_loss=0.113563, vae_loss=0.501661]Train:  28%|██▊       | 147/534 [09:48<27:36,  4.28s/it, gan_loss=-0.520460, rec_loss=0.113563, vae_loss=0.501661]New iteration 147
+New iteration 148
+Train:  28%|██▊       | 147/534 [09:49<27:36,  4.28s/it, gan_loss=-0.520571, rec_loss=0.113442, vae_loss=0.501653]Train:  28%|██▊       | 148/534 [09:49<20:43,  3.22s/it, gan_loss=-0.520571, rec_loss=0.113442, vae_loss=0.501653]New iteration 148
+Train:  28%|██▊       | 148/534 [09:57<20:43,  3.22s/it, gan_loss=-0.520677, rec_loss=0.113431, vae_loss=0.501646]New iteration 149
+Train:  28%|██▊       | 149/534 [09:57<28:57,  4.51s/it, gan_loss=-0.520677, rec_loss=0.113431, vae_loss=0.501646]New iteration 149
+New iteration 150
+Train:  28%|██▊       | 149/534 [09:58<28:57,  4.51s/it, gan_loss=-0.520781, rec_loss=0.113344, vae_loss=0.501639]Train:  28%|██▊       | 150/534 [09:58<21:39,  3.38s/it, gan_loss=-0.520781, rec_loss=0.113344, vae_loss=0.501639]New iteration 150
+New iteration 151
+Train:  28%|██▊       | 150/534 [10:05<21:39,  3.38s/it, gan_loss=-0.520879, rec_loss=0.113279, vae_loss=0.501631]Train:  28%|██▊       | 151/534 [10:05<28:59,  4.54s/it, gan_loss=-0.520879, rec_loss=0.113279, vae_loss=0.501631]New iteration 151
+Train:  28%|██▊       | 151/534 [10:06<28:59,  4.54s/it, gan_loss=-0.520976, rec_loss=0.113262, vae_loss=0.501624]Train:  28%|██▊       | 152/534 [10:06<21:41,  3.41s/it, gan_loss=-0.520976, rec_loss=0.113262, vae_loss=0.501624]New iteration 152
+New iteration 152
+New iteration 153
+Train:  28%|██▊       | 152/534 [10:12<21:41,  3.41s/it, gan_loss=-0.521075, rec_loss=0.113258, vae_loss=0.501616]Train:  29%|██▊       | 153/534 [10:12<27:55,  4.40s/it, gan_loss=-0.521075, rec_loss=0.113258, vae_loss=0.501616]New iteration 153
+New iteration 154
+Train:  29%|██▊       | 153/534 [10:13<27:55,  4.40s/it, gan_loss=-0.521169, rec_loss=0.113179, vae_loss=0.501608]Train:  29%|██▉       | 154/534 [10:13<20:55,  3.30s/it, gan_loss=-0.521169, rec_loss=0.113179, vae_loss=0.501608]New iteration 154
+New iteration 155
+Train:  29%|██▉       | 154/534 [10:20<20:55,  3.30s/it, gan_loss=-0.521264, rec_loss=0.113148, vae_loss=0.501601]Train:  29%|██▉       | 155/534 [10:20<27:18,  4.32s/it, gan_loss=-0.521264, rec_loss=0.113148, vae_loss=0.501601]New iteration 155
+New iteration 156
+Train:  29%|██▉       | 155/534 [10:20<27:18,  4.32s/it, gan_loss=-0.521359, rec_loss=0.113112, vae_loss=0.501593]Train:  29%|██▉       | 156/534 [10:20<20:28,  3.25s/it, gan_loss=-0.521359, rec_loss=0.113112, vae_loss=0.501593]New iteration 156
+Train:  29%|██▉       | 156/534 [10:27<20:28,  3.25s/it, gan_loss=-0.521452, rec_loss=0.113063, vae_loss=0.501585]New iteration 157Train:  29%|██▉       | 157/534 [10:27<26:42,  4.25s/it, gan_loss=-0.521452, rec_loss=0.113063, vae_loss=0.501585]
+New iteration 157
+New iteration 158
+Train:  29%|██▉       | 157/534 [10:28<26:42,  4.25s/it, gan_loss=-0.521546, rec_loss=0.112976, vae_loss=0.501577]Train:  30%|██▉       | 158/534 [10:28<20:04,  3.20s/it, gan_loss=-0.521546, rec_loss=0.112976, vae_loss=0.501577]New iteration 158
+New iteration 159
+Train:  30%|██▉       | 158/534 [10:35<20:04,  3.20s/it, gan_loss=-0.521644, rec_loss=0.112893, vae_loss=0.501569]Train:  30%|██▉       | 159/534 [10:35<28:05,  4.50s/it, gan_loss=-0.521644, rec_loss=0.112893, vae_loss=0.501569]New iteration 159
+New iteration 160
+Train:  30%|██▉       | 159/534 [10:36<28:05,  4.50s/it, gan_loss=-0.521730, rec_loss=0.112804, vae_loss=0.501561]Train:  30%|██▉       | 160/534 [10:36<21:02,  3.37s/it, gan_loss=-0.521730, rec_loss=0.112804, vae_loss=0.501561]New iteration 160
+Train:  30%|██▉       | 160/534 [10:44<21:02,  3.37s/it, gan_loss=-0.521821, rec_loss=0.112767, vae_loss=0.501553]Train:  30%|███       | 161/534 [10:44<29:05,  4.68s/it, gan_loss=-0.521821, rec_loss=0.112767, vae_loss=0.501553]New iteration 161New iteration 161
+
+Train:  30%|███       | 161/534 [10:45<29:05,  4.68s/it, gan_loss=-0.521914, rec_loss=0.112745, vae_loss=0.501545]New iteration 162
+Train:  30%|███       | 162/534 [10:45<21:43,  3.50s/it, gan_loss=-0.521914, rec_loss=0.112745, vae_loss=0.501545]New iteration 162
+New iteration 163
+Train:  30%|███       | 162/534 [10:52<21:43,  3.50s/it, gan_loss=-0.521995, rec_loss=0.112673, vae_loss=0.501537]Train:  31%|███       | 163/534 [10:52<28:30,  4.61s/it, gan_loss=-0.521995, rec_loss=0.112673, vae_loss=0.501537]New iteration 163
+New iteration 164
+Train:  31%|███       | 163/534 [10:52<28:30,  4.61s/it, gan_loss=-0.522083, rec_loss=0.112623, vae_loss=0.501528]Train:  31%|███       | 164/534 [10:52<21:18,  3.45s/it, gan_loss=-0.522083, rec_loss=0.112623, vae_loss=0.501528]New iteration 164
+New iteration 165
+Train:  31%|███       | 164/534 [11:00<21:18,  3.45s/it, gan_loss=-0.522169, rec_loss=0.112626, vae_loss=0.501520]Train:  31%|███       | 165/534 [11:00<28:25,  4.62s/it, gan_loss=-0.522169, rec_loss=0.112626, vae_loss=0.501520]New iteration 165
+New iteration 166
+Train:  31%|███       | 165/534 [11:01<28:25,  4.62s/it, gan_loss=-0.522259, rec_loss=0.112557, vae_loss=0.501511]Train:  31%|███       | 166/534 [11:01<21:14,  3.46s/it, gan_loss=-0.522259, rec_loss=0.112557, vae_loss=0.501511]New iteration 166
+New iteration 167
+Train:  31%|███       | 166/534 [11:08<21:14,  3.46s/it, gan_loss=-0.522343, rec_loss=0.112580, vae_loss=0.501503]Train:  31%|███▏      | 167/534 [11:08<27:43,  4.53s/it, gan_loss=-0.522343, rec_loss=0.112580, vae_loss=0.501503]New iteration 167
+New iteration 168
+Train:  31%|███▏      | 167/534 [11:08<27:43,  4.53s/it, gan_loss=-0.522422, rec_loss=0.112566, vae_loss=0.501494]Train:  31%|███▏      | 168/534 [11:08<20:45,  3.40s/it, gan_loss=-0.522422, rec_loss=0.112566, vae_loss=0.501494]New iteration 168
+New iteration 169
+Train:  31%|███▏      | 168/534 [11:15<20:45,  3.40s/it, gan_loss=-0.522505, rec_loss=0.112567, vae_loss=0.501486]Train:  32%|███▏      | 169/534 [11:15<27:10,  4.47s/it, gan_loss=-0.522505, rec_loss=0.112567, vae_loss=0.501486]New iteration 169
+New iteration 170
+Train:  32%|███▏      | 169/534 [11:16<27:10,  4.47s/it, gan_loss=-0.522590, rec_loss=0.112499, vae_loss=0.501477]Train:  32%|███▏      | 170/534 [11:16<20:21,  3.36s/it, gan_loss=-0.522590, rec_loss=0.112499, vae_loss=0.501477]New iteration 170
+New iteration 171
+Train:  32%|███▏      | 170/534 [11:23<20:21,  3.36s/it, gan_loss=-0.522668, rec_loss=0.112456, vae_loss=0.501468]Train:  32%|███▏      | 171/534 [11:23<25:57,  4.29s/it, gan_loss=-0.522668, rec_loss=0.112456, vae_loss=0.501468]New iteration 171
+Train:  32%|███▏      | 171/534 [11:23<25:57,  4.29s/it, gan_loss=-0.522751, rec_loss=0.112447, vae_loss=0.501459]Train:  32%|███▏      | 172/534 [11:23<19:30,  3.23s/it, gan_loss=-0.522751, rec_loss=0.112447, vae_loss=0.501459]New iteration 172
+New iteration 172
+New iteration 173
+Train:  32%|███▏      | 172/534 [11:29<19:30,  3.23s/it, gan_loss=-0.522833, rec_loss=0.112466, vae_loss=0.501450]Train:  32%|███▏      | 173/534 [11:29<24:27,  4.07s/it, gan_loss=-0.522833, rec_loss=0.112466, vae_loss=0.501450]New iteration 173
+New iteration 174
+Train:  32%|███▏      | 173/534 [11:30<24:27,  4.07s/it, gan_loss=-0.522914, rec_loss=0.112376, vae_loss=0.501441]Train:  33%|███▎      | 174/534 [11:30<18:26,  3.07s/it, gan_loss=-0.522914, rec_loss=0.112376, vae_loss=0.501441]Python 3.7.15
+3: before init_process_group0: before init_process_group
+
+2: before init_process_group
+1: before init_process_group
+wandb: Currently logged in as: nivek (11785_cmu). Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.13.5
+wandb: Run data is saved locally in /jet/home/aramakri/project/IFRNet/wandb/run-20221202_024356-2lomno5y
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run VAN1
+wandb: ⭐️ View project at https://wandb.ai/11785_cmu/IDL%20Project
+wandb: 🚀 View run at https://wandb.ai/11785_cmu/IDL%20Project/runs/2lomno5y
+Distributed Data Parallel Training IFRNet on Rank 2
+Distributed Data Parallel Training IFRNet on Rank 3
+Distributed Data Parallel Training IFRNet on Rank 1
+Distributed Data Parallel Training IFRNet on Rank 0
+2022-12-02 02:43:59:INFO:Namespace(batch_size=48, device=device(type='cuda', index=3), epochs=50, eval_interval=1, label_smoothing=0, local_rank=3, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=4, resume_epoch=0, resume_path=None, world_size=4)
+2022-12-02 02:43:59:INFO:Namespace(batch_size=48, device=device(type='cuda', index=0), epochs=50, eval_interval=1, label_smoothing=0, local_rank=0, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=4, resume_epoch=0, resume_path=None, world_size=4)
+2022-12-02 02:43:59:INFO:Namespace(batch_size=48, device=device(type='cuda', index=1), epochs=50, eval_interval=1, label_smoothing=0, local_rank=1, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=4, resume_epoch=0, resume_path=None, world_size=4)
+2022-12-02 02:43:59:INFO:Namespace(batch_size=48, device=device(type='cuda', index=2), epochs=50, eval_interval=1, label_smoothing=0, local_rank=2, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=4, resume_epoch=0, resume_path=None, world_size=4)
+2022-12-02 02:43:59:INFO:Namespace(batch_size=48, device=device(type='cuda', index=3), epochs=50, eval_interval=1, label_smoothing=0, local_rank=3, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=4, resume_epoch=0, resume_path=None, world_size=4)
+2022-12-02 02:43:59:INFO:Namespace(batch_size=48, device=device(type='cuda', index=0), epochs=50, eval_interval=1, label_smoothing=0, local_rank=0, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=4, resume_epoch=0, resume_path=None, world_size=4)
+2022-12-02 02:43:59:INFO:Namespace(batch_size=48, device=device(type='cuda', index=1), epochs=50, eval_interval=1, label_smoothing=0, local_rank=1, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=4, resume_epoch=0, resume_path=None, world_size=4)
+2022-12-02 02:43:59:INFO:Namespace(batch_size=48, device=device(type='cuda', index=3), epochs=50, eval_interval=1, label_smoothing=0, local_rank=3, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=4, resume_epoch=0, resume_path=None, world_size=4)
+2022-12-02 02:43:59:INFO:Namespace(batch_size=48, device=device(type='cuda', index=1), epochs=50, eval_interval=1, label_smoothing=0, local_rank=1, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=4, resume_epoch=0, resume_path=None, world_size=4)
+2022-12-02 02:43:59:INFO:Namespace(batch_size=48, device=device(type='cuda', index=0), epochs=50, eval_interval=1, label_smoothing=0, local_rank=0, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=4, resume_epoch=0, resume_path=None, world_size=4)
+2022-12-02 02:43:59:INFO:Namespace(batch_size=48, device=device(type='cuda', index=2), epochs=50, eval_interval=1, label_smoothing=0, local_rank=2, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=4, resume_epoch=0, resume_path=None, world_size=4)
+2022-12-02 02:43:59:INFO:Namespace(batch_size=48, device=device(type='cuda', index=2), epochs=50, eval_interval=1, label_smoothing=0, local_rank=2, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=4, resume_epoch=0, resume_path=None, world_size=4)
+Train:   0%|          | 0/267 [00:00<?, ?it/s]2022-12-02 02:44:16:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 02:44:16:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 02:44:16:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 02:44:16:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 02:44:16:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 02:44:16:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 02:44:16:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 02:44:16:INFO:Reducer buckets have been rebuilt in this iteration.
+Train:   0%|          | 0/267 [00:18<?, ?it/s, gan_loss=-0.490962, rec_loss=0.126392, vae_loss=0.502168]Train:   0%|          | 1/267 [00:18<1:19:53, 18.02s/it, gan_loss=-0.490962, rec_loss=0.126392, vae_loss=0.502168]2022-12-02 02:44:18:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 02:44:18:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 02:44:18:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 02:44:18:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 02:44:18:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 02:44:18:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 02:44:18:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 02:44:18:INFO:Reducer buckets have been rebuilt in this iteration.
+Train:   0%|          | 1/267 [00:18<1:19:53, 18.02s/it, gan_loss=-0.490656, rec_loss=0.125471, vae_loss=0.502168]Train:   1%|          | 2/267 [00:18<35:15,  7.98s/it, gan_loss=-0.490656, rec_loss=0.125471, vae_loss=0.502168]  Train:   1%|          | 2/267 [00:19<35:15,  7.98s/it, gan_loss=-0.492107, rec_loss=0.126810, vae_loss=0.502168]Train:   1%|          | 3/267 [00:19<20:45,  4.72s/it, gan_loss=-0.492107, rec_loss=0.126810, vae_loss=0.502168]Train:   1%|          | 3/267 [00:21<20:45,  4.72s/it, gan_loss=-0.492694, rec_loss=0.123718, vae_loss=0.502168]Train:   1%|▏         | 4/267 [00:21<14:41,  3.35s/it, gan_loss=-0.492694, rec_loss=0.123718, vae_loss=0.502168]Train:   1%|▏         | 4/267 [00:21<14:41,  3.35s/it, gan_loss=-0.492997, rec_loss=0.124146, vae_loss=0.502168]Train:   2%|▏         | 5/267 [00:21<10:45,  2.46s/it, gan_loss=-0.492997, rec_loss=0.124146, vae_loss=0.502168]Train:   2%|▏         | 5/267 [00:22<10:45,  2.46s/it, gan_loss=-0.492986, rec_loss=0.122094, vae_loss=0.502167]Train:   2%|▏         | 6/267 [00:22<08:17,  1.91s/it, gan_loss=-0.492986, rec_loss=0.122094, vae_loss=0.502167]Train:   2%|▏         | 6/267 [00:23<08:17,  1.91s/it, gan_loss=-0.493043, rec_loss=0.121942, vae_loss=0.502167]Train:   3%|▎         | 7/267 [00:23<06:42,  1.55s/it, gan_loss=-0.493043, rec_loss=0.121942, vae_loss=0.502167]Train:   3%|▎         | 7/267 [00:24<06:42,  1.55s/it, gan_loss=-0.493036, rec_loss=0.121735, vae_loss=0.502166]Train:   3%|▎         | 8/267 [00:24<05:40,  1.32s/it, gan_loss=-0.493036, rec_loss=0.121735, vae_loss=0.502166]Train:   3%|▎         | 8/267 [00:29<05:40,  1.32s/it, gan_loss=-0.493028, rec_loss=0.121240, vae_loss=0.502165]Train:   3%|▎         | 9/267 [00:29<11:16,  2.62s/it, gan_loss=-0.493028, rec_loss=0.121240, vae_loss=0.502165]Train:   3%|▎         | 9/267 [00:31<11:16,  2.62s/it, gan_loss=-0.493267, rec_loss=0.121685, vae_loss=0.502164]Train:   4%|▎         | 10/267 [00:31<09:14,  2.16s/it, gan_loss=-0.493267, rec_loss=0.121685, vae_loss=0.502164]Train:   4%|▎         | 10/267 [00:32<09:14,  2.16s/it, gan_loss=-0.493155, rec_loss=0.121388, vae_loss=0.502163]Train:   4%|▍         | 11/267 [00:32<07:43,  1.81s/it, gan_loss=-0.493155, rec_loss=0.121388, vae_loss=0.502163]Train:   4%|▍         | 11/267 [00:32<07:43,  1.81s/it, gan_loss=-0.493126, rec_loss=0.121304, vae_loss=0.502162]Train:   4%|▍         | 12/267 [00:32<06:28,  1.52s/it, gan_loss=-0.493126, rec_loss=0.121304, vae_loss=0.502162]Train:   4%|▍         | 12/267 [00:38<06:28,  1.52s/it, gan_loss=-0.493136, rec_loss=0.120909, vae_loss=0.502161]Train:   5%|▍         | 13/267 [00:38<11:20,  2.68s/it, gan_loss=-0.493136, rec_loss=0.120909, vae_loss=0.502161]Train:   5%|▍         | 13/267 [00:39<11:20,  2.68s/it, gan_loss=-0.493163, rec_loss=0.120740, vae_loss=0.502160]Train:   5%|▌         | 14/267 [00:39<09:28,  2.25s/it, gan_loss=-0.493163, rec_loss=0.120740, vae_loss=0.502160]Train:   5%|▌         | 14/267 [00:40<09:28,  2.25s/it, gan_loss=-0.493262, rec_loss=0.120665, vae_loss=0.502159]Train:   6%|▌         | 15/267 [00:40<07:50,  1.87s/it, gan_loss=-0.493262, rec_loss=0.120665, vae_loss=0.502159]Train:   6%|▌         | 15/267 [00:41<07:50,  1.87s/it, gan_loss=-0.493142, rec_loss=0.120554, vae_loss=0.502158]Train:   6%|▌         | 16/267 [00:41<06:35,  1.57s/it, gan_loss=-0.493142, rec_loss=0.120554, vae_loss=0.502158]Train:   6%|▌         | 16/267 [00:47<06:35,  1.57s/it, gan_loss=-0.493195, rec_loss=0.120119, vae_loss=0.502156]Train:   6%|▋         | 17/267 [00:47<11:54,  2.86s/it, gan_loss=-0.493195, rec_loss=0.120119, vae_loss=0.502156]Train:   6%|▋         | 17/267 [00:48<11:54,  2.86s/it, gan_loss=-0.493162, rec_loss=0.119978, vae_loss=0.502155]Train:   7%|▋         | 18/267 [00:48<09:38,  2.32s/it, gan_loss=-0.493162, rec_loss=0.119978, vae_loss=0.502155]Train:   7%|▋         | 18/267 [00:49<09:38,  2.32s/it, gan_loss=-0.493068, rec_loss=0.119801, vae_loss=0.502153]Train:   7%|▋         | 19/267 [00:49<07:56,  1.92s/it, gan_loss=-0.493068, rec_loss=0.119801, vae_loss=0.502153]Train:   7%|▋         | 19/267 [00:50<07:56,  1.92s/it, gan_loss=-0.493057, rec_loss=0.119874, vae_loss=0.502151]Train:   7%|▋         | 20/267 [00:50<06:36,  1.61s/it, gan_loss=-0.493057, rec_loss=0.119874, vae_loss=0.502151]Train:   7%|▋         | 20/267 [00:54<06:36,  1.61s/it, gan_loss=-0.493100, rec_loss=0.119621, vae_loss=0.502149]Train:   8%|▊         | 21/267 [00:54<10:13,  2.49s/it, gan_loss=-0.493100, rec_loss=0.119621, vae_loss=0.502149]Train:   8%|▊         | 21/267 [00:55<10:13,  2.49s/it, gan_loss=-0.493028, rec_loss=0.119459, vae_loss=0.502148]Train:   8%|▊         | 22/267 [00:55<08:26,  2.07s/it, gan_loss=-0.493028, rec_loss=0.119459, vae_loss=0.502148]Train:   8%|▊         | 22/267 [00:56<08:26,  2.07s/it, gan_loss=-0.492991, rec_loss=0.119515, vae_loss=0.502146]Train:   9%|▊         | 23/267 [00:56<06:53,  1.70s/it, gan_loss=-0.492991, rec_loss=0.119515, vae_loss=0.502146]Train:   9%|▊         | 23/267 [00:57<06:53,  1.70s/it, gan_loss=-0.492972, rec_loss=0.118973, vae_loss=0.502144]Train:   9%|▉         | 24/267 [00:57<05:50,  1.44s/it, gan_loss=-0.492972, rec_loss=0.118973, vae_loss=0.502144]Train:   9%|▉         | 24/267 [01:01<05:50,  1.44s/it, gan_loss=-0.493021, rec_loss=0.119181, vae_loss=0.502141]Train:   9%|▉         | 25/267 [01:01<09:26,  2.34s/it, gan_loss=-0.493021, rec_loss=0.119181, vae_loss=0.502141]Train:   9%|▉         | 25/267 [01:03<09:26,  2.34s/it, gan_loss=-0.492968, rec_loss=0.119100, vae_loss=0.502139]Train:  10%|▉         | 26/267 [01:03<08:21,  2.08s/it, gan_loss=-0.492968, rec_loss=0.119100, vae_loss=0.502139]Train:  10%|▉         | 26/267 [01:04<08:21,  2.08s/it, gan_loss=-0.492923, rec_loss=0.118999, vae_loss=0.502137]Train:  10%|█         | 27/267 [01:04<06:47,  1.70s/it, gan_loss=-0.492923, rec_loss=0.118999, vae_loss=0.502137]Train:  10%|█         | 27/267 [01:05<06:47,  1.70s/it, gan_loss=-0.492882, rec_loss=0.118487, vae_loss=0.502134]Train:  10%|█         | 28/267 [01:05<05:42,  1.43s/it, gan_loss=-0.492882, rec_loss=0.118487, vae_loss=0.502134]Train:  10%|█         | 28/267 [01:09<05:42,  1.43s/it, gan_loss=-0.492867, rec_loss=0.118386, vae_loss=0.502132]Train:  11%|█         | 29/267 [01:09<08:56,  2.25s/it, gan_loss=-0.492867, rec_loss=0.118386, vae_loss=0.502132]Train:  11%|█         | 29/267 [01:11<08:56,  2.25s/it, gan_loss=-0.492857, rec_loss=0.118135, vae_loss=0.502129]Train:  11%|█         | 30/267 [01:11<09:03,  2.29s/it, gan_loss=-0.492857, rec_loss=0.118135, vae_loss=0.502129]Train:  11%|█         | 30/267 [01:13<09:03,  2.29s/it, gan_loss=-0.492856, rec_loss=0.118515, vae_loss=0.502126]Train:  12%|█▏        | 31/267 [01:13<08:15,  2.10s/it, gan_loss=-0.492856, rec_loss=0.118515, vae_loss=0.502126]Train:  12%|█▏        | 31/267 [01:14<08:15,  2.10s/it, gan_loss=-0.492869, rec_loss=0.118038, vae_loss=0.502124]Train:  12%|█▏        | 32/267 [01:14<06:45,  1.73s/it, gan_loss=-0.492869, rec_loss=0.118038, vae_loss=0.502124]Train:  12%|█▏        | 32/267 [13:20<06:45,  1.73s/it, gan_loss=-0.492781, rec_loss=0.117874, vae_loss=0.502121]Train:  12%|█▏        | 33/267 [13:20<14:15:12, 219.28s/it, gan_loss=-0.492781, rec_loss=0.117874, vae_loss=0.502121]Train:  12%|█▏        | 33/267 [13:25<14:15:12, 219.28s/it, gan_loss=-0.492815, rec_loss=0.117735, vae_loss=0.502118]Train:  13%|█▎        | 34/267 [13:25<10:00:59, 154.76s/it, gan_loss=-0.492815, rec_loss=0.117735, vae_loss=0.502118]Train:  13%|█▎        | 34/267 [13:28<10:00:59, 154.76s/it, gan_loss=-0.492750, rec_loss=0.117581, vae_loss=0.502115]Train:  13%|█▎        | 35/267 [13:28<7:03:04, 109.42s/it, gan_loss=-0.492750, rec_loss=0.117581, vae_loss=0.502115] Train:  13%|█▎        | 35/267 [13:34<7:03:04, 109.42s/it, gan_loss=-0.492771, rec_loss=0.117625, vae_loss=0.502112]Train:  13%|█▎        | 36/267 [13:34<5:01:22, 78.28s/it, gan_loss=-0.492771, rec_loss=0.117625, vae_loss=0.502112] Train:  13%|█▎        | 36/267 [16:40<5:01:22, 78.28s/it, gan_loss=-0.492746, rec_loss=0.117422, vae_loss=0.502108]Train:  14%|█▍        | 37/267 [16:40<7:04:28, 110.73s/it, gan_loss=-0.492746, rec_loss=0.117422, vae_loss=0.502108]Train:  14%|█▍        | 37/267 [16:41<7:04:28, 110.73s/it, gan_loss=-0.492734, rec_loss=0.117123, vae_loss=0.502105]Train:  14%|█▍        | 38/267 [16:41<4:56:51, 77.78s/it, gan_loss=-0.492734, rec_loss=0.117123, vae_loss=0.502105] Train:  14%|█▍        | 38/267 [16:42<4:56:51, 77.78s/it, gan_loss=-0.492709, rec_loss=0.117234, vae_loss=0.502102]Train:  15%|█▍        | 39/267 [16:42<3:27:48, 54.69s/it, gan_loss=-0.492709, rec_loss=0.117234, vae_loss=0.502102]Train:  15%|█▍        | 39/267 [16:43<3:27:48, 54.69s/it, gan_loss=-0.492688, rec_loss=0.117278, vae_loss=0.502098]Train:  15%|█▍        | 40/267 [16:43<2:25:46, 38.53s/it, gan_loss=-0.492688, rec_loss=0.117278, vae_loss=0.502098]Train:  15%|█▍        | 40/267 [16:48<2:25:46, 38.53s/it, gan_loss=-0.492660, rec_loss=0.117065, vae_loss=0.502094]Train:  15%|█▌        | 41/267 [16:48<1:46:50, 28.36s/it, gan_loss=-0.492660, rec_loss=0.117065, vae_loss=0.502094]Train:  15%|█▌        | 41/267 [16:51<1:46:50, 28.36s/it, gan_loss=-0.492582, rec_loss=0.117133, vae_loss=0.502091]Train:  16%|█▌        | 42/267 [16:51<1:17:59, 20.80s/it, gan_loss=-0.492582, rec_loss=0.117133, vae_loss=0.502091]Train:  16%|█▌        | 42/267 [16:52<1:17:59, 20.80s/it, gan_loss=-0.492581, rec_loss=0.117091, vae_loss=0.502087]Train:  16%|█▌        | 43/267 [16:52<55:55, 14.98s/it, gan_loss=-0.492581, rec_loss=0.117091, vae_loss=0.502087]  Train:  16%|█▌        | 43/267 [16:53<55:55, 14.98s/it, gan_loss=-0.492616, rec_loss=0.117107, vae_loss=0.502083]Train:  16%|█▋        | 44/267 [16:53<39:54, 10.74s/it, gan_loss=-0.492616, rec_loss=0.117107, vae_loss=0.502083]Train:  16%|█▋        | 44/267 [19:16<39:54, 10.74s/it, gan_loss=-0.492556, rec_loss=0.116931, vae_loss=0.502079]Train:  17%|█▋        | 45/267 [19:16<3:06:12, 50.33s/it, gan_loss=-0.492556, rec_loss=0.116931, vae_loss=0.502079]Train:  17%|█▋        | 45/267 [20:25<3:06:12, 50.33s/it, gan_loss=-0.492598, rec_loss=0.116787, vae_loss=0.502075]Train:  17%|█▋        | 46/267 [20:25<3:26:12, 55.98s/it, gan_loss=-0.492598, rec_loss=0.116787, vae_loss=0.502075]Train:  17%|█▋        | 46/267 [20:27<3:26:12, 55.98s/it, gan_loss=-0.492642, rec_loss=0.116633, vae_loss=0.502071]Train:  18%|█▊        | 47/267 [20:27<2:25:47, 39.76s/it, gan_loss=-0.492642, rec_loss=0.116633, vae_loss=0.502071]Train:  18%|█▊        | 47/267 [20:28<2:25:47, 39.76s/it, gan_loss=-0.492641, rec_loss=0.116751, vae_loss=0.502066]Train:  18%|█▊        | 48/267 [20:28<1:42:31, 28.09s/it, gan_loss=-0.492641, rec_loss=0.116751, vae_loss=0.502066]Train:  18%|█▊        | 48/267 [20:28<1:42:31, 28.09s/it, gan_loss=-0.492636, rec_loss=0.116718, vae_loss=0.502062]Train:  18%|█▊        | 49/267 [20:28<1:12:19, 19.91s/it, gan_loss=-0.492636, rec_loss=0.116718, vae_loss=0.502062]Train:  18%|█▊        | 49/267 [20:49<1:12:19, 19.91s/it, gan_loss=-0.492598, rec_loss=0.116765, vae_loss=0.502058]Train:  19%|█▊        | 50/267 [20:49<1:12:43, 20.11s/it, gan_loss=-0.492598, rec_loss=0.116765, vae_loss=0.502058]Train:  19%|█▊        | 50/267 [20:50<1:12:43, 20.11s/it, gan_loss=-0.492555, rec_loss=0.116901, vae_loss=0.502053]Train:  19%|█▉        | 51/267 [20:50<51:43, 14.37s/it, gan_loss=-0.492555, rec_loss=0.116901, vae_loss=0.502053]  Train:  19%|█▉        | 51/267 [20:51<51:43, 14.37s/it, gan_loss=-0.492509, rec_loss=0.116789, vae_loss=0.502048]Train:  19%|█▉        | 52/267 [20:51<37:37, 10.50s/it, gan_loss=-0.492509, rec_loss=0.116789, vae_loss=0.502048]Train:  19%|█▉        | 52/267 [20:53<37:37, 10.50s/it, gan_loss=-0.492478, rec_loss=0.116780, vae_loss=0.502044]Train:  20%|█▉        | 53/267 [20:53<27:42,  7.77s/it, gan_loss=-0.492478, rec_loss=0.116780, vae_loss=0.502044]Train:  20%|█▉        | 53/267 [20:58<27:42,  7.77s/it, gan_loss=-0.492527, rec_loss=0.116977, vae_loss=0.502039]Train:  20%|██        | 54/267 [20:58<24:59,  7.04s/it, gan_loss=-0.492527, rec_loss=0.116977, vae_loss=0.502039]Train:  20%|██        | 54/267 [21:01<24:59,  7.04s/it, gan_loss=-0.492509, rec_loss=0.116894, vae_loss=0.502034]Train:  21%|██        | 55/267 [21:01<20:28,  5.79s/it, gan_loss=-0.492509, rec_loss=0.116894, vae_loss=0.502034]Train:  21%|██        | 55/267 [21:02<20:28,  5.79s/it, gan_loss=-0.492535, rec_loss=0.116755, vae_loss=0.502029]Train:  21%|██        | 56/267 [21:02<15:13,  4.33s/it, gan_loss=-0.492535, rec_loss=0.116755, vae_loss=0.502029]Train:  21%|██        | 56/267 [21:03<15:13,  4.33s/it, gan_loss=-0.492527, rec_loss=0.116760, vae_loss=0.502024]Train:  21%|██▏       | 57/267 [21:03<11:57,  3.42s/it, gan_loss=-0.492527, rec_loss=0.116760, vae_loss=0.502024]Train:  21%|██▏       | 57/267 [21:07<11:57,  3.42s/it, gan_loss=-0.492556, rec_loss=0.116766, vae_loss=0.502019]Train:  22%|██▏       | 58/267 [21:07<11:48,  3.39s/it, gan_loss=-0.492556, rec_loss=0.116766, vae_loss=0.502019]Train:  22%|██▏       | 58/267 [21:08<11:48,  3.39s/it, gan_loss=-0.492502, rec_loss=0.116622, vae_loss=0.502013]Train:  22%|██▏       | 59/267 [21:08<09:21,  2.70s/it, gan_loss=-0.492502, rec_loss=0.116622, vae_loss=0.502013]Train:  22%|██▏       | 59/267 [21:08<09:21,  2.70s/it, gan_loss=-0.492432, rec_loss=0.116441, vae_loss=0.502008]Train:  22%|██▏       | 60/267 [21:08<07:21,  2.13s/it, gan_loss=-0.492432, rec_loss=0.116441, vae_loss=0.502008]Train:  22%|██▏       | 60/267 [21:09<07:21,  2.13s/it, gan_loss=-0.492448, rec_loss=0.116395, vae_loss=0.502002]Train:  23%|██▎       | 61/267 [21:09<05:57,  1.74s/it, gan_loss=-0.492448, rec_loss=0.116395, vae_loss=0.502002]Train:  23%|██▎       | 61/267 [21:13<05:57,  1.74s/it, gan_loss=-0.492490, rec_loss=0.116379, vae_loss=0.501997]Train:  23%|██▎       | 62/267 [21:13<07:57,  2.33s/it, gan_loss=-0.492490, rec_loss=0.116379, vae_loss=0.501997]Train:  23%|██▎       | 62/267 [21:15<07:57,  2.33s/it, gan_loss=-0.492483, rec_loss=0.116275, vae_loss=0.501991]Train:  24%|██▎       | 63/267 [21:15<07:15,  2.13s/it, gan_loss=-0.492483, rec_loss=0.116275, vae_loss=0.501991]Train:  24%|██▎       | 63/267 [21:16<07:15,  2.13s/it, gan_loss=-0.492467, rec_loss=0.116180, vae_loss=0.501985]Train:  24%|██▍       | 64/267 [21:16<06:26,  1.90s/it, gan_loss=-0.492467, rec_loss=0.116180, vae_loss=0.501985]Train:  24%|██▍       | 64/267 [21:17<06:26,  1.90s/it, gan_loss=-0.492470, rec_loss=0.116160, vae_loss=0.501979]Train:  24%|██▍       | 65/267 [21:17<05:43,  1.70s/it, gan_loss=-0.492470, rec_loss=0.116160, vae_loss=0.501979]Train:  24%|██▍       | 65/267 [21:24<05:43,  1.70s/it, gan_loss=-0.492460, rec_loss=0.116012, vae_loss=0.501973]Train:  25%|██▍       | 66/267 [21:24<10:49,  3.23s/it, gan_loss=-0.492460, rec_loss=0.116012, vae_loss=0.501973]Train:  25%|██▍       | 66/267 [21:25<10:49,  3.23s/it, gan_loss=-0.492474, rec_loss=0.116005, vae_loss=0.501967]Train:  25%|██▌       | 67/267 [21:25<08:28,  2.54s/it, gan_loss=-0.492474, rec_loss=0.116005, vae_loss=0.501967]Train:  25%|██▌       | 67/267 [21:26<08:28,  2.54s/it, gan_loss=-0.492456, rec_loss=0.116086, vae_loss=0.501961]Train:  25%|██▌       | 68/267 [21:26<06:53,  2.08s/it, gan_loss=-0.492456, rec_loss=0.116086, vae_loss=0.501961]Train:  25%|██▌       | 68/267 [21:29<06:53,  2.08s/it, gan_loss=-0.492442, rec_loss=0.115933, vae_loss=0.501955]Train:  26%|██▌       | 69/267 [21:29<08:00,  2.43s/it, gan_loss=-0.492442, rec_loss=0.115933, vae_loss=0.501955]Train:  26%|██▌       | 69/267 [21:34<08:00,  2.43s/it, gan_loss=-0.492416, rec_loss=0.115712, vae_loss=0.501948]Train:  26%|██▌       | 70/267 [21:34<10:12,  3.11s/it, gan_loss=-0.492416, rec_loss=0.115712, vae_loss=0.501948]Train:  26%|██▌       | 70/267 [21:37<10:12,  3.11s/it, gan_loss=-0.492431, rec_loss=0.115667, vae_loss=0.501942]Train:  27%|██▋       | 71/267 [21:37<10:10,  3.12s/it, gan_loss=-0.492431, rec_loss=0.115667, vae_loss=0.501942]Train:  27%|██▋       | 71/267 [21:39<10:10,  3.12s/it, gan_loss=-0.492424, rec_loss=0.115557, vae_loss=0.501935]Train:  27%|██▋       | 72/267 [21:39<09:12,  2.83s/it, gan_loss=-0.492424, rec_loss=0.115557, vae_loss=0.501935]Train:  27%|██▋       | 72/267 [21:42<09:12,  2.83s/it, gan_loss=-0.492439, rec_loss=0.115395, vae_loss=0.501929]Train:  27%|██▋       | 73/267 [21:42<09:02,  2.79s/it, gan_loss=-0.492439, rec_loss=0.115395, vae_loss=0.501929]Train:  27%|██▋       | 73/267 [21:44<09:02,  2.79s/it, gan_loss=-0.492410, rec_loss=0.115185, vae_loss=0.501922]Train:  28%|██▊       | 74/267 [21:44<08:21,  2.60s/it, gan_loss=-0.492410, rec_loss=0.115185, vae_loss=0.501922]Train:  28%|██▊       | 74/267 [21:45<08:21,  2.60s/it, gan_loss=-0.492399, rec_loss=0.115169, vae_loss=0.501915]Train:  28%|██▊       | 75/267 [21:45<07:04,  2.21s/it, gan_loss=-0.492399, rec_loss=0.115169, vae_loss=0.501915]Train:  28%|██▊       | 75/267 [21:46<07:04,  2.21s/it, gan_loss=-0.492408, rec_loss=0.115095, vae_loss=0.501908]Train:  28%|██▊       | 76/267 [21:46<05:54,  1.86s/it, gan_loss=-0.492408, rec_loss=0.115095, vae_loss=0.501908]Train:  28%|██▊       | 76/267 [21:49<05:54,  1.86s/it, gan_loss=-0.492424, rec_loss=0.115098, vae_loss=0.501901]Train:  29%|██▉       | 77/267 [21:49<06:45,  2.13s/it, gan_loss=-0.492424, rec_loss=0.115098, vae_loss=0.501901]Train:  29%|██▉       | 77/267 [21:55<06:45,  2.13s/it, gan_loss=-0.492395, rec_loss=0.115061, vae_loss=0.501894]Train:  29%|██▉       | 78/267 [21:55<09:51,  3.13s/it, gan_loss=-0.492395, rec_loss=0.115061, vae_loss=0.501894]Train:  29%|██▉       | 78/267 [21:57<09:51,  3.13s/it, gan_loss=-0.492403, rec_loss=0.114962, vae_loss=0.501886]Train:  30%|██▉       | 79/267 [21:57<08:53,  2.84s/it, gan_loss=-0.492403, rec_loss=0.114962, vae_loss=0.501886]Train:  30%|██▉       | 79/267 [21:58<08:53,  2.84s/it, gan_loss=-0.492404, rec_loss=0.114879, vae_loss=0.501879]Train:  30%|██▉       | 80/267 [21:58<06:57,  2.23s/it, gan_loss=-0.492404, rec_loss=0.114879, vae_loss=0.501879]Train:  30%|██▉       | 80/267 [22:10<06:57,  2.23s/it, gan_loss=-0.492386, rec_loss=0.114935, vae_loss=0.501872]Train:  30%|███       | 81/267 [22:10<16:05,  5.19s/it, gan_loss=-0.492386, rec_loss=0.114935, vae_loss=0.501872]Train:  30%|███       | 81/267 [22:11<16:05,  5.19s/it, gan_loss=-0.492411, rec_loss=0.114854, vae_loss=0.501864]Train:  31%|███       | 82/267 [22:11<11:55,  3.87s/it, gan_loss=-0.492411, rec_loss=0.114854, vae_loss=0.501864]Train:  31%|███       | 82/267 [22:12<11:55,  3.87s/it, gan_loss=-0.492407, rec_loss=0.114718, vae_loss=0.501856]Train:  31%|███       | 83/267 [22:12<09:23,  3.06s/it, gan_loss=-0.492407, rec_loss=0.114718, vae_loss=0.501856]Train:  31%|███       | 83/267 [22:15<09:23,  3.06s/it, gan_loss=-0.492390, rec_loss=0.114750, vae_loss=0.501848]Train:  31%|███▏      | 84/267 [22:15<09:43,  3.19s/it, gan_loss=-0.492390, rec_loss=0.114750, vae_loss=0.501848]Train:  31%|███▏      | 84/267 [22:21<09:43,  3.19s/it, gan_loss=-0.492365, rec_loss=0.114699, vae_loss=0.501840]Train:  32%|███▏      | 85/267 [22:21<12:03,  3.97s/it, gan_loss=-0.492365, rec_loss=0.114699, vae_loss=0.501840]Train:  32%|███▏      | 85/267 [22:24<12:03,  3.97s/it, gan_loss=-0.492393, rec_loss=0.114634, vae_loss=0.501832]Train:  32%|███▏      | 86/267 [22:24<10:44,  3.56s/it, gan_loss=-0.492393, rec_loss=0.114634, vae_loss=0.501832]Train:  32%|███▏      | 86/267 [22:25<10:44,  3.56s/it, gan_loss=-0.492403, rec_loss=0.114578, vae_loss=0.501824]Train:  33%|███▎      | 87/267 [22:25<08:24,  2.80s/it, gan_loss=-0.492403, rec_loss=0.114578, vae_loss=0.501824]Train:  33%|███▎      | 87/267 [22:25<08:24,  2.80s/it, gan_loss=-0.492409, rec_loss=0.114561, vae_loss=0.501816]Train:  33%|███▎      | 88/267 [22:25<06:37,  2.22s/it, gan_loss=-0.492409, rec_loss=0.114561, vae_loss=0.501816]Train:  33%|███▎      | 88/267 [22:30<06:37,  2.22s/it, gan_loss=-0.492420, rec_loss=0.114544, vae_loss=0.501808]Train:  33%|███▎      | 89/267 [22:30<08:12,  2.77s/it, gan_loss=-0.492420, rec_loss=0.114544, vae_loss=0.501808]Train:  33%|███▎      | 89/267 [22:35<08:12,  2.77s/it, gan_loss=-0.492426, rec_loss=0.114505, vae_loss=0.501799]Train:  34%|███▎      | 90/267 [22:35<10:58,  3.72s/it, gan_loss=-0.492426, rec_loss=0.114505, vae_loss=0.501799]Train:  34%|███▎      | 90/267 [22:37<10:58,  3.72s/it, gan_loss=-0.492389, rec_loss=0.114494, vae_loss=0.501791]Train:  34%|███▍      | 91/267 [22:37<08:55,  3.04s/it, gan_loss=-0.492389, rec_loss=0.114494, vae_loss=0.501791]Train:  34%|███▍      | 91/267 [22:39<08:55,  3.04s/it, gan_loss=-0.492366, rec_loss=0.114554, vae_loss=0.501782]Train:  34%|███▍      | 92/267 [22:39<08:13,  2.82s/it, gan_loss=-0.492366, rec_loss=0.114554, vae_loss=0.501782]Train:  34%|███▍      | 92/267 [22:40<08:13,  2.82s/it, gan_loss=-0.492371, rec_loss=0.114448, vae_loss=0.501773]Train:  35%|███▍      | 93/267 [22:40<06:27,  2.23s/it, gan_loss=-0.492371, rec_loss=0.114448, vae_loss=0.501773]Train:  35%|███▍      | 93/267 [22:45<06:27,  2.23s/it, gan_loss=-0.492394, rec_loss=0.114447, vae_loss=0.501765]Train:  35%|███▌      | 94/267 [22:45<08:46,  3.05s/it, gan_loss=-0.492394, rec_loss=0.114447, vae_loss=0.501765]Train:  35%|███▌      | 94/267 [22:47<08:46,  3.05s/it, gan_loss=-0.492371, rec_loss=0.114393, vae_loss=0.501756]Train:  36%|███▌      | 95/267 [22:47<07:58,  2.78s/it, gan_loss=-0.492371, rec_loss=0.114393, vae_loss=0.501756]Train:  36%|███▌      | 95/267 [22:51<07:58,  2.78s/it, gan_loss=-0.492377, rec_loss=0.114280, vae_loss=0.501746]Train:  36%|███▌      | 96/267 [22:51<08:46,  3.08s/it, gan_loss=-0.492377, rec_loss=0.114280, vae_loss=0.501746]Train:  36%|███▌      | 96/267 [22:53<08:46,  3.08s/it, gan_loss=-0.492387, rec_loss=0.114289, vae_loss=0.501737]Train:  36%|███▋      | 97/267 [22:53<07:47,  2.75s/it, gan_loss=-0.492387, rec_loss=0.114289, vae_loss=0.501737]Train:  36%|███▋      | 97/267 [22:55<07:47,  2.75s/it, gan_loss=-0.492395, rec_loss=0.114196, vae_loss=0.501728]Train:  37%|███▋      | 98/267 [22:55<06:46,  2.41s/it, gan_loss=-0.492395, rec_loss=0.114196, vae_loss=0.501728]Train:  37%|███▋      | 98/267 [23:55<06:46,  2.41s/it, gan_loss=-0.492391, rec_loss=0.114120, vae_loss=0.501718]Train:  37%|███▋      | 99/267 [23:55<55:06, 19.68s/it, gan_loss=-0.492391, rec_loss=0.114120, vae_loss=0.501718]Train:  37%|███▋      | 99/267 [23:57<55:06, 19.68s/it, gan_loss=-0.492385, rec_loss=0.114109, vae_loss=0.501709]Train:  37%|███▋      | 100/267 [23:57<40:42, 14.62s/it, gan_loss=-0.492385, rec_loss=0.114109, vae_loss=0.501709]Train:  37%|███▋      | 100/267 [23:59<40:42, 14.62s/it, gan_loss=-0.492383, rec_loss=0.114145, vae_loss=0.501699]Train:  38%|███▊      | 101/267 [23:59<29:36, 10.70s/it, gan_loss=-0.492383, rec_loss=0.114145, vae_loss=0.501699]Train:  38%|███▊      | 101/267 [24:02<29:36, 10.70s/it, gan_loss=-0.492366, rec_loss=0.114032, vae_loss=0.501689]Train:  38%|███▊      | 102/267 [24:02<23:14,  8.45s/it, gan_loss=-0.492366, rec_loss=0.114032, vae_loss=0.501689]Train:  38%|███▊      | 102/267 [24:03<23:14,  8.45s/it, gan_loss=-0.492330, rec_loss=0.113960, vae_loss=0.501679]Train:  39%|███▊      | 103/267 [24:03<17:16,  6.32s/it, gan_loss=-0.492330, rec_loss=0.113960, vae_loss=0.501679]Train:  39%|███▊      | 103/267 [24:04<17:16,  6.32s/it, gan_loss=-0.492322, rec_loss=0.113851, vae_loss=0.501669]Train:  39%|███▉      | 104/267 [24:04<12:40,  4.67s/it, gan_loss=-0.492322, rec_loss=0.113851, vae_loss=0.501669]Train:  39%|███▉      | 104/267 [24:44<12:40,  4.67s/it, gan_loss=-0.492320, rec_loss=0.113718, vae_loss=0.501659]Train:  39%|███▉      | 105/267 [24:44<40:49, 15.12s/it, gan_loss=-0.492320, rec_loss=0.113718, vae_loss=0.501659]Train:  39%|███▉      | 105/267 [24:45<40:49, 15.12s/it, gan_loss=-0.492313, rec_loss=0.113637, vae_loss=0.501649]Train:  40%|███▉      | 106/267 [24:45<29:02, 10.82s/it, gan_loss=-0.492313, rec_loss=0.113637, vae_loss=0.501649]Train:  40%|███▉      | 106/267 [24:45<29:02, 10.82s/it, gan_loss=-0.492322, rec_loss=0.113569, vae_loss=0.501639]Train:  40%|████      | 107/267 [24:45<20:50,  7.81s/it, gan_loss=-0.492322, rec_loss=0.113569, vae_loss=0.501639]Train:  40%|████      | 107/267 [24:47<20:50,  7.81s/it, gan_loss=-0.492334, rec_loss=0.113541, vae_loss=0.501628]Train:  40%|████      | 108/267 [24:47<16:04,  6.07s/it, gan_loss=-0.492334, rec_loss=0.113541, vae_loss=0.501628]Train:  40%|████      | 108/267 [24:51<16:04,  6.07s/it, gan_loss=-0.492340, rec_loss=0.113515, vae_loss=0.501617]Train:  41%|████      | 109/267 [24:51<13:43,  5.21s/it, gan_loss=-0.492340, rec_loss=0.113515, vae_loss=0.501617]Train:  41%|████      | 109/267 [24:52<13:43,  5.21s/it, gan_loss=-0.492330, rec_loss=0.113440, vae_loss=0.501607]Train:  41%|████      | 110/267 [24:52<10:17,  3.93s/it, gan_loss=-0.492330, rec_loss=0.113440, vae_loss=0.501607]Train:  41%|████      | 110/267 [24:52<10:17,  3.93s/it, gan_loss=-0.492330, rec_loss=0.113294, vae_loss=0.501596]Train:  42%|████▏     | 111/267 [24:52<07:49,  3.01s/it, gan_loss=-0.492330, rec_loss=0.113294, vae_loss=0.501596]Train:  42%|████▏     | 111/267 [25:22<07:49,  3.01s/it, gan_loss=-0.492327, rec_loss=0.113196, vae_loss=0.501585]Train:  42%|████▏     | 112/267 [25:22<28:29, 11.03s/it, gan_loss=-0.492327, rec_loss=0.113196, vae_loss=0.501585]Train:  42%|████▏     | 112/267 [25:25<28:29, 11.03s/it, gan_loss=-0.492337, rec_loss=0.113134, vae_loss=0.501574]Train:  42%|████▏     | 113/267 [25:25<21:51,  8.51s/it, gan_loss=-0.492337, rec_loss=0.113134, vae_loss=0.501574]Train:  42%|████▏     | 113/267 [25:27<21:51,  8.51s/it, gan_loss=-0.492332, rec_loss=0.113009, vae_loss=0.501562]Train:  43%|████▎     | 114/267 [25:27<16:51,  6.61s/it, gan_loss=-0.492332, rec_loss=0.113009, vae_loss=0.501562]Train:  43%|████▎     | 114/267 [25:28<16:51,  6.61s/it, gan_loss=-0.492319, rec_loss=0.112905, vae_loss=0.501551]Train:  43%|████▎     | 115/267 [25:28<12:22,  4.88s/it, gan_loss=-0.492319, rec_loss=0.112905, vae_loss=0.501551]Train:  43%|████▎     | 115/267 [25:32<12:22,  4.88s/it, gan_loss=-0.492336, rec_loss=0.112831, vae_loss=0.501539]Train:  43%|████▎     | 116/267 [25:32<11:30,  4.57s/it, gan_loss=-0.492336, rec_loss=0.112831, vae_loss=0.501539]Train:  43%|████▎     | 116/267 [25:32<11:30,  4.57s/it, gan_loss=-0.492339, rec_loss=0.112855, vae_loss=0.501527]Train:  44%|████▍     | 117/267 [25:32<08:36,  3.44s/it, gan_loss=-0.492339, rec_loss=0.112855, vae_loss=0.501527]Train:  44%|████▍     | 117/267 [25:33<08:36,  3.44s/it, gan_loss=-0.492343, rec_loss=0.112840, vae_loss=0.501516]Train:  44%|████▍     | 118/267 [25:33<06:34,  2.65s/it, gan_loss=-0.492343, rec_loss=0.112840, vae_loss=0.501516]Train:  44%|████▍     | 118/267 [25:35<06:34,  2.65s/it, gan_loss=-0.492351, rec_loss=0.112810, vae_loss=0.501504]Train:  45%|████▍     | 119/267 [25:35<06:05,  2.47s/it, gan_loss=-0.492351, rec_loss=0.112810, vae_loss=0.501504]Train:  45%|████▍     | 119/267 [25:42<06:05,  2.47s/it, gan_loss=-0.492339, rec_loss=0.112820, vae_loss=0.501491]Train:  45%|████▍     | 120/267 [25:42<08:57,  3.65s/it, gan_loss=-0.492339, rec_loss=0.112820, vae_loss=0.501491]Train:  45%|████▍     | 120/267 [25:43<08:57,  3.65s/it, gan_loss=-0.492348, rec_loss=0.112835, vae_loss=0.501479]Train:  45%|████▌     | 121/267 [25:43<07:19,  3.01s/it, gan_loss=-0.492348, rec_loss=0.112835, vae_loss=0.501479]Train:  45%|████▌     | 121/267 [25:45<07:19,  3.01s/it, gan_loss=-0.492341, rec_loss=0.112846, vae_loss=0.501467]Train:  46%|████▌     | 122/267 [25:45<06:18,  2.61s/it, gan_loss=-0.492341, rec_loss=0.112846, vae_loss=0.501467]Train:  46%|████▌     | 122/267 [26:20<06:18,  2.61s/it, gan_loss=-0.492322, rec_loss=0.112732, vae_loss=0.501454]Train:  46%|████▌     | 123/267 [26:20<29:34, 12.32s/it, gan_loss=-0.492322, rec_loss=0.112732, vae_loss=0.501454]Train:  46%|████▌     | 123/267 [26:21<29:34, 12.32s/it, gan_loss=-0.492307, rec_loss=0.112728, vae_loss=0.501441]Train:  46%|████▋     | 124/267 [26:21<21:25,  8.99s/it, gan_loss=-0.492307, rec_loss=0.112728, vae_loss=0.501441]Train:  46%|████▋     | 124/267 [26:22<21:25,  8.99s/it, gan_loss=-0.492300, rec_loss=0.112622, vae_loss=0.501429]Train:  47%|████▋     | 125/267 [26:22<15:28,  6.54s/it, gan_loss=-0.492300, rec_loss=0.112622, vae_loss=0.501429]Train:  47%|████▋     | 125/267 [26:23<15:28,  6.54s/it, gan_loss=-0.492284, rec_loss=0.112457, vae_loss=0.501415]Train:  47%|████▋     | 126/267 [26:23<11:19,  4.82s/it, gan_loss=-0.492284, rec_loss=0.112457, vae_loss=0.501415]Train:  47%|████▋     | 126/267 [27:19<11:19,  4.82s/it, gan_loss=-0.492270, rec_loss=0.112341, vae_loss=0.501402]Train:  48%|████▊     | 127/267 [27:19<47:27, 20.34s/it, gan_loss=-0.492270, rec_loss=0.112341, vae_loss=0.501402]Train:  48%|████▊     | 127/267 [27:49<47:27, 20.34s/it, gan_loss=-0.492285, rec_loss=0.112216, vae_loss=0.501389]Train:  48%|████▊     | 128/267 [27:49<53:39, 23.16s/it, gan_loss=-0.492285, rec_loss=0.112216, vae_loss=0.501389]Train:  48%|████▊     | 128/267 [27:51<53:39, 23.16s/it, gan_loss=-0.492290, rec_loss=0.112204, vae_loss=0.501375]Train:  48%|████▊     | 129/267 [27:51<38:55, 16.92s/it, gan_loss=-0.492290, rec_loss=0.112204, vae_loss=0.501375]Train:  48%|████▊     | 129/267 [27:53<38:55, 16.92s/it, gan_loss=-0.492295, rec_loss=0.112257, vae_loss=0.501362]Train:  49%|████▊     | 130/267 [27:53<28:19, 12.40s/it, gan_loss=-0.492295, rec_loss=0.112257, vae_loss=0.501362]Train:  49%|████▊     | 130/267 [27:56<28:19, 12.40s/it, gan_loss=-0.492290, rec_loss=0.112137, vae_loss=0.501348]Train:  49%|████▉     | 131/267 [27:56<21:47,  9.62s/it, gan_loss=-0.492290, rec_loss=0.112137, vae_loss=0.501348]Train:  49%|████▉     | 131/267 [27:58<21:47,  9.62s/it, gan_loss=-0.492267, rec_loss=0.112038, vae_loss=0.501334]Train:  49%|████▉     | 132/267 [27:58<16:33,  7.36s/it, gan_loss=-0.492267, rec_loss=0.112038, vae_loss=0.501334]Train:  49%|████▉     | 132/267 [27:59<16:33,  7.36s/it, gan_loss=-0.492260, rec_loss=0.111938, vae_loss=0.501319]Train:  50%|████▉     | 133/267 [27:59<12:02,  5.39s/it, gan_loss=-0.492260, rec_loss=0.111938, vae_loss=0.501319]Train:  50%|████▉     | 133/267 [28:00<12:02,  5.39s/it, gan_loss=-0.492250, rec_loss=0.111857, vae_loss=0.501305]Train:  50%|█████     | 134/267 [28:00<08:54,  4.02s/it, gan_loss=-0.492250, rec_loss=0.111857, vae_loss=0.501305]Train:  50%|█████     | 134/267 [28:01<08:54,  4.02s/it, gan_loss=-0.492266, rec_loss=0.111827, vae_loss=0.501290]Train:  51%|█████     | 135/267 [28:01<06:42,  3.05s/it, gan_loss=-0.492266, rec_loss=0.111827, vae_loss=0.501290]Train:  51%|█████     | 135/267 [28:22<06:42,  3.05s/it, gan_loss=-0.492241, rec_loss=0.111796, vae_loss=0.501276]Train:  51%|█████     | 136/267 [28:22<18:34,  8.51s/it, gan_loss=-0.492241, rec_loss=0.111796, vae_loss=0.501276]Train:  51%|█████     | 136/267 [28:23<18:34,  8.51s/it, gan_loss=-0.492218, rec_loss=0.111681, vae_loss=0.501261]Train:  51%|█████▏    | 137/267 [28:23<13:28,  6.22s/it, gan_loss=-0.492218, rec_loss=0.111681, vae_loss=0.501261]Train:  51%|█████▏    | 137/267 [28:24<13:28,  6.22s/it, gan_loss=-0.492206, rec_loss=0.111585, vae_loss=0.501245]Train:  52%|█████▏    | 138/267 [28:24<09:52,  4.59s/it, gan_loss=-0.492206, rec_loss=0.111585, vae_loss=0.501245]Train:  52%|█████▏    | 138/267 [28:45<09:52,  4.59s/it, gan_loss=-0.492212, rec_loss=0.111490, vae_loss=0.501230]Train:  52%|█████▏    | 139/267 [28:45<20:33,  9.64s/it, gan_loss=-0.492212, rec_loss=0.111490, vae_loss=0.501230]Train:  52%|█████▏    | 139/267 [28:47<20:33,  9.64s/it, gan_loss=-0.492204, rec_loss=0.111354, vae_loss=0.501215]Train:  52%|█████▏    | 140/267 [28:47<15:09,  7.16s/it, gan_loss=-0.492204, rec_loss=0.111354, vae_loss=0.501215]Train:  52%|█████▏    | 140/267 [28:48<15:09,  7.16s/it, gan_loss=-0.492200, rec_loss=0.111271, vae_loss=0.501199]Train:  53%|█████▎    | 141/267 [28:48<11:12,  5.34s/it, gan_loss=-0.492200, rec_loss=0.111271, vae_loss=0.501199]Train:  53%|█████▎    | 141/267 [28:49<11:12,  5.34s/it, gan_loss=-0.492202, rec_loss=0.111134, vae_loss=0.501183]Train:  53%|█████▎    | 142/267 [28:49<08:36,  4.13s/it, gan_loss=-0.492202, rec_loss=0.111134, vae_loss=0.501183]Train:  53%|█████▎    | 142/267 [28:53<08:36,  4.13s/it, gan_loss=-0.492193, rec_loss=0.111096, vae_loss=0.501167]Train:  54%|█████▎    | 143/267 [28:53<08:15,  3.99s/it, gan_loss=-0.492193, rec_loss=0.111096, vae_loss=0.501167]Train:  54%|█████▎    | 143/267 [28:53<08:15,  3.99s/it, gan_loss=-0.492162, rec_loss=0.111011, vae_loss=0.501150]Train:  54%|█████▍    | 144/267 [28:53<06:13,  3.04s/it, gan_loss=-0.492162, rec_loss=0.111011, vae_loss=0.501150]Train:  54%|█████▍    | 144/267 [28:54<06:13,  3.04s/it, gan_loss=-0.492170, rec_loss=0.110965, vae_loss=0.501134]Train:  54%|█████▍    | 145/267 [28:54<04:48,  2.37s/it, gan_loss=-0.492170, rec_loss=0.110965, vae_loss=0.501134]Train:  54%|█████▍    | 145/267 [28:55<04:48,  2.37s/it, gan_loss=-0.492172, rec_loss=0.110935, vae_loss=0.501117]Train:  55%|█████▍    | 146/267 [28:55<03:49,  1.90s/it, gan_loss=-0.492172, rec_loss=0.110935, vae_loss=0.501117]Train:  55%|█████▍    | 146/267 [29:00<03:49,  1.90s/it, gan_loss=-0.492161, rec_loss=0.110896, vae_loss=0.501100]Train:  55%|█████▌    | 147/267 [29:00<05:38,  2.82s/it, gan_loss=-0.492161, rec_loss=0.110896, vae_loss=0.501100]Train:  55%|█████▌    | 147/267 [29:01<05:38,  2.82s/it, gan_loss=-0.492149, rec_loss=0.110757, vae_loss=0.501082]Train:  55%|█████▌    | 148/267 [29:01<04:24,  2.22s/it, gan_loss=-0.492149, rec_loss=0.110757, vae_loss=0.501082]Train:  55%|█████▌    | 148/267 [29:02<04:24,  2.22s/it, gan_loss=-0.492153, rec_loss=0.110602, vae_loss=0.501065]Train:  56%|█████▌    | 149/267 [29:02<03:31,  1.79s/it, gan_loss=-0.492153, rec_loss=0.110602, vae_loss=0.501065]Train:  56%|█████▌    | 149/267 [29:02<03:31,  1.79s/it, gan_loss=-0.492142, rec_loss=0.110495, vae_loss=0.501047]Train:  56%|█████▌    | 150/267 [29:02<02:54,  1.49s/it, gan_loss=-0.492142, rec_loss=0.110495, vae_loss=0.501047]Train:  56%|█████▌    | 150/267 [29:10<02:54,  1.49s/it, gan_loss=-0.492150, rec_loss=0.110426, vae_loss=0.501029]Train:  57%|█████▋    | 151/267 [29:10<06:35,  3.41s/it, gan_loss=-0.492150, rec_loss=0.110426, vae_loss=0.501029]Train:  57%|█████▋    | 151/267 [29:11<06:35,  3.41s/it, gan_loss=-0.492141, rec_loss=0.110376, vae_loss=0.501011]Train:  57%|█████▋    | 152/267 [29:11<05:03,  2.64s/it, gan_loss=-0.492141, rec_loss=0.110376, vae_loss=0.501011]Train:  57%|█████▋    | 152/267 [29:12<05:03,  2.64s/it, gan_loss=-0.492148, rec_loss=0.110370, vae_loss=0.500992]Train:  57%|█████▋    | 153/267 [29:12<03:58,  2.09s/it, gan_loss=-0.492148, rec_loss=0.110370, vae_loss=0.500992]Train:  57%|█████▋    | 153/267 [29:13<03:58,  2.09s/it, gan_loss=-0.492147, rec_loss=0.110310, vae_loss=0.500973]Train:  58%|█████▊    | 154/267 [29:13<03:12,  1.70s/it, gan_loss=-0.492147, rec_loss=0.110310, vae_loss=0.500973]Train:  58%|█████▊    | 154/267 [29:29<03:12,  1.70s/it, gan_loss=-0.492154, rec_loss=0.110230, vae_loss=0.500954]Train:  58%|█████▊    | 155/267 [29:29<11:23,  6.10s/it, gan_loss=-0.492154, rec_loss=0.110230, vae_loss=0.500954]Train:  58%|█████▊    | 155/267 [29:30<11:23,  6.10s/it, gan_loss=-0.492140, rec_loss=0.110118, vae_loss=0.500935]Train:  58%|█████▊    | 156/267 [29:30<08:20,  4.51s/it, gan_loss=-0.492140, rec_loss=0.110118, vae_loss=0.500935]Train:  58%|█████▊    | 156/267 [29:32<08:20,  4.51s/it, gan_loss=-0.492136, rec_loss=0.110034, vae_loss=0.500915]Train:  59%|█████▉    | 157/267 [29:32<06:59,  3.81s/it, gan_loss=-0.492136, rec_loss=0.110034, vae_loss=0.500915]Train:  59%|█████▉    | 157/267 [29:33<06:59,  3.81s/it, gan_loss=-0.492144, rec_loss=0.109974, vae_loss=0.500895]Train:  59%|█████▉    | 158/267 [29:33<05:34,  3.07s/it, gan_loss=-0.492144, rec_loss=0.109974, vae_loss=0.500895]Python 3.7.15
+2: before init_process_group0: before init_process_group
+
+1: before init_process_group
+3: before init_process_group
+wandb: Currently logged in as: nivek (11785_cmu). Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.13.5
+wandb: Run data is saved locally in /jet/home/aramakri/project/IFRNet/wandb/run-20221202_033309-pl8ma0jx
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run VAN1
+wandb: ⭐️ View project at https://wandb.ai/11785_cmu/IDL%20Project
+wandb: 🚀 View run at https://wandb.ai/11785_cmu/IDL%20Project/runs/pl8ma0jx
+Distributed Data Parallel Training IFRNet on Rank 0Distributed Data Parallel Training IFRNet on Rank 2Distributed Data Parallel Training IFRNet on Rank 3Distributed Data Parallel Training IFRNet on Rank 1
+
+
+
+2022-12-02 03:33:11:INFO:Namespace(batch_size=48, device=device(type='cuda', index=0), epochs=50, eval_interval=1, label_smoothing=0, local_rank=0, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=4, resume_epoch=0, resume_path=None, world_size=4)
+2022-12-02 03:33:11:INFO:Namespace(batch_size=48, device=device(type='cuda', index=2), epochs=50, eval_interval=1, label_smoothing=0, local_rank=2, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=4, resume_epoch=0, resume_path=None, world_size=4)
+2022-12-02 03:33:11:INFO:Namespace(batch_size=48, device=device(type='cuda', index=1), epochs=50, eval_interval=1, label_smoothing=0, local_rank=1, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=4, resume_epoch=0, resume_path=None, world_size=4)
+2022-12-02 03:33:11:INFO:Namespace(batch_size=48, device=device(type='cuda', index=3), epochs=50, eval_interval=1, label_smoothing=0, local_rank=3, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=4, resume_epoch=0, resume_path=None, world_size=4)
+2022-12-02 03:33:11:INFO:Namespace(batch_size=48, device=device(type='cuda', index=2), epochs=50, eval_interval=1, label_smoothing=0, local_rank=2, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=4, resume_epoch=0, resume_path=None, world_size=4)
+2022-12-02 03:33:11:INFO:Namespace(batch_size=48, device=device(type='cuda', index=0), epochs=50, eval_interval=1, label_smoothing=0, local_rank=0, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=4, resume_epoch=0, resume_path=None, world_size=4)
+2022-12-02 03:33:11:INFO:Namespace(batch_size=48, device=device(type='cuda', index=1), epochs=50, eval_interval=1, label_smoothing=0, local_rank=1, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=4, resume_epoch=0, resume_path=None, world_size=4)
+2022-12-02 03:33:11:INFO:Namespace(batch_size=48, device=device(type='cuda', index=3), epochs=50, eval_interval=1, label_smoothing=0, local_rank=3, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=4, resume_epoch=0, resume_path=None, world_size=4)
+2022-12-02 03:33:11:INFO:Namespace(batch_size=48, device=device(type='cuda', index=2), epochs=50, eval_interval=1, label_smoothing=0, local_rank=2, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=4, resume_epoch=0, resume_path=None, world_size=4)
+2022-12-02 03:33:11:INFO:Namespace(batch_size=48, device=device(type='cuda', index=1), epochs=50, eval_interval=1, label_smoothing=0, local_rank=1, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=4, resume_epoch=0, resume_path=None, world_size=4)
+2022-12-02 03:33:11:INFO:Namespace(batch_size=48, device=device(type='cuda', index=3), epochs=50, eval_interval=1, label_smoothing=0, local_rank=3, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=4, resume_epoch=0, resume_path=None, world_size=4)
+2022-12-02 03:33:11:INFO:Namespace(batch_size=48, device=device(type='cuda', index=0), epochs=50, eval_interval=1, label_smoothing=0, local_rank=0, log_path='checkpoint/IFRNet', lr_end=1e-05, lr_start=0.0001, model_name='IFRNet', num_workers=4, resume_epoch=0, resume_path=None, world_size=4)
+2022-12-02 03:33:12:INFO:Epoch 0
+2022-12-02 03:33:12:INFO:Epoch 0
+Train:   0%|          | 0/267 [00:00<?, ?it/s]2022-12-02 03:33:20:INFO:Iteration 0
+2022-12-02 03:33:20:INFO:Iteration 0
+2022-12-02 03:33:27:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 03:33:27:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 03:33:27:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 03:33:27:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 03:33:27:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 03:33:27:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 03:33:27:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 03:33:27:INFO:Reducer buckets have been rebuilt in this iteration.
+Train:   0%|          | 0/267 [00:17<?, ?it/s, gan_loss=-0.490957, rec_loss=0.126392, vae_loss=0.502168]Train:   0%|          | 1/267 [00:17<1:15:38, 17.06s/it, gan_loss=-0.490957, rec_loss=0.126392, vae_loss=0.502168]2022-12-02 03:33:29:INFO:Iteration 1
+2022-12-02 03:33:29:INFO:Iteration 1
+2022-12-02 03:33:29:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 03:33:29:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 03:33:29:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 03:33:29:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 03:33:29:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 03:33:29:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 03:33:29:INFO:Reducer buckets have been rebuilt in this iteration.
+2022-12-02 03:33:29:INFO:Reducer buckets have been rebuilt in this iteration.
+Train:   0%|          | 1/267 [00:18<1:15:38, 17.06s/it, gan_loss=-0.490658, rec_loss=0.125471, vae_loss=0.502168]Train:   1%|          | 2/267 [00:18<33:47,  7.65s/it, gan_loss=-0.490658, rec_loss=0.125471, vae_loss=0.502168]  2022-12-02 03:33:30:INFO:Iteration 2
+2022-12-02 03:33:30:INFO:Iteration 2
+Train:   1%|          | 2/267 [00:18<33:47,  7.65s/it, gan_loss=-0.492110, rec_loss=0.126810, vae_loss=0.502168]Train:   1%|          | 3/267 [00:18<19:59,  4.55s/it, gan_loss=-0.492110, rec_loss=0.126810, vae_loss=0.502168]2022-12-02 03:33:31:INFO:Iteration 3
+2022-12-02 03:33:31:INFO:Iteration 3
+Train:   1%|          | 3/267 [00:19<19:59,  4.55s/it, gan_loss=-0.492694, rec_loss=0.123718, vae_loss=0.502168]Train:   1%|▏         | 4/267 [00:19<13:28,  3.07s/it, gan_loss=-0.492694, rec_loss=0.123718, vae_loss=0.502168]2022-12-02 03:33:32:INFO:Iteration 4
+2022-12-02 03:33:32:INFO:Iteration 4
+Train:   1%|▏         | 4/267 [00:20<13:28,  3.07s/it, gan_loss=-0.492999, rec_loss=0.124146, vae_loss=0.502168]Train:   2%|▏         | 5/267 [00:20<09:52,  2.26s/it, gan_loss=-0.492999, rec_loss=0.124146, vae_loss=0.502168]2022-12-02 03:33:33:INFO:Iteration 5
+2022-12-02 03:33:33:INFO:Iteration 5
+Train:   2%|▏         | 5/267 [00:21<09:52,  2.26s/it, gan_loss=-0.492990, rec_loss=0.122094, vae_loss=0.502167]Train:   2%|▏         | 6/267 [00:21<07:42,  1.77s/it, gan_loss=-0.492990, rec_loss=0.122094, vae_loss=0.502167]2022-12-02 03:33:33:INFO:Iteration 6
+2022-12-02 03:33:33:INFO:Iteration 6
+Train:   2%|▏         | 6/267 [00:22<07:42,  1.77s/it, gan_loss=-0.493045, rec_loss=0.121942, vae_loss=0.502167]Train:   3%|▎         | 7/267 [00:22<06:19,  1.46s/it, gan_loss=-0.493045, rec_loss=0.121942, vae_loss=0.502167]2022-12-02 03:33:34:INFO:Iteration 7
+2022-12-02 03:33:34:INFO:Iteration 7
+Train:   3%|▎         | 7/267 [00:23<06:19,  1.46s/it, gan_loss=-0.493040, rec_loss=0.121735, vae_loss=0.502166]Train:   3%|▎         | 8/267 [00:23<05:26,  1.26s/it, gan_loss=-0.493040, rec_loss=0.121735, vae_loss=0.502166]2022-12-02 03:33:37:INFO:Iteration 8
+2022-12-02 03:33:37:INFO:Iteration 8
+Train:   3%|▎         | 8/267 [00:26<05:26,  1.26s/it, gan_loss=-0.493031, rec_loss=0.121240, vae_loss=0.502165]Train:   3%|▎         | 9/267 [00:26<07:56,  1.85s/it, gan_loss=-0.493031, rec_loss=0.121240, vae_loss=0.502165]2022-12-02 03:33:38:INFO:Iteration 9
+2022-12-02 03:33:38:INFO:Iteration 9
+Train:   3%|▎         | 9/267 [00:27<07:56,  1.85s/it, gan_loss=-0.493271, rec_loss=0.121685, vae_loss=0.502164]Train:   4%|▎         | 10/267 [00:27<06:33,  1.53s/it, gan_loss=-0.493271, rec_loss=0.121685, vae_loss=0.502164]2022-12-02 03:33:39:INFO:Iteration 10
+2022-12-02 03:33:39:INFO:Iteration 10
+Train:   4%|▎         | 10/267 [00:27<06:33,  1.53s/it, gan_loss=-0.493159, rec_loss=0.121388, vae_loss=0.502163]Train:   4%|▍         | 11/267 [00:27<05:36,  1.31s/it, gan_loss=-0.493159, rec_loss=0.121388, vae_loss=0.502163]2022-12-02 03:33:40:INFO:Iteration 11
+2022-12-02 03:33:40:INFO:Iteration 11
+Train:   4%|▍         | 11/267 [00:28<05:36,  1.31s/it, gan_loss=-0.493129, rec_loss=0.121304, vae_loss=0.502162]Train:   4%|▍         | 12/267 [00:28<04:57,  1.17s/it, gan_loss=-0.493129, rec_loss=0.121304, vae_loss=0.502162]2022-12-02 03:33:44:INFO:Iteration 12
+2022-12-02 03:33:44:INFO:Iteration 12
+Train:   4%|▍         | 12/267 [00:33<04:57,  1.17s/it, gan_loss=-0.493139, rec_loss=0.120909, vae_loss=0.502161]Train:   5%|▍         | 13/267 [00:33<09:21,  2.21s/it, gan_loss=-0.493139, rec_loss=0.120909, vae_loss=0.502161]2022-12-02 03:33:45:INFO:Iteration 13
+2022-12-02 03:33:45:INFO:Iteration 13
+Train:   5%|▍         | 13/267 [00:34<09:21,  2.21s/it, gan_loss=-0.493165, rec_loss=0.120740, vae_loss=0.502160]Train:   5%|▌         | 14/267 [00:34<07:33,  1.79s/it, gan_loss=-0.493165, rec_loss=0.120740, vae_loss=0.502160]2022-12-02 03:33:46:INFO:Iteration 14
+2022-12-02 03:33:46:INFO:Iteration 14
+Train:   5%|▌         | 14/267 [00:34<07:33,  1.79s/it, gan_loss=-0.493264, rec_loss=0.120665, vae_loss=0.502159]Train:   6%|▌         | 15/267 [00:34<06:18,  1.50s/it, gan_loss=-0.493264, rec_loss=0.120665, vae_loss=0.502159]2022-12-02 03:33:47:INFO:Iteration 15
+2022-12-02 03:33:47:INFO:Iteration 15
+Train:   6%|▌         | 15/267 [00:35<06:18,  1.50s/it, gan_loss=-0.493143, rec_loss=0.120554, vae_loss=0.502158]Train:   6%|▌         | 16/267 [00:35<05:25,  1.30s/it, gan_loss=-0.493143, rec_loss=0.120554, vae_loss=0.502158]2022-12-02 03:33:52:INFO:Iteration 16
+2022-12-02 03:33:52:INFO:Iteration 16
+Train:   6%|▌         | 16/267 [00:40<05:25,  1.30s/it, gan_loss=-0.493195, rec_loss=0.120119, vae_loss=0.502156]Train:   6%|▋         | 17/267 [00:40<10:16,  2.47s/it, gan_loss=-0.493195, rec_loss=0.120119, vae_loss=0.502156]2022-12-02 03:33:53:INFO:Iteration 17
+2022-12-02 03:33:53:INFO:Iteration 17
+Train:   6%|▋         | 17/267 [00:41<10:16,  2.47s/it, gan_loss=-0.493162, rec_loss=0.119978, vae_loss=0.502155]Train:   7%|▋         | 18/267 [00:41<08:10,  1.97s/it, gan_loss=-0.493162, rec_loss=0.119978, vae_loss=0.502155]2022-12-02 03:33:54:INFO:Iteration 18
+2022-12-02 03:33:54:INFO:Iteration 18
+Train:   7%|▋         | 18/267 [00:42<08:10,  1.97s/it, gan_loss=-0.493068, rec_loss=0.119801, vae_loss=0.502153]Train:   7%|▋         | 19/267 [00:42<06:43,  1.63s/it, gan_loss=-0.493068, rec_loss=0.119801, vae_loss=0.502153]2022-12-02 03:33:55:INFO:Iteration 19
+2022-12-02 03:33:55:INFO:Iteration 19
+Train:   7%|▋         | 19/267 [00:43<06:43,  1.63s/it, gan_loss=-0.493058, rec_loss=0.119874, vae_loss=0.502151]Train:   7%|▋         | 20/267 [00:43<05:41,  1.38s/it, gan_loss=-0.493058, rec_loss=0.119874, vae_loss=0.502151]2022-12-02 03:34:00:INFO:Iteration 20
+2022-12-02 03:34:00:INFO:Iteration 20
+Train:   7%|▋         | 20/267 [00:48<05:41,  1.38s/it, gan_loss=-0.493100, rec_loss=0.119621, vae_loss=0.502149]Train:   8%|▊         | 21/267 [00:48<10:02,  2.45s/it, gan_loss=-0.493100, rec_loss=0.119621, vae_loss=0.502149]2022-12-02 03:34:00:INFO:Iteration 21
+2022-12-02 03:34:00:INFO:Iteration 21
+Train:   8%|▊         | 21/267 [00:49<10:02,  2.45s/it, gan_loss=-0.493028, rec_loss=0.119459, vae_loss=0.502148]Train:   8%|▊         | 22/267 [00:49<08:00,  1.96s/it, gan_loss=-0.493028, rec_loss=0.119459, vae_loss=0.502148]2022-12-02 03:34:01:INFO:Iteration 22
+2022-12-02 03:34:01:INFO:Iteration 22
+Train:   8%|▊         | 22/267 [00:50<08:00,  1.96s/it, gan_loss=-0.492991, rec_loss=0.119515, vae_loss=0.502146]Train:   9%|▊         | 23/267 [00:50<06:35,  1.62s/it, gan_loss=-0.492991, rec_loss=0.119515, vae_loss=0.502146]2022-12-02 03:34:02:INFO:Iteration 23
+2022-12-02 03:34:02:INFO:Iteration 23
+Train:   9%|▊         | 23/267 [00:50<06:35,  1.62s/it, gan_loss=-0.492972, rec_loss=0.118973, vae_loss=0.502144]Train:   9%|▉         | 24/267 [00:50<05:36,  1.38s/it, gan_loss=-0.492972, rec_loss=0.118973, vae_loss=0.502144]2022-12-02 03:34:07:INFO:Iteration 24
+2022-12-02 03:34:07:INFO:Iteration 24
+Train:   9%|▉         | 24/267 [00:55<05:36,  1.38s/it, gan_loss=-0.493022, rec_loss=0.119181, vae_loss=0.502141]Train:   9%|▉         | 25/267 [00:55<09:40,  2.40s/it, gan_loss=-0.493022, rec_loss=0.119181, vae_loss=0.502141]2022-12-02 03:34:08:INFO:Iteration 25
+2022-12-02 03:34:08:INFO:Iteration 25
+Train:   9%|▉         | 25/267 [00:56<09:40,  2.40s/it, gan_loss=-0.492969, rec_loss=0.119100, vae_loss=0.502139]Train:  10%|▉         | 26/267 [00:56<08:02,  2.00s/it, gan_loss=-0.492969, rec_loss=0.119100, vae_loss=0.502139]2022-12-02 03:34:09:INFO:Iteration 26
+2022-12-02 03:34:09:INFO:Iteration 26
+Train:  10%|▉         | 26/267 [00:57<08:02,  2.00s/it, gan_loss=-0.492924, rec_loss=0.118999, vae_loss=0.502137]Train:  10%|█         | 27/267 [00:57<06:35,  1.65s/it, gan_loss=-0.492924, rec_loss=0.118999, vae_loss=0.502137]2022-12-02 03:34:10:INFO:Iteration 27
+2022-12-02 03:34:10:INFO:Iteration 27
+Train:  10%|█         | 27/267 [00:58<06:35,  1.65s/it, gan_loss=-0.492883, rec_loss=0.118487, vae_loss=0.502134]Train:  10%|█         | 28/267 [00:58<05:35,  1.40s/it, gan_loss=-0.492883, rec_loss=0.118487, vae_loss=0.502134]2022-12-02 03:34:13:INFO:Iteration 28
+2022-12-02 03:34:13:INFO:Iteration 28
+Train:  10%|█         | 28/267 [01:02<05:35,  1.40s/it, gan_loss=-0.492868, rec_loss=0.118386, vae_loss=0.502132]Train:  11%|█         | 29/267 [01:02<08:27,  2.13s/it, gan_loss=-0.492868, rec_loss=0.118386, vae_loss=0.502132]2022-12-02 03:34:15:INFO:Iteration 29
+2022-12-02 03:34:15:INFO:Iteration 29
+Train:  11%|█         | 29/267 [01:03<08:27,  2.13s/it, gan_loss=-0.492858, rec_loss=0.118135, vae_loss=0.502129]Train:  11%|█         | 30/267 [01:03<07:22,  1.87s/it, gan_loss=-0.492858, rec_loss=0.118135, vae_loss=0.502129]2022-12-02 03:34:15:INFO:Iteration 30
+2022-12-02 03:34:15:INFO:Iteration 30
+Train:  11%|█         | 30/267 [01:04<07:22,  1.87s/it, gan_loss=-0.492857, rec_loss=0.118515, vae_loss=0.502126]Train:  12%|█▏        | 31/267 [01:04<06:07,  1.56s/it, gan_loss=-0.492857, rec_loss=0.118515, vae_loss=0.502126]2022-12-02 03:34:16:INFO:Iteration 31
+2022-12-02 03:34:16:INFO:Iteration 31
+Train:  12%|█▏        | 31/267 [01:05<06:07,  1.56s/it, gan_loss=-0.492870, rec_loss=0.118038, vae_loss=0.502124]Train:  12%|█▏        | 32/267 [01:05<05:14,  1.34s/it, gan_loss=-0.492870, rec_loss=0.118038, vae_loss=0.502124]2022-12-02 03:34:20:INFO:Iteration 32
+2022-12-02 03:34:20:INFO:Iteration 32
+Train:  12%|█▏        | 32/267 [01:09<05:14,  1.34s/it, gan_loss=-0.492782, rec_loss=0.117874, vae_loss=0.502121]Train:  12%|█▏        | 33/267 [01:09<08:57,  2.30s/it, gan_loss=-0.492782, rec_loss=0.117874, vae_loss=0.502121]2022-12-02 03:34:22:INFO:Iteration 33
+2022-12-02 03:34:22:INFO:Iteration 33
+Train:  12%|█▏        | 33/267 [01:10<08:57,  2.30s/it, gan_loss=-0.492815, rec_loss=0.117735, vae_loss=0.502118]Train:  13%|█▎        | 34/267 [01:10<07:12,  1.86s/it, gan_loss=-0.492815, rec_loss=0.117735, vae_loss=0.502118]2022-12-02 03:34:22:INFO:Iteration 34
+2022-12-02 03:34:22:INFO:Iteration 34
+Train:  13%|█▎        | 34/267 [01:11<07:12,  1.86s/it, gan_loss=-0.492750, rec_loss=0.117581, vae_loss=0.502115]Train:  13%|█▎        | 35/267 [01:11<05:58,  1.55s/it, gan_loss=-0.492750, rec_loss=0.117581, vae_loss=0.502115]2022-12-02 03:34:23:INFO:Iteration 35
+2022-12-02 03:34:23:INFO:Iteration 35
+Train:  13%|█▎        | 35/267 [01:12<05:58,  1.55s/it, gan_loss=-0.492771, rec_loss=0.117625, vae_loss=0.502112]Train:  13%|█▎        | 36/267 [01:12<05:07,  1.33s/it, gan_loss=-0.492771, rec_loss=0.117625, vae_loss=0.502112]2022-12-02 03:34:28:INFO:Iteration 36
+2022-12-02 03:34:28:INFO:Iteration 36
+Train:  13%|█▎        | 36/267 [01:16<05:07,  1.33s/it, gan_loss=-0.492746, rec_loss=0.117422, vae_loss=0.502108]Train:  14%|█▍        | 37/267 [01:16<09:00,  2.35s/it, gan_loss=-0.492746, rec_loss=0.117422, vae_loss=0.502108]2022-12-02 03:34:29:INFO:Iteration 37
+2022-12-02 03:34:29:INFO:Iteration 37
+Train:  14%|█▍        | 37/267 [01:17<09:00,  2.35s/it, gan_loss=-0.492734, rec_loss=0.117123, vae_loss=0.502105]Train:  14%|█▍        | 38/267 [01:17<07:13,  1.89s/it, gan_loss=-0.492734, rec_loss=0.117123, vae_loss=0.502105]2022-12-02 03:34:30:INFO:Iteration 38
+2022-12-02 03:34:30:INFO:Iteration 38
+Train:  14%|█▍        | 38/267 [01:18<07:13,  1.89s/it, gan_loss=-0.492709, rec_loss=0.117234, vae_loss=0.502102]Train:  15%|█▍        | 39/267 [01:18<05:58,  1.57s/it, gan_loss=-0.492709, rec_loss=0.117234, vae_loss=0.502102]2022-12-02 03:34:31:INFO:Iteration 39
+2022-12-02 03:34:31:INFO:Iteration 39
+Train:  15%|█▍        | 39/267 [01:19<05:58,  1.57s/it, gan_loss=-0.492687, rec_loss=0.117278, vae_loss=0.502098]Train:  15%|█▍        | 40/267 [01:19<05:06,  1.35s/it, gan_loss=-0.492687, rec_loss=0.117278, vae_loss=0.502098]2022-12-02 03:34:35:INFO:Iteration 40
+2022-12-02 03:34:35:INFO:Iteration 40
+Train:  15%|█▍        | 40/267 [01:23<05:06,  1.35s/it, gan_loss=-0.492659, rec_loss=0.117065, vae_loss=0.502094]Train:  15%|█▌        | 41/267 [01:23<08:39,  2.30s/it, gan_loss=-0.492659, rec_loss=0.117065, vae_loss=0.502094]2022-12-02 03:34:36:INFO:Iteration 41
+2022-12-02 03:34:36:INFO:Iteration 41
+Train:  15%|█▌        | 41/267 [01:24<08:39,  2.30s/it, gan_loss=-0.492581, rec_loss=0.117133, vae_loss=0.502091]Train:  16%|█▌        | 42/267 [01:24<06:57,  1.86s/it, gan_loss=-0.492581, rec_loss=0.117133, vae_loss=0.502091]2022-12-02 03:34:37:INFO:Iteration 42
+2022-12-02 03:34:37:INFO:Iteration 42
+Train:  16%|█▌        | 42/267 [01:25<06:57,  1.86s/it, gan_loss=-0.492581, rec_loss=0.117091, vae_loss=0.502087]Train:  16%|█▌        | 43/267 [01:25<05:46,  1.55s/it, gan_loss=-0.492581, rec_loss=0.117091, vae_loss=0.502087]2022-12-02 03:34:38:INFO:Iteration 43
+2022-12-02 03:34:38:INFO:Iteration 43
+Train:  16%|█▌        | 43/267 [01:26<05:46,  1.55s/it, gan_loss=-0.492616, rec_loss=0.117107, vae_loss=0.502083]Train:  16%|█▋        | 44/267 [01:26<05:00,  1.35s/it, gan_loss=-0.492616, rec_loss=0.117107, vae_loss=0.502083]2022-12-02 03:34:42:INFO:Iteration 44
+2022-12-02 03:34:42:INFO:Iteration 44
+Train:  16%|█▋        | 44/267 [01:31<05:00,  1.35s/it, gan_loss=-0.492555, rec_loss=0.116931, vae_loss=0.502079]Train:  17%|█▋        | 45/267 [01:31<09:08,  2.47s/it, gan_loss=-0.492555, rec_loss=0.116931, vae_loss=0.502079]2022-12-02 03:34:43:INFO:Iteration 45
+2022-12-02 03:34:43:INFO:Iteration 45
+Train:  17%|█▋        | 45/267 [01:32<09:08,  2.47s/it, gan_loss=-0.492597, rec_loss=0.116787, vae_loss=0.502075]Train:  17%|█▋        | 46/267 [01:32<07:16,  1.98s/it, gan_loss=-0.492597, rec_loss=0.116787, vae_loss=0.502075]2022-12-02 03:34:44:INFO:Iteration 46
+2022-12-02 03:34:44:INFO:Iteration 46
+Train:  17%|█▋        | 46/267 [01:33<07:16,  1.98s/it, gan_loss=-0.492642, rec_loss=0.116633, vae_loss=0.502071]Train:  18%|█▊        | 47/267 [01:33<05:58,  1.63s/it, gan_loss=-0.492642, rec_loss=0.116633, vae_loss=0.502071]2022-12-02 03:34:45:INFO:Iteration 47
+2022-12-02 03:34:45:INFO:Iteration 47
+Train:  18%|█▊        | 47/267 [01:34<05:58,  1.63s/it, gan_loss=-0.492640, rec_loss=0.116751, vae_loss=0.502066]Train:  18%|█▊        | 48/267 [01:34<05:36,  1.53s/it, gan_loss=-0.492640, rec_loss=0.116751, vae_loss=0.502066]2022-12-02 03:34:49:INFO:Iteration 48
+2022-12-02 03:34:49:INFO:Iteration 48
+Train:  18%|█▊        | 48/267 [01:38<05:36,  1.53s/it, gan_loss=-0.492635, rec_loss=0.116718, vae_loss=0.502062]Train:  18%|█▊        | 49/267 [01:38<08:29,  2.34s/it, gan_loss=-0.492635, rec_loss=0.116718, vae_loss=0.502062]2022-12-02 03:34:51:INFO:Iteration 49
+2022-12-02 03:34:51:INFO:Iteration 49
+Train:  18%|█▊        | 49/267 [01:39<08:29,  2.34s/it, gan_loss=-0.492597, rec_loss=0.116765, vae_loss=0.502058]Train:  19%|█▊        | 50/267 [01:39<06:48,  1.88s/it, gan_loss=-0.492597, rec_loss=0.116765, vae_loss=0.502058]2022-12-02 03:34:51:INFO:Iteration 50
+2022-12-02 03:34:51:INFO:Iteration 50
+Train:  19%|█▊        | 50/267 [01:40<06:48,  1.88s/it, gan_loss=-0.492554, rec_loss=0.116901, vae_loss=0.502053]Train:  19%|█▉        | 51/267 [01:40<05:38,  1.57s/it, gan_loss=-0.492554, rec_loss=0.116901, vae_loss=0.502053]2022-12-02 03:34:52:INFO:Iteration 51
+2022-12-02 03:34:52:INFO:Iteration 51
+Train:  19%|█▉        | 51/267 [01:41<05:38,  1.57s/it, gan_loss=-0.492508, rec_loss=0.116789, vae_loss=0.502048]Train:  19%|█▉        | 52/267 [01:41<04:59,  1.39s/it, gan_loss=-0.492508, rec_loss=0.116789, vae_loss=0.502048]2022-12-02 03:34:56:INFO:Iteration 52
+2022-12-02 03:34:56:INFO:Iteration 52
+Train:  19%|█▉        | 52/267 [01:45<04:59,  1.39s/it, gan_loss=-0.492477, rec_loss=0.116780, vae_loss=0.502044]Train:  20%|█▉        | 53/267 [01:45<07:48,  2.19s/it, gan_loss=-0.492477, rec_loss=0.116780, vae_loss=0.502044]2022-12-02 03:34:58:INFO:Iteration 53
+2022-12-02 03:34:58:INFO:Iteration 53
+Train:  20%|█▉        | 53/267 [01:46<07:48,  2.19s/it, gan_loss=-0.492526, rec_loss=0.116977, vae_loss=0.502039]Train:  20%|██        | 54/267 [01:46<06:32,  1.84s/it, gan_loss=-0.492526, rec_loss=0.116977, vae_loss=0.502039]2022-12-02 03:34:58:INFO:Iteration 54
+2022-12-02 03:34:58:INFO:Iteration 54
+Train:  20%|██        | 54/267 [01:47<06:32,  1.84s/it, gan_loss=-0.492509, rec_loss=0.116894, vae_loss=0.502034]Train:  21%|██        | 55/267 [01:47<05:25,  1.54s/it, gan_loss=-0.492509, rec_loss=0.116894, vae_loss=0.502034]2022-12-02 03:34:59:INFO:Iteration 55
+2022-12-02 03:34:59:INFO:Iteration 55
+Train:  21%|██        | 55/267 [01:48<05:25,  1.54s/it, gan_loss=-0.492534, rec_loss=0.116755, vae_loss=0.502029]Train:  21%|██        | 56/267 [01:48<05:08,  1.46s/it, gan_loss=-0.492534, rec_loss=0.116755, vae_loss=0.502029]2022-12-02 03:35:03:INFO:Iteration 56
+2022-12-02 03:35:03:INFO:Iteration 56
+Train:  21%|██        | 56/267 [01:52<05:08,  1.46s/it, gan_loss=-0.492527, rec_loss=0.116760, vae_loss=0.502024]Train:  21%|██▏       | 57/267 [01:52<07:51,  2.25s/it, gan_loss=-0.492527, rec_loss=0.116760, vae_loss=0.502024]2022-12-02 03:35:05:INFO:Iteration 57
+2022-12-02 03:35:05:INFO:Iteration 57
+Train:  21%|██▏       | 57/267 [01:53<07:51,  2.25s/it, gan_loss=-0.492555, rec_loss=0.116766, vae_loss=0.502019]Train:  22%|██▏       | 58/267 [01:53<06:29,  1.87s/it, gan_loss=-0.492555, rec_loss=0.116766, vae_loss=0.502019]2022-12-02 03:35:06:INFO:Iteration 58
+2022-12-02 03:35:06:INFO:Iteration 58
+Train:  22%|██▏       | 58/267 [01:54<06:29,  1.87s/it, gan_loss=-0.492501, rec_loss=0.116622, vae_loss=0.502013]Train:  22%|██▏       | 59/267 [01:54<05:23,  1.55s/it, gan_loss=-0.492501, rec_loss=0.116622, vae_loss=0.502013]2022-12-02 03:35:06:INFO:Iteration 59
+2022-12-02 03:35:06:INFO:Iteration 59
+Train:  22%|██▏       | 59/267 [01:55<05:23,  1.55s/it, gan_loss=-0.492431, rec_loss=0.116441, vae_loss=0.502008]Train:  22%|██▏       | 60/267 [01:55<04:57,  1.44s/it, gan_loss=-0.492431, rec_loss=0.116441, vae_loss=0.502008]2022-12-02 03:35:11:INFO:Iteration 60
+2022-12-02 03:35:11:INFO:Iteration 60
+Train:  22%|██▏       | 60/267 [02:00<04:57,  1.44s/it, gan_loss=-0.492447, rec_loss=0.116395, vae_loss=0.502002]Train:  23%|██▎       | 61/267 [02:00<08:07,  2.36s/it, gan_loss=-0.492447, rec_loss=0.116395, vae_loss=0.502002]2022-12-02 03:35:12:INFO:Iteration 61
+2022-12-02 03:35:12:INFO:Iteration 61
+Train:  23%|██▎       | 61/267 [02:00<08:07,  2.36s/it, gan_loss=-0.492489, rec_loss=0.116379, vae_loss=0.501997]Train:  23%|██▎       | 62/267 [02:00<06:29,  1.90s/it, gan_loss=-0.492489, rec_loss=0.116379, vae_loss=0.501997]2022-12-02 03:35:13:INFO:Iteration 62
+2022-12-02 03:35:13:INFO:Iteration 62
+Train:  23%|██▎       | 62/267 [02:01<06:29,  1.90s/it, gan_loss=-0.492483, rec_loss=0.116275, vae_loss=0.501991]Train:  24%|██▎       | 63/267 [02:01<05:22,  1.58s/it, gan_loss=-0.492483, rec_loss=0.116275, vae_loss=0.501991]2022-12-02 03:35:14:INFO:Iteration 63
+2022-12-02 03:35:14:INFO:Iteration 63
+Train:  24%|██▎       | 63/267 [02:02<05:22,  1.58s/it, gan_loss=-0.492467, rec_loss=0.116180, vae_loss=0.501985]Train:  24%|██▍       | 64/267 [02:02<05:01,  1.48s/it, gan_loss=-0.492467, rec_loss=0.116180, vae_loss=0.501985]2022-12-02 03:35:18:INFO:Iteration 64
+2022-12-02 03:35:18:INFO:Iteration 64
+Train:  24%|██▍       | 64/267 [02:07<05:01,  1.48s/it, gan_loss=-0.492469, rec_loss=0.116160, vae_loss=0.501979]Train:  24%|██▍       | 65/267 [02:07<08:04,  2.40s/it, gan_loss=-0.492469, rec_loss=0.116160, vae_loss=0.501979]2022-12-02 03:35:19:INFO:Iteration 65
+2022-12-02 03:35:19:INFO:Iteration 65
+Train:  24%|██▍       | 65/267 [02:08<08:04,  2.40s/it, gan_loss=-0.492459, rec_loss=0.116012, vae_loss=0.501973]Train:  25%|██▍       | 66/267 [02:08<06:26,  1.93s/it, gan_loss=-0.492459, rec_loss=0.116012, vae_loss=0.501973]2022-12-02 03:35:20:INFO:Iteration 66
+2022-12-02 03:35:20:INFO:Iteration 66
+Train:  25%|██▍       | 66/267 [02:09<06:26,  1.93s/it, gan_loss=-0.492473, rec_loss=0.116005, vae_loss=0.501967]Train:  25%|██▌       | 67/267 [02:09<05:19,  1.60s/it, gan_loss=-0.492473, rec_loss=0.116005, vae_loss=0.501967]2022-12-02 03:35:21:INFO:Iteration 67
+2022-12-02 03:35:21:INFO:Iteration 67
+Train:  25%|██▌       | 67/267 [02:10<05:19,  1.60s/it, gan_loss=-0.492455, rec_loss=0.116086, vae_loss=0.501961]Train:  25%|██▌       | 68/267 [02:10<05:03,  1.52s/it, gan_loss=-0.492455, rec_loss=0.116086, vae_loss=0.501961]2022-12-02 03:35:25:INFO:Iteration 68
+2022-12-02 03:35:25:INFO:Iteration 68
+Train:  25%|██▌       | 68/267 [02:14<05:03,  1.52s/it, gan_loss=-0.492441, rec_loss=0.115933, vae_loss=0.501955]Train:  26%|██▌       | 69/267 [02:14<07:34,  2.30s/it, gan_loss=-0.492441, rec_loss=0.115933, vae_loss=0.501955]2022-12-02 03:35:27:INFO:Iteration 69
+2022-12-02 03:35:27:INFO:Iteration 69
+Train:  26%|██▌       | 69/267 [02:15<07:34,  2.30s/it, gan_loss=-0.492415, rec_loss=0.115712, vae_loss=0.501948]Train:  26%|██▌       | 70/267 [02:15<06:09,  1.87s/it, gan_loss=-0.492415, rec_loss=0.115712, vae_loss=0.501948]2022-12-02 03:35:27:INFO:Iteration 70
+2022-12-02 03:35:27:INFO:Iteration 70
+Train:  26%|██▌       | 70/267 [02:16<06:09,  1.87s/it, gan_loss=-0.492430, rec_loss=0.115667, vae_loss=0.501942]Train:  27%|██▋       | 71/267 [02:16<05:05,  1.56s/it, gan_loss=-0.492430, rec_loss=0.115667, vae_loss=0.501942]2022-12-02 03:35:28:INFO:Iteration 71
+2022-12-02 03:35:28:INFO:Iteration 71
+Train:  27%|██▋       | 71/267 [02:17<05:05,  1.56s/it, gan_loss=-0.492423, rec_loss=0.115557, vae_loss=0.501935]Train:  27%|██▋       | 72/267 [02:17<04:51,  1.50s/it, gan_loss=-0.492423, rec_loss=0.115557, vae_loss=0.501935]2022-12-02 03:35:32:INFO:Iteration 72
+2022-12-02 03:35:32:INFO:Iteration 72
+Train:  27%|██▋       | 72/267 [02:21<04:51,  1.50s/it, gan_loss=-0.492438, rec_loss=0.115395, vae_loss=0.501929]Train:  27%|██▋       | 73/267 [02:21<07:34,  2.35s/it, gan_loss=-0.492438, rec_loss=0.115395, vae_loss=0.501929]2022-12-02 03:35:34:INFO:Iteration 73
+2022-12-02 03:35:34:INFO:Iteration 73
+Train:  27%|██▋       | 73/267 [02:22<07:34,  2.35s/it, gan_loss=-0.492409, rec_loss=0.115185, vae_loss=0.501922]Train:  28%|██▊       | 74/267 [02:22<06:04,  1.89s/it, gan_loss=-0.492409, rec_loss=0.115185, vae_loss=0.501922]2022-12-02 03:35:35:INFO:Iteration 74
+2022-12-02 03:35:35:INFO:Iteration 74
+Train:  28%|██▊       | 74/267 [02:23<06:04,  1.89s/it, gan_loss=-0.492398, rec_loss=0.115169, vae_loss=0.501915]Train:  28%|██▊       | 75/267 [02:23<05:06,  1.60s/it, gan_loss=-0.492398, rec_loss=0.115169, vae_loss=0.501915]2022-12-02 03:35:36:INFO:Iteration 75
+2022-12-02 03:35:36:INFO:Iteration 75
+Train:  28%|██▊       | 75/267 [02:24<05:06,  1.60s/it, gan_loss=-0.492407, rec_loss=0.115095, vae_loss=0.501908]Train:  28%|██▊       | 76/267 [02:24<04:36,  1.45s/it, gan_loss=-0.492407, rec_loss=0.115095, vae_loss=0.501908]2022-12-02 03:35:40:INFO:Iteration 76
+2022-12-02 03:35:40:INFO:Iteration 76
+Train:  28%|██▊       | 76/267 [02:29<04:36,  1.45s/it, gan_loss=-0.492423, rec_loss=0.115098, vae_loss=0.501901]Train:  29%|██▉       | 77/267 [02:29<07:33,  2.38s/it, gan_loss=-0.492423, rec_loss=0.115098, vae_loss=0.501901]2022-12-02 03:35:41:INFO:Iteration 77
+2022-12-02 03:35:41:INFO:Iteration 77
+Train:  29%|██▉       | 77/267 [02:30<07:33,  2.38s/it, gan_loss=-0.492394, rec_loss=0.115061, vae_loss=0.501894]Train:  29%|██▉       | 78/267 [02:30<06:02,  1.92s/it, gan_loss=-0.492394, rec_loss=0.115061, vae_loss=0.501894]2022-12-02 03:35:42:INFO:Iteration 78
+2022-12-02 03:35:42:INFO:Iteration 78
+Train:  29%|██▉       | 78/267 [02:31<06:02,  1.92s/it, gan_loss=-0.492402, rec_loss=0.114962, vae_loss=0.501886]Train:  30%|██▉       | 79/267 [02:31<04:59,  1.59s/it, gan_loss=-0.492402, rec_loss=0.114962, vae_loss=0.501886]2022-12-02 03:35:43:INFO:Iteration 79
+2022-12-02 03:35:43:INFO:Iteration 79
+Train:  30%|██▉       | 79/267 [02:32<04:59,  1.59s/it, gan_loss=-0.492403, rec_loss=0.114879, vae_loss=0.501879]Train:  30%|██▉       | 80/267 [02:32<04:33,  1.46s/it, gan_loss=-0.492403, rec_loss=0.114879, vae_loss=0.501879]2022-12-02 03:35:47:INFO:Iteration 80
+2022-12-02 03:35:47:INFO:Iteration 80
+Train:  30%|██▉       | 80/267 [02:36<04:33,  1.46s/it, gan_loss=-0.492385, rec_loss=0.114935, vae_loss=0.501872]Train:  30%|███       | 81/267 [02:36<07:04,  2.28s/it, gan_loss=-0.492385, rec_loss=0.114935, vae_loss=0.501872]2022-12-02 03:35:48:INFO:Iteration 81
+2022-12-02 03:35:48:INFO:Iteration 81
+Train:  30%|███       | 81/267 [02:37<07:04,  2.28s/it, gan_loss=-0.492410, rec_loss=0.114854, vae_loss=0.501864]Train:  31%|███       | 82/267 [02:37<05:40,  1.84s/it, gan_loss=-0.492410, rec_loss=0.114854, vae_loss=0.501864]2022-12-02 03:35:49:INFO:Iteration 82
+2022-12-02 03:35:49:INFO:Iteration 82
+Train:  31%|███       | 82/267 [02:38<05:40,  1.84s/it, gan_loss=-0.492406, rec_loss=0.114718, vae_loss=0.501856]Train:  31%|███       | 83/267 [02:38<04:42,  1.54s/it, gan_loss=-0.492406, rec_loss=0.114718, vae_loss=0.501856]2022-12-02 03:35:50:INFO:Iteration 83
+2022-12-02 03:35:50:INFO:Iteration 83
+Train:  31%|███       | 83/267 [02:39<04:42,  1.54s/it, gan_loss=-0.492388, rec_loss=0.114750, vae_loss=0.501848]Train:  31%|███▏      | 84/267 [02:39<04:14,  1.39s/it, gan_loss=-0.492388, rec_loss=0.114750, vae_loss=0.501848]2022-12-02 03:35:54:INFO:Iteration 84
+2022-12-02 03:35:54:INFO:Iteration 84
+Train:  31%|███▏      | 84/267 [02:43<04:14,  1.39s/it, gan_loss=-0.492364, rec_loss=0.114699, vae_loss=0.501840]Train:  32%|███▏      | 85/267 [02:43<07:00,  2.31s/it, gan_loss=-0.492364, rec_loss=0.114699, vae_loss=0.501840]2022-12-02 03:35:56:INFO:Iteration 85
+2022-12-02 03:35:56:INFO:Iteration 85
+Train:  32%|███▏      | 85/267 [02:44<07:00,  2.31s/it, gan_loss=-0.492392, rec_loss=0.114635, vae_loss=0.501832]Train:  32%|███▏      | 86/267 [02:44<05:37,  1.87s/it, gan_loss=-0.492392, rec_loss=0.114635, vae_loss=0.501832]2022-12-02 03:35:56:INFO:Iteration 86
+2022-12-02 03:35:56:INFO:Iteration 86
+Train:  32%|███▏      | 86/267 [02:45<05:37,  1.87s/it, gan_loss=-0.492402, rec_loss=0.114578, vae_loss=0.501824]Train:  33%|███▎      | 87/267 [02:45<04:39,  1.55s/it, gan_loss=-0.492402, rec_loss=0.114578, vae_loss=0.501824]2022-12-02 03:35:57:INFO:Iteration 87
+2022-12-02 03:35:57:INFO:Iteration 87
+Train:  33%|███▎      | 87/267 [02:46<04:39,  1.55s/it, gan_loss=-0.492408, rec_loss=0.114561, vae_loss=0.501816]Train:  33%|███▎      | 88/267 [02:46<04:05,  1.37s/it, gan_loss=-0.492408, rec_loss=0.114561, vae_loss=0.501816]2022-12-02 03:36:02:INFO:Iteration 88
+2022-12-02 03:36:02:INFO:Iteration 88
+Train:  33%|███▎      | 88/267 [02:50<04:05,  1.37s/it, gan_loss=-0.492419, rec_loss=0.114544, vae_loss=0.501808]Train:  33%|███▎      | 89/267 [02:50<07:04,  2.39s/it, gan_loss=-0.492419, rec_loss=0.114544, vae_loss=0.501808]2022-12-02 03:36:03:INFO:Iteration 89
+2022-12-02 03:36:03:INFO:Iteration 89
+Train:  33%|███▎      | 89/267 [02:51<07:04,  2.39s/it, gan_loss=-0.492425, rec_loss=0.114505, vae_loss=0.501799]Train:  34%|███▎      | 90/267 [02:51<05:39,  1.92s/it, gan_loss=-0.492425, rec_loss=0.114505, vae_loss=0.501799]2022-12-02 03:36:04:INFO:Iteration 90
+2022-12-02 03:36:04:INFO:Iteration 90
+Train:  34%|███▎      | 90/267 [02:52<05:39,  1.92s/it, gan_loss=-0.492389, rec_loss=0.114494, vae_loss=0.501791]Train:  34%|███▍      | 91/267 [02:52<04:40,  1.59s/it, gan_loss=-0.492389, rec_loss=0.114494, vae_loss=0.501791]2022-12-02 03:36:05:INFO:Iteration 91
+2022-12-02 03:36:05:INFO:Iteration 91
+Train:  34%|███▍      | 91/267 [02:53<04:40,  1.59s/it, gan_loss=-0.492365, rec_loss=0.114554, vae_loss=0.501782]Train:  34%|███▍      | 92/267 [02:53<03:58,  1.36s/it, gan_loss=-0.492365, rec_loss=0.114554, vae_loss=0.501782]2022-12-02 03:36:09:INFO:Iteration 92
+2022-12-02 03:36:09:INFO:Iteration 92
+Train:  34%|███▍      | 92/267 [02:57<03:58,  1.36s/it, gan_loss=-0.492370, rec_loss=0.114448, vae_loss=0.501773]Train:  35%|███▍      | 93/267 [02:57<06:46,  2.34s/it, gan_loss=-0.492370, rec_loss=0.114448, vae_loss=0.501773]2022-12-02 03:36:10:INFO:Iteration 93
+2022-12-02 03:36:10:INFO:Iteration 93
+Train:  35%|███▍      | 93/267 [02:58<06:46,  2.34s/it, gan_loss=-0.492393, rec_loss=0.114447, vae_loss=0.501765]Train:  35%|███▌      | 94/267 [02:58<05:26,  1.89s/it, gan_loss=-0.492393, rec_loss=0.114447, vae_loss=0.501765]2022-12-02 03:36:11:INFO:Iteration 94
+2022-12-02 03:36:11:INFO:Iteration 94
+Train:  35%|███▌      | 94/267 [02:59<05:26,  1.89s/it, gan_loss=-0.492370, rec_loss=0.114393, vae_loss=0.501756]Train:  36%|███▌      | 95/267 [02:59<04:29,  1.57s/it, gan_loss=-0.492370, rec_loss=0.114393, vae_loss=0.501756]2022-12-02 03:36:12:INFO:Iteration 95
+2022-12-02 03:36:12:INFO:Iteration 95
+Train:  36%|███▌      | 95/267 [03:00<04:29,  1.57s/it, gan_loss=-0.492377, rec_loss=0.114280, vae_loss=0.501746]Train:  36%|███▌      | 96/267 [03:00<04:16,  1.50s/it, gan_loss=-0.492377, rec_loss=0.114280, vae_loss=0.501746]2022-12-02 03:36:17:INFO:Iteration 96
+2022-12-02 03:36:17:INFO:Iteration 96
+Train:  36%|███▌      | 96/267 [03:05<04:16,  1.50s/it, gan_loss=-0.492386, rec_loss=0.114289, vae_loss=0.501737]Train:  36%|███▋      | 97/267 [03:05<06:56,  2.45s/it, gan_loss=-0.492386, rec_loss=0.114289, vae_loss=0.501737]2022-12-02 03:36:18:INFO:Iteration 97
+2022-12-02 03:36:18:INFO:Iteration 97
+Train:  36%|███▋      | 97/267 [03:06<06:56,  2.45s/it, gan_loss=-0.492394, rec_loss=0.114197, vae_loss=0.501728]Train:  37%|███▋      | 98/267 [03:06<05:32,  1.96s/it, gan_loss=-0.492394, rec_loss=0.114197, vae_loss=0.501728]2022-12-02 03:36:19:INFO:Iteration 98
+2022-12-02 03:36:19:INFO:Iteration 98
+Train:  37%|███▋      | 98/267 [03:07<05:32,  1.96s/it, gan_loss=-0.492390, rec_loss=0.114120, vae_loss=0.501718]Train:  37%|███▋      | 99/267 [03:07<04:32,  1.62s/it, gan_loss=-0.492390, rec_loss=0.114120, vae_loss=0.501718]2022-12-02 03:36:19:INFO:Iteration 99
+2022-12-02 03:36:19:INFO:Iteration 99
+Train:  37%|███▋      | 99/267 [03:08<04:32,  1.62s/it, gan_loss=-0.492384, rec_loss=0.114109, vae_loss=0.501709]Train:  37%|███▋      | 100/267 [03:08<04:16,  1.54s/it, gan_loss=-0.492384, rec_loss=0.114109, vae_loss=0.501709]2022-12-02 03:36:24:INFO:Iteration 100
+2022-12-02 03:36:24:INFO:Iteration 100
+Train:  37%|███▋      | 100/267 [03:13<04:16,  1.54s/it, gan_loss=-0.492382, rec_loss=0.114145, vae_loss=0.501699]Train:  38%|███▊      | 101/267 [03:13<06:39,  2.41s/it, gan_loss=-0.492382, rec_loss=0.114145, vae_loss=0.501699]2022-12-02 03:36:25:INFO:Iteration 101
+2022-12-02 03:36:25:INFO:Iteration 101
+Train:  38%|███▊      | 101/267 [03:13<06:39,  2.41s/it, gan_loss=-0.492365, rec_loss=0.114032, vae_loss=0.501689]Train:  38%|███▊      | 102/267 [03:13<05:22,  1.95s/it, gan_loss=-0.492365, rec_loss=0.114032, vae_loss=0.501689]2022-12-02 03:36:26:INFO:Iteration 102
+2022-12-02 03:36:26:INFO:Iteration 102
+Train:  38%|███▊      | 102/267 [03:14<05:22,  1.95s/it, gan_loss=-0.492330, rec_loss=0.113960, vae_loss=0.501679]Train:  39%|███▊      | 103/267 [03:14<04:24,  1.61s/it, gan_loss=-0.492330, rec_loss=0.113960, vae_loss=0.501679]2022-12-02 03:36:27:INFO:Iteration 103
+2022-12-02 03:36:27:INFO:Iteration 103
+Train:  39%|███▊      | 103/267 [03:16<04:24,  1.61s/it, gan_loss=-0.492321, rec_loss=0.113851, vae_loss=0.501669]Train:  39%|███▉      | 104/267 [03:16<04:08,  1.52s/it, gan_loss=-0.492321, rec_loss=0.113851, vae_loss=0.501669]2022-12-02 03:36:31:INFO:Iteration 104
+2022-12-02 03:36:31:INFO:Iteration 104
+Train:  39%|███▉      | 104/267 [03:20<04:08,  1.52s/it, gan_loss=-0.492319, rec_loss=0.113718, vae_loss=0.501659]Train:  39%|███▉      | 105/267 [03:20<06:29,  2.41s/it, gan_loss=-0.492319, rec_loss=0.113718, vae_loss=0.501659]2022-12-02 03:36:33:INFO:Iteration 105
+2022-12-02 03:36:33:INFO:Iteration 105
+Train:  39%|███▉      | 105/267 [03:21<06:29,  2.41s/it, gan_loss=-0.492312, rec_loss=0.113637, vae_loss=0.501649]Train:  40%|███▉      | 106/267 [03:21<05:11,  1.93s/it, gan_loss=-0.492312, rec_loss=0.113637, vae_loss=0.501649]2022-12-02 03:36:33:INFO:Iteration 106
+2022-12-02 03:36:33:INFO:Iteration 106
+Train:  40%|███▉      | 106/267 [03:22<05:11,  1.93s/it, gan_loss=-0.492322, rec_loss=0.113569, vae_loss=0.501639]Train:  40%|████      | 107/267 [03:22<04:15,  1.60s/it, gan_loss=-0.492322, rec_loss=0.113569, vae_loss=0.501639]2022-12-02 03:36:34:INFO:Iteration 107
+2022-12-02 03:36:34:INFO:Iteration 107
+Train:  40%|████      | 107/267 [03:23<04:15,  1.60s/it, gan_loss=-0.492334, rec_loss=0.113541, vae_loss=0.501628]Train:  40%|████      | 108/267 [03:23<03:50,  1.45s/it, gan_loss=-0.492334, rec_loss=0.113541, vae_loss=0.501628]2022-12-02 03:36:39:INFO:Iteration 108
+2022-12-02 03:36:39:INFO:Iteration 108
+Train:  40%|████      | 108/267 [03:27<03:50,  1.45s/it, gan_loss=-0.492339, rec_loss=0.113515, vae_loss=0.501617]Train:  41%|████      | 109/267 [03:27<06:01,  2.29s/it, gan_loss=-0.492339, rec_loss=0.113515, vae_loss=0.501617]2022-12-02 03:36:40:INFO:Iteration 109
+2022-12-02 03:36:40:INFO:Iteration 109
+Train:  41%|████      | 109/267 [03:28<06:01,  2.29s/it, gan_loss=-0.492329, rec_loss=0.113440, vae_loss=0.501607]Train:  41%|████      | 110/267 [03:28<04:54,  1.87s/it, gan_loss=-0.492329, rec_loss=0.113440, vae_loss=0.501607]2022-12-02 03:36:41:INFO:Iteration 110
+2022-12-02 03:36:41:INFO:Iteration 110
+Train:  41%|████      | 110/267 [03:29<04:54,  1.87s/it, gan_loss=-0.492329, rec_loss=0.113295, vae_loss=0.501596]Train:  42%|████▏     | 111/267 [03:29<04:03,  1.56s/it, gan_loss=-0.492329, rec_loss=0.113295, vae_loss=0.501596]2022-12-02 03:36:41:INFO:Iteration 111
+2022-12-02 03:36:41:INFO:Iteration 111
+Train:  42%|████▏     | 111/267 [03:30<04:03,  1.56s/it, gan_loss=-0.492327, rec_loss=0.113196, vae_loss=0.501585]Train:  42%|████▏     | 112/267 [03:30<03:33,  1.38s/it, gan_loss=-0.492327, rec_loss=0.113196, vae_loss=0.501585]2022-12-02 03:36:46:INFO:Iteration 112
+2022-12-02 03:36:46:INFO:Iteration 112
+Train:  42%|████▏     | 112/267 [03:34<03:33,  1.38s/it, gan_loss=-0.492336, rec_loss=0.113134, vae_loss=0.501574]Train:  42%|████▏     | 113/267 [03:34<05:51,  2.28s/it, gan_loss=-0.492336, rec_loss=0.113134, vae_loss=0.501574]2022-12-02 03:36:47:INFO:Iteration 113
+2022-12-02 03:36:47:INFO:Iteration 113
+Train:  42%|████▏     | 113/267 [03:35<05:51,  2.28s/it, gan_loss=-0.492331, rec_loss=0.113009, vae_loss=0.501562]Train:  43%|████▎     | 114/267 [03:35<04:42,  1.84s/it, gan_loss=-0.492331, rec_loss=0.113009, vae_loss=0.501562]2022-12-02 03:36:48:INFO:Iteration 114
+2022-12-02 03:36:48:INFO:Iteration 114
+Train:  43%|████▎     | 114/267 [03:40<04:42,  1.84s/it, gan_loss=-0.492319, rec_loss=0.112905, vae_loss=0.501551]Train:  43%|████▎     | 115/267 [03:40<07:26,  2.93s/it, gan_loss=-0.492319, rec_loss=0.112905, vae_loss=0.501551]2022-12-02 03:36:53:INFO:Iteration 115
+2022-12-02 03:36:53:INFO:Iteration 115
+Train:  43%|████▎     | 115/267 [03:41<07:26,  2.93s/it, gan_loss=-0.492336, rec_loss=0.112831, vae_loss=0.501539]Train:  43%|████▎     | 116/267 [03:41<05:47,  2.30s/it, gan_loss=-0.492336, rec_loss=0.112831, vae_loss=0.501539]2022-12-02 03:36:54:INFO:Iteration 116
+2022-12-02 03:36:54:INFO:Iteration 116
+Train:  43%|████▎     | 116/267 [03:50<05:47,  2.30s/it, gan_loss=-0.492339, rec_loss=0.112855, vae_loss=0.501528]Train:  44%|████▍     | 117/267 [03:50<10:42,  4.28s/it, gan_loss=-0.492339, rec_loss=0.112855, vae_loss=0.501528]2022-12-02 03:37:04:INFO:Iteration 117
+2022-12-02 03:37:04:INFO:Iteration 117
+Train:  44%|████▍     | 117/267 [03:53<10:42,  4.28s/it, gan_loss=-0.492343, rec_loss=0.112840, vae_loss=0.501516]Train:  44%|████▍     | 118/267 [03:53<09:10,  3.70s/it, gan_loss=-0.492343, rec_loss=0.112840, vae_loss=0.501516]2022-12-02 03:37:05:INFO:Iteration 118
+2022-12-02 03:37:05:INFO:Iteration 118
+Train:  44%|████▍     | 118/267 [03:55<09:10,  3.70s/it, gan_loss=-0.492350, rec_loss=0.112810, vae_loss=0.501504]Train:  45%|████▍     | 119/267 [03:55<08:20,  3.38s/it, gan_loss=-0.492350, rec_loss=0.112810, vae_loss=0.501504]2022-12-02 03:37:08:INFO:Iteration 119
+2022-12-02 03:37:08:INFO:Iteration 119
+Train:  45%|████▍     | 119/267 [03:56<08:20,  3.38s/it, gan_loss=-0.492338, rec_loss=0.112820, vae_loss=0.501492]Train:  45%|████▍     | 120/267 [03:56<06:24,  2.61s/it, gan_loss=-0.492338, rec_loss=0.112820, vae_loss=0.501492]2022-12-02 03:37:09:INFO:Iteration 120
+2022-12-02 03:37:09:INFO:Iteration 120
+Train:  45%|████▍     | 120/267 [03:58<06:24,  2.61s/it, gan_loss=-0.492348, rec_loss=0.112835, vae_loss=0.501479]Train:  45%|████▌     | 121/267 [03:58<05:38,  2.32s/it, gan_loss=-0.492348, rec_loss=0.112835, vae_loss=0.501479]2022-12-02 03:37:16:INFO:Iteration 121
+2022-12-02 03:37:16:INFO:Iteration 121
+Train:  45%|████▌     | 121/267 [04:04<05:38,  2.32s/it, gan_loss=-0.492340, rec_loss=0.112846, vae_loss=0.501467]Train:  46%|████▌     | 122/267 [04:04<08:32,  3.53s/it, gan_loss=-0.492340, rec_loss=0.112846, vae_loss=0.501467]2022-12-02 03:37:17:INFO:Iteration 122
+2022-12-02 03:37:17:INFO:Iteration 122
+Train:  46%|████▌     | 122/267 [04:06<08:32,  3.53s/it, gan_loss=-0.492322, rec_loss=0.112732, vae_loss=0.501454]Train:  46%|████▌     | 123/267 [04:06<07:05,  2.96s/it, gan_loss=-0.492322, rec_loss=0.112732, vae_loss=0.501454]2022-12-02 03:37:18:INFO:Iteration 123
+2022-12-02 03:37:18:INFO:Iteration 123
+Train:  46%|████▌     | 123/267 [04:06<07:05,  2.96s/it, gan_loss=-0.492307, rec_loss=0.112728, vae_loss=0.501441]Train:  46%|████▋     | 124/267 [04:06<05:31,  2.32s/it, gan_loss=-0.492307, rec_loss=0.112728, vae_loss=0.501441]2022-12-02 03:37:19:INFO:Iteration 124
+2022-12-02 03:37:19:INFO:Iteration 124
+Train:  46%|████▋     | 124/267 [04:08<05:31,  2.32s/it, gan_loss=-0.492300, rec_loss=0.112622, vae_loss=0.501429]Train:  47%|████▋     | 125/267 [04:08<04:51,  2.05s/it, gan_loss=-0.492300, rec_loss=0.112622, vae_loss=0.501429]2022-12-02 03:37:23:INFO:Iteration 125
+2022-12-02 03:37:23:INFO:Iteration 125
+Train:  47%|████▋     | 125/267 [04:11<04:51,  2.05s/it, gan_loss=-0.492284, rec_loss=0.112457, vae_loss=0.501416]Train:  47%|████▋     | 126/267 [04:11<05:44,  2.45s/it, gan_loss=-0.492284, rec_loss=0.112457, vae_loss=0.501416]2022-12-02 03:37:24:INFO:Iteration 126
+2022-12-02 03:37:24:INFO:Iteration 126
+Train:  47%|████▋     | 126/267 [04:13<05:44,  2.45s/it, gan_loss=-0.492270, rec_loss=0.112341, vae_loss=0.501402]Train:  48%|████▊     | 127/267 [04:13<05:12,  2.23s/it, gan_loss=-0.492270, rec_loss=0.112341, vae_loss=0.501402]2022-12-02 03:37:25:INFO:Iteration 127
+2022-12-02 03:37:25:INFO:Iteration 127
+Train:  48%|████▊     | 127/267 [04:14<05:12,  2.23s/it, gan_loss=-0.492285, rec_loss=0.112216, vae_loss=0.501389]Train:  48%|████▊     | 128/267 [04:14<04:14,  1.83s/it, gan_loss=-0.492285, rec_loss=0.112216, vae_loss=0.501389]2022-12-02 03:37:27:INFO:Iteration 128
+2022-12-02 03:37:27:INFO:Iteration 128
+Train:  48%|████▊     | 128/267 [04:16<04:14,  1.83s/it, gan_loss=-0.492290, rec_loss=0.112204, vae_loss=0.501375]Train:  48%|████▊     | 129/267 [04:16<04:12,  1.83s/it, gan_loss=-0.492290, rec_loss=0.112204, vae_loss=0.501375]2022-12-02 03:37:32:INFO:Iteration 129
+2022-12-02 03:37:32:INFO:Iteration 129
+Train:  48%|████▊     | 129/267 [04:20<04:12,  1.83s/it, gan_loss=-0.492295, rec_loss=0.112257, vae_loss=0.501362]Train:  49%|████▊     | 130/267 [04:20<05:45,  2.53s/it, gan_loss=-0.492295, rec_loss=0.112257, vae_loss=0.501362]2022-12-02 03:37:32:INFO:Iteration 130
+2022-12-02 03:37:32:INFO:Iteration 130
+Train:  49%|████▊     | 130/267 [04:21<05:45,  2.53s/it, gan_loss=-0.492289, rec_loss=0.112137, vae_loss=0.501348]Train:  49%|████▉     | 131/267 [04:21<04:53,  2.16s/it, gan_loss=-0.492289, rec_loss=0.112137, vae_loss=0.501348]2022-12-02 03:37:34:INFO:Iteration 131
+2022-12-02 03:37:34:INFO:Iteration 131
+Train:  49%|████▉     | 131/267 [04:22<04:53,  2.16s/it, gan_loss=-0.492267, rec_loss=0.112038, vae_loss=0.501334]Train:  49%|████▉     | 132/267 [04:22<03:57,  1.76s/it, gan_loss=-0.492267, rec_loss=0.112038, vae_loss=0.501334]2022-12-02 03:37:36:INFO:Iteration 132
+2022-12-02 03:37:36:INFO:Iteration 132
+Train:  49%|████▉     | 132/267 [04:24<03:57,  1.76s/it, gan_loss=-0.492260, rec_loss=0.111938, vae_loss=0.501319]Train:  50%|████▉     | 133/267 [04:24<04:11,  1.88s/it, gan_loss=-0.492260, rec_loss=0.111938, vae_loss=0.501319]2022-12-02 03:37:40:INFO:Iteration 133
+2022-12-02 03:37:40:INFO:Iteration 133
+Train:  50%|████▉     | 133/267 [04:28<04:11,  1.88s/it, gan_loss=-0.492250, rec_loss=0.111857, vae_loss=0.501305]Train:  50%|█████     | 134/267 [04:28<05:30,  2.49s/it, gan_loss=-0.492250, rec_loss=0.111857, vae_loss=0.501305]2022-12-02 03:37:41:INFO:Iteration 134
+2022-12-02 03:37:41:INFO:Iteration 134
+Train:  50%|█████     | 134/267 [04:29<05:30,  2.49s/it, gan_loss=-0.492265, rec_loss=0.111827, vae_loss=0.501290]Train:  51%|█████     | 135/267 [04:29<04:22,  1.99s/it, gan_loss=-0.492265, rec_loss=0.111827, vae_loss=0.501290]2022-12-02 03:37:41:INFO:Iteration 135
+2022-12-02 03:37:41:INFO:Iteration 135
+Train:  51%|█████     | 135/267 [04:30<04:22,  1.99s/it, gan_loss=-0.492241, rec_loss=0.111796, vae_loss=0.501276]Train:  51%|█████     | 136/267 [04:30<03:34,  1.64s/it, gan_loss=-0.492241, rec_loss=0.111796, vae_loss=0.501276]2022-12-02 03:37:44:INFO:Iteration 136
+2022-12-02 03:37:44:INFO:Iteration 136
+Train:  51%|█████     | 136/267 [04:32<03:34,  1.64s/it, gan_loss=-0.492218, rec_loss=0.111681, vae_loss=0.501261]Train:  51%|█████▏    | 137/267 [04:32<04:09,  1.92s/it, gan_loss=-0.492218, rec_loss=0.111681, vae_loss=0.501261]2022-12-02 03:37:47:INFO:Iteration 137
+2022-12-02 03:37:47:INFO:Iteration 137
+Train:  51%|█████▏    | 137/267 [04:35<04:09,  1.92s/it, gan_loss=-0.492206, rec_loss=0.111585, vae_loss=0.501245]Train:  52%|█████▏    | 138/267 [04:35<04:54,  2.28s/it, gan_loss=-0.492206, rec_loss=0.111585, vae_loss=0.501245]2022-12-02 03:37:48:INFO:Iteration 138
+2022-12-02 03:37:48:INFO:Iteration 138
+Train:  52%|█████▏    | 138/267 [04:36<04:54,  2.28s/it, gan_loss=-0.492212, rec_loss=0.111490, vae_loss=0.501230]Train:  52%|█████▏    | 139/267 [04:36<03:56,  1.85s/it, gan_loss=-0.492212, rec_loss=0.111490, vae_loss=0.501230]2022-12-02 03:37:49:INFO:Iteration 139
+2022-12-02 03:37:49:INFO:Iteration 139
+Train:  52%|█████▏    | 139/267 [04:37<03:56,  1.85s/it, gan_loss=-0.492204, rec_loss=0.111354, vae_loss=0.501215]Train:  52%|█████▏    | 140/267 [04:37<03:15,  1.54s/it, gan_loss=-0.492204, rec_loss=0.111354, vae_loss=0.501215]2022-12-02 03:37:51:INFO:Iteration 140
+2022-12-02 03:37:51:INFO:Iteration 140
+Train:  52%|█████▏    | 140/267 [04:40<03:15,  1.54s/it, gan_loss=-0.492200, rec_loss=0.111271, vae_loss=0.501199]Train:  53%|█████▎    | 141/267 [04:40<03:50,  1.83s/it, gan_loss=-0.492200, rec_loss=0.111271, vae_loss=0.501199]2022-12-02 03:37:55:INFO:Iteration 141
+2022-12-02 03:37:55:INFO:Iteration 141
+Train:  53%|█████▎    | 141/267 [04:43<03:50,  1.83s/it, gan_loss=-0.492202, rec_loss=0.111134, vae_loss=0.501183]Train:  53%|█████▎    | 142/267 [04:43<04:43,  2.26s/it, gan_loss=-0.492202, rec_loss=0.111134, vae_loss=0.501183]2022-12-02 03:37:55:INFO:Iteration 142
+2022-12-02 03:37:55:INFO:Iteration 142
+Train:  53%|█████▎    | 142/267 [04:44<04:43,  2.26s/it, gan_loss=-0.492193, rec_loss=0.111096, vae_loss=0.501167]Train:  54%|█████▎    | 143/267 [04:44<03:47,  1.84s/it, gan_loss=-0.492193, rec_loss=0.111096, vae_loss=0.501167]2022-12-02 03:37:56:INFO:Iteration 143
+2022-12-02 03:37:56:INFO:Iteration 143
+Train:  54%|█████▎    | 143/267 [04:44<03:47,  1.84s/it, gan_loss=-0.492162, rec_loss=0.111011, vae_loss=0.501150]Train:  54%|█████▍    | 144/267 [04:44<03:08,  1.53s/it, gan_loss=-0.492162, rec_loss=0.111011, vae_loss=0.501150]2022-12-02 03:37:59:INFO:Iteration 144
+2022-12-02 03:37:59:INFO:Iteration 144
+Train:  54%|█████▍    | 144/267 [04:47<03:08,  1.53s/it, gan_loss=-0.492169, rec_loss=0.110965, vae_loss=0.501134]Train:  54%|█████▍    | 145/267 [04:47<03:43,  1.84s/it, gan_loss=-0.492169, rec_loss=0.110965, vae_loss=0.501134]2022-12-02 03:38:02:INFO:Iteration 145
+2022-12-02 03:38:02:INFO:Iteration 145
+Train:  54%|█████▍    | 145/267 [04:50<03:43,  1.84s/it, gan_loss=-0.492172, rec_loss=0.110935, vae_loss=0.501117]Train:  55%|█████▍    | 146/267 [04:50<04:31,  2.24s/it, gan_loss=-0.492172, rec_loss=0.110935, vae_loss=0.501117]2022-12-02 03:38:03:INFO:Iteration 146
+2022-12-02 03:38:03:INFO:Iteration 146
+Train:  55%|█████▍    | 146/267 [04:51<04:31,  2.24s/it, gan_loss=-0.492161, rec_loss=0.110896, vae_loss=0.501100]Train:  55%|█████▌    | 147/267 [04:51<03:37,  1.82s/it, gan_loss=-0.492161, rec_loss=0.110896, vae_loss=0.501100]2022-12-02 03:38:04:INFO:Iteration 147
+2022-12-02 03:38:04:INFO:Iteration 147
+Train:  55%|█████▌    | 147/267 [04:52<03:37,  1.82s/it, gan_loss=-0.492149, rec_loss=0.110757, vae_loss=0.501082]Train:  55%|█████▌    | 148/267 [04:52<03:00,  1.52s/it, gan_loss=-0.492149, rec_loss=0.110757, vae_loss=0.501082]2022-12-02 03:38:07:INFO:Iteration 148
+2022-12-02 03:38:07:INFO:Iteration 148
+Train:  55%|█████▌    | 148/267 [04:55<03:00,  1.52s/it, gan_loss=-0.492152, rec_loss=0.110602, vae_loss=0.501065]Train:  56%|█████▌    | 149/267 [04:55<03:57,  2.01s/it, gan_loss=-0.492152, rec_loss=0.110602, vae_loss=0.501065]2022-12-02 03:38:09:INFO:Iteration 149
+2022-12-02 03:38:09:INFO:Iteration 149
+Train:  56%|█████▌    | 149/267 [04:58<03:57,  2.01s/it, gan_loss=-0.492142, rec_loss=0.110495, vae_loss=0.501047]Train:  56%|█████▌    | 150/267 [04:58<04:15,  2.18s/it, gan_loss=-0.492142, rec_loss=0.110495, vae_loss=0.501047]2022-12-02 03:38:10:INFO:Iteration 150
+2022-12-02 03:38:10:INFO:Iteration 150
+Train:  56%|█████▌    | 150/267 [04:58<04:15,  2.18s/it, gan_loss=-0.492150, rec_loss=0.110426, vae_loss=0.501029]Train:  57%|█████▋    | 151/267 [04:58<03:25,  1.77s/it, gan_loss=-0.492150, rec_loss=0.110426, vae_loss=0.501029]2022-12-02 03:38:11:INFO:Iteration 151
+2022-12-02 03:38:11:INFO:Iteration 151
+Train:  57%|█████▋    | 151/267 [04:59<03:25,  1.77s/it, gan_loss=-0.492141, rec_loss=0.110376, vae_loss=0.501011]Train:  57%|█████▋    | 152/267 [04:59<02:51,  1.49s/it, gan_loss=-0.492141, rec_loss=0.110376, vae_loss=0.501011]2022-12-02 03:38:14:INFO:Iteration 152
+2022-12-02 03:38:14:INFO:Iteration 152
+Train:  57%|█████▋    | 152/267 [05:02<02:51,  1.49s/it, gan_loss=-0.492147, rec_loss=0.110370, vae_loss=0.500992]Train:  57%|█████▋    | 153/267 [05:02<03:41,  1.95s/it, gan_loss=-0.492147, rec_loss=0.110370, vae_loss=0.500992]2022-12-02 03:38:17:INFO:Iteration 153
+2022-12-02 03:38:17:INFO:Iteration 153
+Train:  57%|█████▋    | 153/267 [05:05<03:41,  1.95s/it, gan_loss=-0.492146, rec_loss=0.110310, vae_loss=0.500973]Train:  58%|█████▊    | 154/267 [05:05<04:23,  2.33s/it, gan_loss=-0.492146, rec_loss=0.110310, vae_loss=0.500973]2022-12-02 03:38:18:INFO:Iteration 154
+2022-12-02 03:38:18:INFO:Iteration 154
+Train:  58%|█████▊    | 154/267 [05:06<04:23,  2.33s/it, gan_loss=-0.492153, rec_loss=0.110230, vae_loss=0.500954]Train:  58%|█████▊    | 155/267 [05:06<03:30,  1.88s/it, gan_loss=-0.492153, rec_loss=0.110230, vae_loss=0.500954]2022-12-02 03:38:19:INFO:Iteration 155
+2022-12-02 03:38:19:INFO:Iteration 155
+Train:  58%|█████▊    | 155/267 [05:07<03:30,  1.88s/it, gan_loss=-0.492140, rec_loss=0.110118, vae_loss=0.500935]Train:  58%|█████▊    | 156/267 [05:07<02:54,  1.57s/it, gan_loss=-0.492140, rec_loss=0.110118, vae_loss=0.500935]2022-12-02 03:38:22:INFO:Iteration 156
+2022-12-02 03:38:22:INFO:Iteration 156
+Train:  58%|█████▊    | 156/267 [05:10<02:54,  1.57s/it, gan_loss=-0.492136, rec_loss=0.110034, vae_loss=0.500915]Train:  59%|█████▉    | 157/267 [05:10<03:42,  2.03s/it, gan_loss=-0.492136, rec_loss=0.110034, vae_loss=0.500915]2022-12-02 03:38:25:INFO:Iteration 157
+2022-12-02 03:38:25:INFO:Iteration 157
+Train:  59%|█████▉    | 157/267 [05:13<03:42,  2.03s/it, gan_loss=-0.492144, rec_loss=0.109974, vae_loss=0.500895]Train:  59%|█████▉    | 158/267 [05:13<04:06,  2.27s/it, gan_loss=-0.492144, rec_loss=0.109974, vae_loss=0.500895]2022-12-02 03:38:26:INFO:Iteration 158
+2022-12-02 03:38:26:INFO:Iteration 158
+Train:  59%|█████▉    | 158/267 [05:14<04:06,  2.27s/it, gan_loss=-0.492144, rec_loss=0.109849, vae_loss=0.500875]Train:  60%|█████▉    | 159/267 [05:14<03:17,  1.83s/it, gan_loss=-0.492144, rec_loss=0.109849, vae_loss=0.500875]2022-12-02 03:38:26:INFO:Iteration 159
+2022-12-02 03:38:26:INFO:Iteration 159
+Train:  60%|█████▉    | 159/267 [05:15<03:17,  1.83s/it, gan_loss=-0.492124, rec_loss=0.109836, vae_loss=0.500855]Train:  60%|█████▉    | 160/267 [05:15<02:44,  1.53s/it, gan_loss=-0.492124, rec_loss=0.109836, vae_loss=0.500855]2022-12-02 03:38:29:INFO:Iteration 160
+2022-12-02 03:38:29:INFO:Iteration 160
+Train:  60%|█████▉    | 160/267 [05:18<02:44,  1.53s/it, gan_loss=-0.492115, rec_loss=0.109716, vae_loss=0.500834]Train:  60%|██████    | 161/267 [05:18<03:24,  1.93s/it, gan_loss=-0.492115, rec_loss=0.109716, vae_loss=0.500834]2022-12-02 03:38:33:INFO:Iteration 161
+2022-12-02 03:38:33:INFO:Iteration 161
+Train:  60%|██████    | 161/267 [05:22<03:24,  1.93s/it, gan_loss=-0.492119, rec_loss=0.109623, vae_loss=0.500813]Train:  61%|██████    | 162/267 [05:22<04:33,  2.61s/it, gan_loss=-0.492119, rec_loss=0.109623, vae_loss=0.500813]2022-12-02 03:38:34:INFO:Iteration 162
+2022-12-02 03:38:34:INFO:Iteration 162
+Train:  61%|██████    | 162/267 [05:23<04:33,  2.61s/it, gan_loss=-0.492127, rec_loss=0.109589, vae_loss=0.500792]Train:  61%|██████    | 163/267 [05:23<03:35,  2.07s/it, gan_loss=-0.492127, rec_loss=0.109589, vae_loss=0.500792]2022-12-02 03:38:35:INFO:Iteration 163
+2022-12-02 03:38:35:INFO:Iteration 163
+Train:  61%|██████    | 163/267 [05:23<03:35,  2.07s/it, gan_loss=-0.492123, rec_loss=0.109481, vae_loss=0.500770]Train:  61%|██████▏   | 164/267 [05:23<02:54,  1.70s/it, gan_loss=-0.492123, rec_loss=0.109481, vae_loss=0.500770]2022-12-02 03:38:38:INFO:Iteration 164
+2022-12-02 03:38:38:INFO:Iteration 164
+Train:  61%|██████▏   | 164/267 [05:26<02:54,  1.70s/it, gan_loss=-0.492107, rec_loss=0.109323, vae_loss=0.500748]Train:  62%|██████▏   | 165/267 [05:26<03:15,  1.92s/it, gan_loss=-0.492107, rec_loss=0.109323, vae_loss=0.500748]2022-12-02 03:38:42:INFO:Iteration 165
+2022-12-02 03:38:42:INFO:Iteration 165
+Train:  62%|██████▏   | 165/267 [05:30<03:15,  1.92s/it, gan_loss=-0.492099, rec_loss=0.109258, vae_loss=0.500725]Train:  62%|██████▏   | 166/267 [05:30<04:29,  2.66s/it, gan_loss=-0.492099, rec_loss=0.109258, vae_loss=0.500725]2022-12-02 03:38:43:INFO:Iteration 166
+2022-12-02 03:38:43:INFO:Iteration 166
+Train:  62%|██████▏   | 166/267 [05:31<04:29,  2.66s/it, gan_loss=-0.492097, rec_loss=0.109151, vae_loss=0.500703]Train:  63%|██████▎   | 167/267 [05:31<03:31,  2.11s/it, gan_loss=-0.492097, rec_loss=0.109151, vae_loss=0.500703]2022-12-02 03:38:44:INFO:Iteration 167
+2022-12-02 03:38:44:INFO:Iteration 167
+Train:  63%|██████▎   | 167/267 [05:32<03:31,  2.11s/it, gan_loss=-0.492097, rec_loss=0.109015, vae_loss=0.500680]Train:  63%|██████▎   | 168/267 [05:32<02:50,  1.73s/it, gan_loss=-0.492097, rec_loss=0.109015, vae_loss=0.500680]2022-12-02 03:38:47:INFO:Iteration 168
+2022-12-02 03:38:47:INFO:Iteration 168
+Train:  63%|██████▎   | 168/267 [05:35<02:50,  1.73s/it, gan_loss=-0.492098, rec_loss=0.108971, vae_loss=0.500656]Train:  63%|██████▎   | 169/267 [05:35<03:23,  2.07s/it, gan_loss=-0.492098, rec_loss=0.108971, vae_loss=0.500656]2022-12-02 03:38:50:INFO:Iteration 169
+2022-12-02 03:38:50:INFO:Iteration 169
+Train:  63%|██████▎   | 169/267 [05:38<03:23,  2.07s/it, gan_loss=-0.492101, rec_loss=0.108868, vae_loss=0.500632]Train:  64%|██████▎   | 170/267 [05:38<04:02,  2.50s/it, gan_loss=-0.492101, rec_loss=0.108868, vae_loss=0.500632]2022-12-02 03:38:51:INFO:Iteration 170
+2022-12-02 03:38:51:INFO:Iteration 170
+Train:  64%|██████▎   | 170/267 [05:39<04:02,  2.50s/it, gan_loss=-0.492096, rec_loss=0.108743, vae_loss=0.500608]Train:  64%|██████▍   | 171/267 [05:39<03:11,  2.00s/it, gan_loss=-0.492096, rec_loss=0.108743, vae_loss=0.500608]2022-12-02 03:38:52:INFO:Iteration 171
+2022-12-02 03:38:52:INFO:Iteration 171
+Train:  64%|██████▍   | 171/267 [05:40<03:11,  2.00s/it, gan_loss=-0.492090, rec_loss=0.108629, vae_loss=0.500584]Train:  64%|██████▍   | 172/267 [05:40<02:36,  1.65s/it, gan_loss=-0.492090, rec_loss=0.108629, vae_loss=0.500584]2022-12-02 03:38:54:INFO:Iteration 172
+2022-12-02 03:38:54:INFO:Iteration 172
+Train:  64%|██████▍   | 172/267 [05:43<02:36,  1.65s/it, gan_loss=-0.492092, rec_loss=0.108592, vae_loss=0.500559]Train:  65%|██████▍   | 173/267 [05:43<03:06,  1.99s/it, gan_loss=-0.492092, rec_loss=0.108592, vae_loss=0.500559]2022-12-02 03:38:58:INFO:Iteration 173
+2022-12-02 03:38:58:INFO:Iteration 173
+Train:  65%|██████▍   | 173/267 [05:46<03:06,  1.99s/it, gan_loss=-0.492087, rec_loss=0.108482, vae_loss=0.500533]Train:  65%|██████▌   | 174/267 [05:46<03:44,  2.41s/it, gan_loss=-0.492087, rec_loss=0.108482, vae_loss=0.500533]2022-12-02 03:38:59:INFO:Iteration 174
+2022-12-02 03:38:59:INFO:Iteration 174
+Train:  65%|██████▌   | 174/267 [05:47<03:44,  2.41s/it, gan_loss=-0.492089, rec_loss=0.108393, vae_loss=0.500508]Train:  66%|██████▌   | 175/267 [05:47<02:58,  1.94s/it, gan_loss=-0.492089, rec_loss=0.108393, vae_loss=0.500508]2022-12-02 03:38:59:INFO:Iteration 175
+2022-12-02 03:38:59:INFO:Iteration 175
+Train:  66%|██████▌   | 175/267 [05:48<02:58,  1.94s/it, gan_loss=-0.492088, rec_loss=0.108306, vae_loss=0.500481]Train:  66%|██████▌   | 176/267 [05:48<02:26,  1.61s/it, gan_loss=-0.492088, rec_loss=0.108306, vae_loss=0.500481]2022-12-02 03:39:02:INFO:Iteration 176
+2022-12-02 03:39:02:INFO:Iteration 176
+Train:  66%|██████▌   | 176/267 [05:50<02:26,  1.61s/it, gan_loss=-0.492084, rec_loss=0.108262, vae_loss=0.500455]Train:  66%|██████▋   | 177/267 [05:50<02:49,  1.88s/it, gan_loss=-0.492084, rec_loss=0.108262, vae_loss=0.500455]2022-12-02 03:39:05:INFO:Iteration 177
+2022-12-02 03:39:05:INFO:Iteration 177
+Train:  66%|██████▋   | 177/267 [05:53<02:49,  1.88s/it, gan_loss=-0.492088, rec_loss=0.108205, vae_loss=0.500428]Train:  67%|██████▋   | 178/267 [05:53<03:18,  2.23s/it, gan_loss=-0.492088, rec_loss=0.108205, vae_loss=0.500428]2022-12-02 03:39:06:INFO:Iteration 178
+2022-12-02 03:39:06:INFO:Iteration 178
+Train:  67%|██████▋   | 178/267 [05:54<03:18,  2.23s/it, gan_loss=-0.492091, rec_loss=0.108116, vae_loss=0.500400]Train:  67%|██████▋   | 179/267 [05:54<02:39,  1.81s/it, gan_loss=-0.492091, rec_loss=0.108116, vae_loss=0.500400]2022-12-02 03:39:07:INFO:Iteration 179
+2022-12-02 03:39:07:INFO:Iteration 179
+Train:  67%|██████▋   | 179/267 [05:55<02:39,  1.81s/it, gan_loss=-0.492075, rec_loss=0.107944, vae_loss=0.500372]Train:  67%|██████▋   | 180/267 [05:55<02:12,  1.52s/it, gan_loss=-0.492075, rec_loss=0.107944, vae_loss=0.500372]2022-12-02 03:39:09:INFO:Iteration 180
+2022-12-02 03:39:09:INFO:Iteration 180
+Train:  67%|██████▋   | 180/267 [05:57<02:12,  1.52s/it, gan_loss=-0.492085, rec_loss=0.107870, vae_loss=0.500344]Train:  68%|██████▊   | 181/267 [05:57<02:28,  1.73s/it, gan_loss=-0.492085, rec_loss=0.107870, vae_loss=0.500344]2022-12-02 03:39:12:INFO:Iteration 181
+2022-12-02 03:39:12:INFO:Iteration 181
+Train:  68%|██████▊   | 181/267 [06:01<02:28,  1.73s/it, gan_loss=-0.492090, rec_loss=0.107810, vae_loss=0.500314]Train:  68%|██████▊   | 182/267 [06:01<03:08,  2.22s/it, gan_loss=-0.492090, rec_loss=0.107810, vae_loss=0.500314]2022-12-02 03:39:13:INFO:Iteration 182
+2022-12-02 03:39:13:INFO:Iteration 182
+Train:  68%|██████▊   | 182/267 [06:02<03:08,  2.22s/it, gan_loss=-0.492095, rec_loss=0.107791, vae_loss=0.500285]Train:  69%|██████▊   | 183/267 [06:02<02:39,  1.90s/it, gan_loss=-0.492095, rec_loss=0.107791, vae_loss=0.500285]2022-12-02 03:39:14:INFO:Iteration 183
+2022-12-02 03:39:14:INFO:Iteration 183
+Train:  69%|██████▊   | 183/267 [06:03<02:39,  1.90s/it, gan_loss=-0.492094, rec_loss=0.107669, vae_loss=0.500255]Train:  69%|██████▉   | 184/267 [06:03<02:11,  1.58s/it, gan_loss=-0.492094, rec_loss=0.107669, vae_loss=0.500255]2022-12-02 03:39:17:INFO:Iteration 184
+2022-12-02 03:39:17:INFO:Iteration 184
+Train:  69%|██████▉   | 184/267 [06:06<02:11,  1.58s/it, gan_loss=-0.492096, rec_loss=0.107576, vae_loss=0.500224]Train:  69%|██████▉   | 185/267 [06:06<02:46,  2.03s/it, gan_loss=-0.492096, rec_loss=0.107576, vae_loss=0.500224]2022-12-02 03:39:19:INFO:Iteration 185
+2022-12-02 03:39:19:INFO:Iteration 185
+Train:  69%|██████▉   | 185/267 [06:08<02:46,  2.03s/it, gan_loss=-0.492092, rec_loss=0.107458, vae_loss=0.500193]Train:  70%|██████▉   | 186/267 [06:08<02:40,  1.98s/it, gan_loss=-0.492092, rec_loss=0.107458, vae_loss=0.500193]2022-12-02 03:39:20:INFO:Iteration 186
+2022-12-02 03:39:20:INFO:Iteration 186
+Train:  70%|██████▉   | 186/267 [06:09<02:40,  1.98s/it, gan_loss=-0.492098, rec_loss=0.107413, vae_loss=0.500161]Train:  70%|███████   | 187/267 [06:09<02:23,  1.80s/it, gan_loss=-0.492098, rec_loss=0.107413, vae_loss=0.500161]2022-12-02 03:39:21:INFO:Iteration 187
+2022-12-02 03:39:21:INFO:Iteration 187
+Train:  70%|███████   | 187/267 [06:10<02:23,  1.80s/it, gan_loss=-0.492093, rec_loss=0.107320, vae_loss=0.500129]Train:  70%|███████   | 188/267 [06:10<01:59,  1.51s/it, gan_loss=-0.492093, rec_loss=0.107320, vae_loss=0.500129]2022-12-02 03:39:24:INFO:Iteration 188
+2022-12-02 03:39:24:INFO:Iteration 188
+Train:  70%|███████   | 188/267 [06:13<01:59,  1.51s/it, gan_loss=-0.492096, rec_loss=0.107193, vae_loss=0.500096]Train:  71%|███████   | 189/267 [06:13<02:33,  1.97s/it, gan_loss=-0.492096, rec_loss=0.107193, vae_loss=0.500096]2022-12-02 03:39:27:INFO:Iteration 189
+2022-12-02 03:39:27:INFO:Iteration 189
+Train:  71%|███████   | 189/267 [06:15<02:33,  1.97s/it, gan_loss=-0.492084, rec_loss=0.107050, vae_loss=0.500062]Train:  71%|███████   | 190/267 [06:15<02:35,  2.02s/it, gan_loss=-0.492084, rec_loss=0.107050, vae_loss=0.500062]2022-12-02 03:39:27:INFO:Iteration 190
+2022-12-02 03:39:27:INFO:Iteration 190
+Train:  71%|███████   | 190/267 [06:17<02:35,  2.02s/it, gan_loss=-0.492084, rec_loss=0.106953, vae_loss=0.500028]Train:  72%|███████▏  | 191/267 [06:17<02:24,  1.91s/it, gan_loss=-0.492084, rec_loss=0.106953, vae_loss=0.500028]2022-12-02 03:39:29:INFO:Iteration 191
+2022-12-02 03:39:29:INFO:Iteration 191
+Train:  72%|███████▏  | 191/267 [06:17<02:24,  1.91s/it, gan_loss=-0.492087, rec_loss=0.106888, vae_loss=0.499993]Train:  72%|███████▏  | 192/267 [06:17<01:58,  1.58s/it, gan_loss=-0.492087, rec_loss=0.106888, vae_loss=0.499993]2022-12-02 03:39:32:INFO:Iteration 192
+2022-12-02 03:39:32:INFO:Iteration 192
+Train:  72%|███████▏  | 192/267 [06:20<01:58,  1.58s/it, gan_loss=-0.492091, rec_loss=0.106780, vae_loss=0.499957]Train:  72%|███████▏  | 193/267 [06:20<02:19,  1.89s/it, gan_loss=-0.492091, rec_loss=0.106780, vae_loss=0.499957]2022-12-02 03:39:34:INFO:Iteration 193
+2022-12-02 03:39:34:INFO:Iteration 193
+Train:  72%|███████▏  | 193/267 [06:22<02:19,  1.89s/it, gan_loss=-0.492087, rec_loss=0.106642, vae_loss=0.499921]Train:  73%|███████▎  | 194/267 [06:22<02:27,  2.02s/it, gan_loss=-0.492087, rec_loss=0.106642, vae_loss=0.499921]2022-12-02 03:39:35:INFO:Iteration 194
+2022-12-02 03:39:35:INFO:Iteration 194
+Train:  73%|███████▎  | 194/267 [06:24<02:27,  2.02s/it, gan_loss=-0.492094, rec_loss=0.106545, vae_loss=0.499884]Train:  73%|███████▎  | 195/267 [06:24<02:20,  1.95s/it, gan_loss=-0.492094, rec_loss=0.106545, vae_loss=0.499884]2022-12-02 03:39:37:INFO:Iteration 195
+2022-12-02 03:39:37:INFO:Iteration 195
+Train:  73%|███████▎  | 195/267 [06:25<02:20,  1.95s/it, gan_loss=-0.492098, rec_loss=0.106483, vae_loss=0.499846]Train:  73%|███████▎  | 196/267 [06:25<01:54,  1.61s/it, gan_loss=-0.492098, rec_loss=0.106483, vae_loss=0.499846]2022-12-02 03:39:39:INFO:Iteration 196
+2022-12-02 03:39:39:INFO:Iteration 196
+Train:  73%|███████▎  | 196/267 [06:27<01:54,  1.61s/it, gan_loss=-0.492090, rec_loss=0.106418, vae_loss=0.499807]Train:  74%|███████▍  | 197/267 [06:27<02:12,  1.89s/it, gan_loss=-0.492090, rec_loss=0.106418, vae_loss=0.499807]2022-12-02 03:39:42:INFO:Iteration 197
+2022-12-02 03:39:42:INFO:Iteration 197
+Train:  74%|███████▍  | 197/267 [06:30<02:12,  1.89s/it, gan_loss=-0.492089, rec_loss=0.106334, vae_loss=0.499767]Train:  74%|███████▍  | 198/267 [06:30<02:25,  2.11s/it, gan_loss=-0.492089, rec_loss=0.106334, vae_loss=0.499767]2022-12-02 03:39:43:INFO:Iteration 198
+2022-12-02 03:39:43:INFO:Iteration 198
+Train:  74%|███████▍  | 198/267 [06:32<02:25,  2.11s/it, gan_loss=-0.492087, rec_loss=0.106202, vae_loss=0.499727]Train:  75%|███████▍  | 199/267 [06:32<02:09,  1.91s/it, gan_loss=-0.492087, rec_loss=0.106202, vae_loss=0.499727]2022-12-02 03:39:44:INFO:Iteration 199
+2022-12-02 03:39:44:INFO:Iteration 199
+Train:  75%|███████▍  | 199/267 [06:32<02:09,  1.91s/it, gan_loss=-0.492086, rec_loss=0.106147, vae_loss=0.499686]Train:  75%|███████▍  | 200/267 [06:32<01:46,  1.59s/it, gan_loss=-0.492086, rec_loss=0.106147, vae_loss=0.499686]2022-12-02 03:39:46:INFO:Iteration 200
+2022-12-02 03:39:46:INFO:Iteration 200
+Train:  75%|███████▍  | 200/267 [06:36<01:46,  1.59s/it, gan_loss=-0.492087, rec_loss=0.106031, vae_loss=0.499644]Train:  75%|███████▌  | 201/267 [06:36<02:29,  2.27s/it, gan_loss=-0.492087, rec_loss=0.106031, vae_loss=0.499644]2022-12-02 03:39:50:INFO:Iteration 201
+2022-12-02 03:39:50:INFO:Iteration 201
+Train:  75%|███████▌  | 201/267 [06:38<02:29,  2.27s/it, gan_loss=-0.492078, rec_loss=0.105923, vae_loss=0.499601]Train:  76%|███████▌  | 202/267 [06:38<02:14,  2.07s/it, gan_loss=-0.492078, rec_loss=0.105923, vae_loss=0.499601]2022-12-02 03:39:50:INFO:Iteration 202
+2022-12-02 03:39:50:INFO:Iteration 202
+Train:  76%|███████▌  | 202/267 [06:39<02:14,  2.07s/it, gan_loss=-0.492076, rec_loss=0.105808, vae_loss=0.499557]Train:  76%|███████▌  | 203/267 [06:39<01:56,  1.82s/it, gan_loss=-0.492076, rec_loss=0.105808, vae_loss=0.499557]2022-12-02 03:39:52:INFO:Iteration 203
+2022-12-02 03:39:52:INFO:Iteration 203
+Train:  76%|███████▌  | 203/267 [06:40<01:56,  1.82s/it, gan_loss=-0.492072, rec_loss=0.105744, vae_loss=0.499512]Train:  76%|███████▋  | 204/267 [06:40<01:36,  1.54s/it, gan_loss=-0.492072, rec_loss=0.105744, vae_loss=0.499512]2022-12-02 03:39:54:INFO:Iteration 204
+2022-12-02 03:39:54:INFO:Iteration 204
+Train:  76%|███████▋  | 204/267 [06:45<01:36,  1.54s/it, gan_loss=-0.492072, rec_loss=0.105653, vae_loss=0.499465]Train:  77%|███████▋  | 205/267 [06:45<02:33,  2.47s/it, gan_loss=-0.492072, rec_loss=0.105653, vae_loss=0.499465]2022-12-02 03:39:57:INFO:Iteration 205
+2022-12-02 03:39:57:INFO:Iteration 205
+Train:  77%|███████▋  | 205/267 [06:46<02:33,  2.47s/it, gan_loss=-0.492072, rec_loss=0.105603, vae_loss=0.499418]Train:  77%|███████▋  | 206/267 [06:46<02:04,  2.04s/it, gan_loss=-0.492072, rec_loss=0.105603, vae_loss=0.499418]2022-12-02 03:39:58:INFO:Iteration 206
+2022-12-02 03:39:58:INFO:Iteration 206
+Train:  77%|███████▋  | 206/267 [06:47<02:04,  2.04s/it, gan_loss=-0.492081, rec_loss=0.105569, vae_loss=0.499370]Train:  78%|███████▊  | 207/267 [06:47<01:56,  1.94s/it, gan_loss=-0.492081, rec_loss=0.105569, vae_loss=0.499370]2022-12-02 03:40:00:INFO:Iteration 207
+2022-12-02 03:40:00:INFO:Iteration 207
+Train:  78%|███████▊  | 207/267 [06:48<01:56,  1.94s/it, gan_loss=-0.492070, rec_loss=0.105462, vae_loss=0.499321]Train:  78%|███████▊  | 208/267 [06:48<01:34,  1.60s/it, gan_loss=-0.492070, rec_loss=0.105462, vae_loss=0.499321]2022-12-02 03:40:01:INFO:Iteration 208
+2022-12-02 03:40:01:INFO:Iteration 208
+Train:  78%|███████▊  | 208/267 [06:53<01:34,  1.60s/it, gan_loss=-0.492070, rec_loss=0.105385, vae_loss=0.499270]Train:  78%|███████▊  | 209/267 [06:53<02:24,  2.49s/it, gan_loss=-0.492070, rec_loss=0.105385, vae_loss=0.499270]2022-12-02 03:40:05:INFO:Iteration 209
+2022-12-02 03:40:05:INFO:Iteration 209
+Train:  78%|███████▊  | 209/267 [06:54<02:24,  2.49s/it, gan_loss=-0.492081, rec_loss=0.105292, vae_loss=0.499218]Train:  79%|███████▊  | 210/267 [06:54<01:53,  1.99s/it, gan_loss=-0.492081, rec_loss=0.105292, vae_loss=0.499218]2022-12-02 03:40:06:INFO:Iteration 210
+2022-12-02 03:40:06:INFO:Iteration 210
+Train:  79%|███████▊  | 210/267 [06:55<01:53,  1.99s/it, gan_loss=-0.492078, rec_loss=0.105168, vae_loss=0.499165]Train:  79%|███████▉  | 211/267 [06:55<01:34,  1.69s/it, gan_loss=-0.492078, rec_loss=0.105168, vae_loss=0.499165]2022-12-02 03:40:07:INFO:Iteration 211
+2022-12-02 03:40:07:INFO:Iteration 211
+Train:  79%|███████▉  | 211/267 [06:55<01:34,  1.69s/it, gan_loss=-0.492077, rec_loss=0.105132, vae_loss=0.499111]Train:  79%|███████▉  | 212/267 [06:55<01:19,  1.45s/it, gan_loss=-0.492077, rec_loss=0.105132, vae_loss=0.499111]2022-12-02 03:40:09:INFO:Iteration 212
+2022-12-02 03:40:09:INFO:Iteration 212
+Train:  79%|███████▉  | 212/267 [07:00<01:19,  1.45s/it, gan_loss=-0.492085, rec_loss=0.105078, vae_loss=0.499055]Train:  80%|███████▉  | 213/267 [07:00<02:06,  2.35s/it, gan_loss=-0.492085, rec_loss=0.105078, vae_loss=0.499055]2022-12-02 03:40:13:INFO:Iteration 213
+2022-12-02 03:40:13:INFO:Iteration 213
+Train:  80%|███████▉  | 213/267 [07:01<02:06,  2.35s/it, gan_loss=-0.492081, rec_loss=0.104999, vae_loss=0.498998]Train:  80%|████████  | 214/267 [07:01<01:42,  1.93s/it, gan_loss=-0.492081, rec_loss=0.104999, vae_loss=0.498998]2022-12-02 03:40:13:INFO:Iteration 214
+2022-12-02 03:40:13:INFO:Iteration 214
+Train:  80%|████████  | 214/267 [07:02<01:42,  1.93s/it, gan_loss=-0.492071, rec_loss=0.104870, vae_loss=0.498939]Train:  81%|████████  | 215/267 [07:02<01:23,  1.60s/it, gan_loss=-0.492071, rec_loss=0.104870, vae_loss=0.498939]2022-12-02 03:40:14:INFO:Iteration 215
+2022-12-02 03:40:14:INFO:Iteration 215
+Train:  81%|████████  | 215/267 [07:02<01:23,  1.60s/it, gan_loss=-0.492076, rec_loss=0.104752, vae_loss=0.498879]Train:  81%|████████  | 216/267 [07:02<01:09,  1.37s/it, gan_loss=-0.492076, rec_loss=0.104752, vae_loss=0.498879]2022-12-02 03:40:17:INFO:Iteration 216
+2022-12-02 03:40:17:INFO:Iteration 216
+Train:  81%|████████  | 216/267 [07:07<01:09,  1.37s/it, gan_loss=-0.492079, rec_loss=0.104689, vae_loss=0.498817]Train:  81%|████████▏ | 217/267 [07:07<01:59,  2.40s/it, gan_loss=-0.492079, rec_loss=0.104689, vae_loss=0.498817]2022-12-02 03:40:20:INFO:Iteration 217
+2022-12-02 03:40:20:INFO:Iteration 217
+Train:  81%|████████▏ | 217/267 [07:08<01:59,  2.40s/it, gan_loss=-0.492077, rec_loss=0.104573, vae_loss=0.498754]Train:  82%|████████▏ | 218/267 [07:08<01:35,  1.95s/it, gan_loss=-0.492077, rec_loss=0.104573, vae_loss=0.498754]2022-12-02 03:40:21:INFO:Iteration 218
+2022-12-02 03:40:21:INFO:Iteration 218
+Train:  82%|████████▏ | 218/267 [07:09<01:35,  1.95s/it, gan_loss=-0.492072, rec_loss=0.104459, vae_loss=0.498688]Train:  82%|████████▏ | 219/267 [07:09<01:17,  1.61s/it, gan_loss=-0.492072, rec_loss=0.104459, vae_loss=0.498688]2022-12-02 03:40:22:INFO:Iteration 219
+2022-12-02 03:40:22:INFO:Iteration 219
+Train:  82%|████████▏ | 219/267 [07:10<01:17,  1.61s/it, gan_loss=-0.492080, rec_loss=0.104332, vae_loss=0.498621]Train:  82%|████████▏ | 220/267 [07:10<01:04,  1.38s/it, gan_loss=-0.492080, rec_loss=0.104332, vae_loss=0.498621]2022-12-02 03:40:25:INFO:Iteration 220
+2022-12-02 03:40:25:INFO:Iteration 220
+Train:  82%|████████▏ | 220/267 [07:15<01:04,  1.38s/it, gan_loss=-0.492079, rec_loss=0.104266, vae_loss=0.498552]Train:  83%|████████▎ | 221/267 [07:15<01:59,  2.60s/it, gan_loss=-0.492079, rec_loss=0.104266, vae_loss=0.498552]2022-12-02 03:40:28:INFO:Iteration 221
+2022-12-02 03:40:28:INFO:Iteration 221
+Train:  83%|████████▎ | 221/267 [07:16<01:59,  2.60s/it, gan_loss=-0.492084, rec_loss=0.104219, vae_loss=0.498481]Train:  83%|████████▎ | 222/267 [07:16<01:33,  2.07s/it, gan_loss=-0.492084, rec_loss=0.104219, vae_loss=0.498481]2022-12-02 03:40:29:INFO:Iteration 222
+2022-12-02 03:40:29:INFO:Iteration 222
+Train:  83%|████████▎ | 222/267 [07:17<01:33,  2.07s/it, gan_loss=-0.492086, rec_loss=0.104191, vae_loss=0.498409]Train:  84%|████████▎ | 223/267 [07:17<01:14,  1.70s/it, gan_loss=-0.492086, rec_loss=0.104191, vae_loss=0.498409]2022-12-02 03:40:29:INFO:Iteration 223
+2022-12-02 03:40:29:INFO:Iteration 223
+Train:  84%|████████▎ | 223/267 [07:18<01:14,  1.70s/it, gan_loss=-0.492085, rec_loss=0.104146, vae_loss=0.498334]Train:  84%|████████▍ | 224/267 [07:18<01:01,  1.44s/it, gan_loss=-0.492085, rec_loss=0.104146, vae_loss=0.498334]2022-12-02 03:40:32:INFO:Iteration 224
+2022-12-02 03:40:32:INFO:Iteration 224
+Train:  84%|████████▍ | 224/267 [07:22<01:01,  1.44s/it, gan_loss=-0.492082, rec_loss=0.104099, vae_loss=0.498256]Train:  84%|████████▍ | 225/267 [07:22<01:40,  2.40s/it, gan_loss=-0.492082, rec_loss=0.104099, vae_loss=0.498256]2022-12-02 03:40:35:INFO:Iteration 225
+2022-12-02 03:40:35:INFO:Iteration 225
+Train:  84%|████████▍ | 225/267 [07:23<01:40,  2.40s/it, gan_loss=-0.492085, rec_loss=0.103999, vae_loss=0.498177]Train:  85%|████████▍ | 226/267 [07:23<01:19,  1.93s/it, gan_loss=-0.492085, rec_loss=0.103999, vae_loss=0.498177]2022-12-02 03:40:36:INFO:Iteration 226
+2022-12-02 03:40:36:INFO:Iteration 226
+Train:  85%|████████▍ | 226/267 [07:24<01:19,  1.93s/it, gan_loss=-0.492081, rec_loss=0.103912, vae_loss=0.498095]Train:  85%|████████▌ | 227/267 [07:24<01:05,  1.64s/it, gan_loss=-0.492081, rec_loss=0.103912, vae_loss=0.498095]2022-12-02 03:40:37:INFO:Iteration 227
+2022-12-02 03:40:37:INFO:Iteration 227
+Train:  85%|████████▌ | 227/267 [07:25<01:05,  1.64s/it, gan_loss=-0.492086, rec_loss=0.103834, vae_loss=0.498011]Train:  85%|████████▌ | 228/267 [07:25<00:54,  1.40s/it, gan_loss=-0.492086, rec_loss=0.103834, vae_loss=0.498011]2022-12-02 03:40:39:INFO:Iteration 228
+2022-12-02 03:40:39:INFO:Iteration 228
+Train:  85%|████████▌ | 228/267 [07:30<00:54,  1.40s/it, gan_loss=-0.492090, rec_loss=0.103748, vae_loss=0.497924]Train:  86%|████████▌ | 229/267 [07:30<01:30,  2.39s/it, gan_loss=-0.492090, rec_loss=0.103748, vae_loss=0.497924]2022-12-02 03:40:42:INFO:Iteration 229
+2022-12-02 03:40:42:INFO:Iteration 229
+Train:  86%|████████▌ | 229/267 [07:31<01:30,  2.39s/it, gan_loss=-0.492087, rec_loss=0.103650, vae_loss=0.497834]Train:  86%|████████▌ | 230/267 [07:31<01:11,  1.92s/it, gan_loss=-0.492087, rec_loss=0.103650, vae_loss=0.497834]2022-12-02 03:40:43:INFO:Iteration 230
+2022-12-02 03:40:43:INFO:Iteration 230
+Train:  86%|████████▌ | 230/267 [07:32<01:11,  1.92s/it, gan_loss=-0.492084, rec_loss=0.103536, vae_loss=0.497742]Train:  87%|████████▋ | 231/267 [07:32<01:02,  1.73s/it, gan_loss=-0.492084, rec_loss=0.103536, vae_loss=0.497742]2022-12-02 03:40:44:INFO:Iteration 231
+2022-12-02 03:40:44:INFO:Iteration 231
+Train:  87%|████████▋ | 231/267 [07:33<01:02,  1.73s/it, gan_loss=-0.492090, rec_loss=0.103431, vae_loss=0.497647]Train:  87%|████████▋ | 232/267 [07:33<00:50,  1.46s/it, gan_loss=-0.492090, rec_loss=0.103431, vae_loss=0.497647]2022-12-02 03:40:47:INFO:Iteration 232
+2022-12-02 03:40:47:INFO:Iteration 232
+Train:  87%|████████▋ | 232/267 [07:37<00:50,  1.46s/it, gan_loss=-0.492090, rec_loss=0.103347, vae_loss=0.497548]Train:  87%|████████▋ | 233/267 [07:37<01:21,  2.39s/it, gan_loss=-0.492090, rec_loss=0.103347, vae_loss=0.497548]2022-12-02 03:40:50:INFO:Iteration 233
+2022-12-02 03:40:50:INFO:Iteration 233
+Train:  87%|████████▋ | 233/267 [07:38<01:21,  2.39s/it, gan_loss=-0.492087, rec_loss=0.103245, vae_loss=0.497447]Train:  88%|████████▊ | 234/267 [07:38<01:04,  1.95s/it, gan_loss=-0.492087, rec_loss=0.103245, vae_loss=0.497447]2022-12-02 03:40:51:INFO:Iteration 234
+2022-12-02 03:40:51:INFO:Iteration 234
+Train:  88%|████████▊ | 234/267 [07:39<01:04,  1.95s/it, gan_loss=-0.492091, rec_loss=0.103146, vae_loss=0.497342]Train:  88%|████████▊ | 235/267 [07:39<00:53,  1.67s/it, gan_loss=-0.492091, rec_loss=0.103146, vae_loss=0.497342]2022-12-02 03:40:52:INFO:Iteration 235
+2022-12-02 03:40:52:INFO:Iteration 235
+Train:  88%|████████▊ | 235/267 [07:40<00:53,  1.67s/it, gan_loss=-0.492080, rec_loss=0.103022, vae_loss=0.497234]Train:  88%|████████▊ | 236/267 [07:40<00:43,  1.42s/it, gan_loss=-0.492080, rec_loss=0.103022, vae_loss=0.497234]2022-12-02 03:40:55:INFO:Iteration 236
+2022-12-02 03:40:55:INFO:Iteration 236
+Train:  88%|████████▊ | 236/267 [07:45<00:43,  1.42s/it, gan_loss=-0.492069, rec_loss=0.102880, vae_loss=0.497122]Train:  89%|████████▉ | 237/267 [07:45<01:14,  2.50s/it, gan_loss=-0.492069, rec_loss=0.102880, vae_loss=0.497122]2022-12-02 03:40:58:INFO:Iteration 237
+2022-12-02 03:40:58:INFO:Iteration 237
+Train:  89%|████████▉ | 237/267 [07:46<01:14,  2.50s/it, gan_loss=-0.492072, rec_loss=0.102807, vae_loss=0.497006]Train:  89%|████████▉ | 238/267 [07:46<00:57,  1.99s/it, gan_loss=-0.492072, rec_loss=0.102807, vae_loss=0.497006]2022-12-02 03:40:58:INFO:Iteration 238
+2022-12-02 03:40:58:INFO:Iteration 238
+Train:  89%|████████▉ | 238/267 [07:47<00:57,  1.99s/it, gan_loss=-0.492068, rec_loss=0.102692, vae_loss=0.496887]Train:  90%|████████▉ | 239/267 [07:47<00:45,  1.64s/it, gan_loss=-0.492068, rec_loss=0.102692, vae_loss=0.496887]2022-12-02 03:40:59:INFO:Iteration 239
+2022-12-02 03:40:59:INFO:Iteration 239
+Train:  90%|████████▉ | 239/267 [07:48<00:45,  1.64s/it, gan_loss=-0.492064, rec_loss=0.102582, vae_loss=0.496763]Train:  90%|████████▉ | 240/267 [07:48<00:37,  1.40s/it, gan_loss=-0.492064, rec_loss=0.102582, vae_loss=0.496763]2022-12-02 03:41:03:INFO:Iteration 240
+2022-12-02 03:41:03:INFO:Iteration 240
+Train:  90%|████████▉ | 240/267 [07:53<00:37,  1.40s/it, gan_loss=-0.492059, rec_loss=0.102472, vae_loss=0.496636]Train:  90%|█████████ | 241/267 [07:53<01:06,  2.57s/it, gan_loss=-0.492059, rec_loss=0.102472, vae_loss=0.496636]2022-12-02 03:41:05:INFO:Iteration 241
+2022-12-02 03:41:05:INFO:Iteration 241
+Train:  90%|█████████ | 241/267 [07:54<01:06,  2.57s/it, gan_loss=-0.492052, rec_loss=0.102396, vae_loss=0.496504]Train:  91%|█████████ | 242/267 [07:54<00:51,  2.05s/it, gan_loss=-0.492052, rec_loss=0.102396, vae_loss=0.496504]2022-12-02 03:41:06:INFO:Iteration 242
+2022-12-02 03:41:06:INFO:Iteration 242
+Train:  91%|█████████ | 242/267 [07:55<00:51,  2.05s/it, gan_loss=-0.492054, rec_loss=0.102319, vae_loss=0.496367]Train:  91%|█████████ | 243/267 [07:55<00:40,  1.69s/it, gan_loss=-0.492054, rec_loss=0.102319, vae_loss=0.496367]2022-12-02 03:41:07:INFO:Iteration 243
+2022-12-02 03:41:07:INFO:Iteration 243
+Train:  91%|█████████ | 243/267 [07:55<00:40,  1.69s/it, gan_loss=-0.492050, rec_loss=0.102215, vae_loss=0.496225]Train:  91%|█████████▏| 244/267 [07:55<00:32,  1.43s/it, gan_loss=-0.492050, rec_loss=0.102215, vae_loss=0.496225]2022-12-02 03:41:10:INFO:Iteration 244
+2022-12-02 03:41:10:INFO:Iteration 244
+Train:  91%|█████████▏| 244/267 [08:00<00:32,  1.43s/it, gan_loss=-0.492053, rec_loss=0.102141, vae_loss=0.496079]Train:  92%|█████████▏| 245/267 [08:00<00:55,  2.50s/it, gan_loss=-0.492053, rec_loss=0.102141, vae_loss=0.496079]2022-12-02 03:41:13:INFO:Iteration 245
+2022-12-02 03:41:13:INFO:Iteration 245
+Train:  92%|█████████▏| 245/267 [08:01<00:55,  2.50s/it, gan_loss=-0.492059, rec_loss=0.102076, vae_loss=0.495928]Train:  92%|█████████▏| 246/267 [08:01<00:42,  2.00s/it, gan_loss=-0.492059, rec_loss=0.102076, vae_loss=0.495928]2022-12-02 03:41:14:INFO:Iteration 246
+2022-12-02 03:41:14:INFO:Iteration 246

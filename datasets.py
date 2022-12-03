@@ -85,7 +85,9 @@ class Vimeo90K_Train_Dataset(Dataset):
         self.flow_t0_list = []
         self.flow_t1_list = []
         with open(os.path.join(dataset_dir, 'tri_trainlist.txt'), 'r') as f:
-            for i in f:
+            for index, i in enumerate(f):
+            #     if index % 20 != 0:
+            #         continue
                 name = str(i).strip()
                 if(len(name) <= 1):
                     continue
@@ -133,7 +135,9 @@ class Vimeo90K_Test_Dataset(Dataset):
         self.flow_t0_list = []
         self.flow_t1_list = []
         with open(os.path.join(dataset_dir, 'tri_testlist.txt'), 'r') as f:
-            for i in f:
+            for index, i in enumerate(f):
+                # if index % 4 != 0:
+                #     continue
                 name = str(i).strip()
                 if(len(name) <= 1):
                     continue

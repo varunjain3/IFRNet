@@ -358,7 +358,7 @@ class Generator(nn.Module):
         # KL Loss: Constrain intermediate features to look like standard Normal distributions
         # New paradigm: the encoder should not just condense information about the input images but also fuse them
         # It should take both images in at once and then output information that is decoded into an intermediate frame
-        kl = (ft_3_var ** 2 + ft_3_mean ** 2 - torch.log(ft_3_var) - 1/2).sum()
+        kl = (ft_3_var ** 2 + ft_3_mean ** 2 - torch.log(ft_3_var) - 1/2).mean()
 
         out3 = self.decoder3(ft_3_, f0_3, f1_3, up_flow0_4, up_flow1_4)
         up_flow0_3 = out3[:, 0:2] + 2.0 * resize(up_flow0_4, scale_factor=2.0)

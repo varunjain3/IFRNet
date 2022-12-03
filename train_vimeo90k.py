@@ -18,15 +18,15 @@ import logging
 import wandb
 from tqdm import tqdm
 
-
+WARM_UP = 20
 # Implements Cosine Annealing Scheduler
 def get_lr(args, iters):
     epoch = iters / args.iters_per_epoch
     lr = 0
-    if epoch < 20: # Linear warm-up from 1e-8
+    if epoch < WARM_UP: # Linear warm-up from 1e-8
         lr = epoch * (args.lr_start - 1e-8) / 20 + 1e-8
     else:
-        iters -= 20 * args.iters_per_epoch
+        iters -= WARM_UP * args.iters_per_epoch
         ratio = 0.5 * (1.0 + np.cos(iters / (args.epochs * args.iters_per_epoch) * math.pi))
         lr = (args.lr_start - args.lr_end) * ratio + args.lr_end
     return lr
@@ -48,23 +48,37 @@ def train(args, ddp_generator,model, ddp_discriminator):
     local_rank = args.local_rank
     print('Distributed Data Parallel Training IFRNet on Rank {}'.format(local_rank))
 
-    if local_rank == 0:
-        os.makedirs(args.log_path, exist_ok=True)
-        log_path = os.path.join(args.log_path, time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()))
-        os.makedirs(log_path, exist_ok=True)
-        logger = logging.getLogger()
-        logger.setLevel('INFO')
-        BASIC_FORMAT = '%(asctime)s:%(levelname)s:%(message)s'
-        DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
-        formatter = logging.Formatter(BASIC_FORMAT, DATE_FORMAT)
-        chlr = logging.StreamHandler()
-        chlr.setFormatter(formatter)
-        chlr.setLevel('INFO')
-        fhlr = logging.FileHandler(os.path.join(log_path, 'train.log'))
-        fhlr.setFormatter(formatter)
-        logger.addHandler(chlr)
-        logger.addHandler(fhlr)
-        logger.info(args)
+    # if local_rank == 0:
+    os.makedirs(args.log_path, exist_ok=True)
+    log_path = os.path.join(args.log_path, time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()))
+    os.makedirs(log_path, exist_ok=True)
+    logger = logging.getLogger()
+    logger.setLevel('INFO')
+    BASIC_FORMAT = '%(asctime)s:%(levelname)s:%(message)s'
+    DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
+    formatter = logging.Formatter(BASIC_FORMAT, DATE_FORMAT)
+    chlr = logging.StreamHandler()
+    chlr.setFormatter(formatter)
+    chlr.setLevel('INFO')
+    fhlr = logging.FileHandler(os.path.join(log_path, 'train.log'))
+    fhlr.setFormatter(formatter)
+    logger.addHandler(chlr)
+    logger.addHandler(fhlr)
+    logger.info(args)
+    # Rank 1 logger
+    logger2 = logging.getLogger()
+    logger2.setLevel('INFO')
+    BASIC_FORMAT = '%(asctime)s:%(levelname)s:%(message)s'
+    DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
+    formatter = logging.Formatter(BASIC_FORMAT, DATE_FORMAT)
+    chlr = logging.StreamHandler()
+    chlr.setFormatter(formatter)
+    chlr.setLevel('INFO')
+    fhlr = logging.FileHandler(os.path.join(log_path, 'train_rank1.log'))
+    fhlr.setFormatter(formatter)
+    logger2.addHandler(chlr)
+    logger2.addHandler(fhlr)
+    logger2.info(args)
 
     vimeo90k_dir = '/ocean/projects/cis220078p/vjain1/data/vimeo_triplet' # TODO: change to data directory
     dataset_train = Vimeo90K_Train_Dataset(dataset_dir=vimeo90k_dir, augment=True)
@@ -78,8 +92,11 @@ def train(args, ddp_generator,model, ddp_discriminator):
 
     gen_optimizer = optim.AdamW(ddp_generator.parameters(), lr=args.lr_start, weight_decay=0)
     # Additions: Discriminator optimizer
-    disc_optimizer = optim.AdamW(ddp_discriminator.parameters(), lr=args.lr_start, weight_decay=0)
+    disc_optimizer = optim.SGD(ddp_discriminator.parameters(), lr=args.lr_start, weight_decay=0)
     GAN_loss = JSD()
+
+    scaler1 = torch.cuda.amp.GradScaler()
+    # scaler2 = torch.cuda.amp.GradScaler() # Is a second scaler necessary for a different loss due to different magnitudes?
 
     time_stamp = time.time()
     avg_rec = AverageMeter()
@@ -88,30 +105,43 @@ def train(args, ddp_generator,model, ddp_discriminator):
     best_psnr = 0.0
 
     for epoch in range(args.resume_epoch, args.epochs):
-        print(f"Epoch {epoch}:")
+        # print(f"Epoch {epoch}:")
+        if local_rank == 0:
+            logger.info(f"Epoch {epoch}")
         sampler.set_epoch(epoch)
         ddp_discriminator.train()
         ddp_generator.train()
         if local_rank ==0:
             batch_bar = tqdm(total=len(dataloader_train), dynamic_ncols=True, leave=False, position=0, desc='Train')
         for i, data in enumerate(dataloader_train):
-            print(f"New iteration {i}")
+            # print(f"New iteration {i}")
+            if local_rank == 0:
+                logger.info(f"Iteration {i}")
             for l in range(len(data)):
                 data[l] = data[l].to(args.device)
             img0, imgt, img1, flow, embt = data
-            if epoch == 1:
-                logger.info(f"{local_rank}: Getting time...")
+            # if epoch == 1: 
+            #     if local_rank == 0:
+            #         logger.info(f"{local_rank}: Getting time...")
+            #     else:
+            #         logger2.info(f"{local_rank}: Getting time...")
             data_time_interval = time.time() - time_stamp
             time_stamp = time.time()
 
-            if epoch == 1:
-                logger.info(f"{local_rank}: Setting LR...")
+            # if epoch == 1: 
+            #     if local_rank == 0:
+            #         logger.info(f"{local_rank}: Setting LR...")
+            #     else:
+            #         logger2.info(f"{local_rank}: Setting LR...")
             lr = get_lr(args, iters)
             set_lr(gen_optimizer, lr)
             set_lr(disc_optimizer, lr)
 
-            if epoch == 1:
-                logger.info(f"{local_rank}: Zeroing gradients")
+            # if epoch == 1: 
+            #     if local_rank == 0:
+            #         logger.info(f"{local_rank}: Zeroing gradients")
+            #     else:
+            #         logger2.info(f"{local_rank}: Zeroing gradients")
             gen_optimizer.zero_grad()
             disc_optimizer.zero_grad()
 
@@ -119,23 +149,36 @@ def train(args, ddp_generator,model, ddp_discriminator):
             # https://www.run.ai/guides/deep-learning-for-computer-vision/pytorch-gan#GAN-Tutorial
             # If run into difficulties: use https://github.com/soumith/ganhacks
             # Generator Training Step
-            if epoch:
-                logger.info(f"{local_rank}: Generator Training Step...")
-            imgt_pred, loss_rec, loss_kl = ddp_generator(img0, img1, embt, imgt, flow, ret_loss = True)
-            label_size = imgt_pred.size(0)
-            discriminator_logits = ddp_discriminator(imgt_pred)
-            true_labels = generate_true_labels(label_size, args.label_smoothing).to(args.device).float()
-            loss_adv = GAN_loss(true_labels, discriminator_logits)
-            generator_loss = loss_rec + loss_kl + loss_adv
+            # if epoch == 1: 
+            #     if local_rank == 0:
+            #         logger.info(f"{local_rank}: Generator Training Step...")
+            #     else:
+            #         logger2.info(f"{local_rank}: Generator Training Step...")
+            with torch.cuda.amp.autocast():    
+                imgt_pred, loss_rec, loss_kl = ddp_generator(img0, img1, embt, imgt, flow, ret_loss = True)
+                label_size = imgt_pred.size(0)
+                discriminator_logits = ddp_discriminator(imgt_pred)
+                true_labels = generate_true_labels(label_size, args.label_smoothing).to(args.device).float()
+                loss_adv = GAN_loss(true_labels, discriminator_logits)
+                generator_loss = loss_rec + loss_kl + loss_adv
 
-            if epoch:
-                logger.info(f"{local_rank}: Generator Training Backward...")
-            generator_loss.backward()
-            gen_optimizer.step()
+            # if epoch == 1: 
+            #     if local_rank == 0:
+            #         logger.info(f"{local_rank}: Generator Training Backward...")
+            #     else:
+            #         logger.info(f"{local_rank}: Generator Training Backward...")
+            # generator_loss.backward()
+            # gen_optimizer.step()
+            scaler1.scale(generator_loss).backward()
+            scaler1.step(gen_optimizer)
+            scaler1.update()
 
             # Discriminator Training Step
-            if epoch:
-                logger.info(f"{local_rank}: Discriminator Training Step...")
+            # if epoch == 1: 
+            #     if local_rank == 0:
+            #         logger.info(f"{local_rank}: Discriminator Training Step...")
+            #     else:
+            #         logger2.info(f"{local_rank}: Discriminator Training Step...")
             disc_optimizer.zero_grad()
             # gen_optimizer.zero_grad()
 
@@ -147,16 +190,16 @@ def train(args, ddp_generator,model, ddp_discriminator):
             full_training_set = torch.concat([imgt, imgt_pred.detach()])
             full_training_labels = torch.concat([true_labels2, false_labels])
 
-            discriminator_out = ddp_discriminator(full_training_set)
-            loss_disc = GAN_loss(full_training_labels, discriminator_out)
+            with torch.cuda.amp.autocast():
+                discriminator_out = ddp_discriminator(full_training_set)
+                loss_disc = GAN_loss(full_training_labels, discriminator_out)
             # TODO: Check if this is the correct order of the arguments.
             
-            loss_disc.backward()
-            disc_optimizer.step()
-
-            # loss = loss_rec + loss_kl
-            # loss.backward()
-            # gen_optimizer.step()
+            # loss_disc.backward()
+            # disc_optimizer.step()
+            scaler1.scale(loss_disc).backward()
+            scaler1.step(disc_optimizer)
+            scaler1.update()
 
             avg_rec.update(loss_rec.cpu().data)
             avg_vae.update(loss_kl.cpu().data)
@@ -195,14 +238,17 @@ def train(args, ddp_generator,model, ddp_discriminator):
             time_stamp = time.time()
         if local_rank ==0:
             batch_bar.close()
-        if (epoch+1) % args.eval_interval == 0 and local_rank == 0:
+        print(f"Rank: {local_rank}, Closed batch bar")
+        
+        if (epoch+1) % args.eval_interval == 0:
             psnr = evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, epoch, logger)
-            if psnr > best_psnr:
+            if local_rank == 0 and psnr > best_psnr:
                 best_psnr = psnr
                 torch.save(ddp_generator.module.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'best'))
             torch.save(ddp_generator.module.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'latest'))
-
-        dist.barrier()
+        print(f"Rank: {local_rank}, Finished evaluation")
+        dist.barrier() # Rank 1 will wait for Rank 0 to finish evaland then come here
+        print(f"Rank: {local_rank}, Passed Barrier")
 
 
 def evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, epoch, logger):
@@ -286,7 +332,7 @@ if __name__ == '__main__':
         from models.IFRNet_S import Generator
 
     args.log_path = args.log_path + '/' + args.model_name
-    args.num_workers = 2#10 #args.batch_size
+    args.num_workers = 4#10 #args.batch_size
 
     model = Generator().to(args.device)
     
