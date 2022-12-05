@@ -48,32 +48,31 @@ def train(args, ddp_generator,model, ddp_discriminator):
     local_rank = args.local_rank
     print('Distributed Data Parallel Training IFRNet on Rank {}'.format(local_rank))
 
-    # if local_rank == 0:
-    os.makedirs(args.log_path, exist_ok=True)
-    log_path = os.path.join(args.log_path, time.strftime('%Y%m%d_%H%M%S', time.localtime()))
-    os.makedirs(log_path, exist_ok=True)
-    logger = logging.getLogger()
-    logger.setLevel('INFO')
-    BASIC_FORMAT = '%(asctime)s:%(levelname)s:%(message)s'
-    DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
-    formatter = logging.Formatter(BASIC_FORMAT, DATE_FORMAT)
-    chlr = logging.StreamHandler()
-    chlr.setFormatter(formatter)
-    chlr.setLevel('INFO')
-    fhlr = logging.FileHandler(os.path.join(log_path, 'train.log'))
-    fhlr.setFormatter(formatter)
-    logger.addHandler(chlr)
-    logger.addHandler(fhlr)
-    logger.info(args)
+    if local_rank == 0:
+        os.makedirs(args.log_path, exist_ok=True)
+        log_path = os.path.join(args.log_path, time.strftime('%Y%m%d_%H%M%S', time.localtime()))
+        os.makedirs(log_path, exist_ok=True)
+        logger = logging.getLogger()
+        logger.setLevel('INFO')
+        BASIC_FORMAT = '%(asctime)s:%(levelname)s:%(message)s'
+        DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
+        formatter = logging.Formatter(BASIC_FORMAT, DATE_FORMAT)
+        chlr = logging.StreamHandler()
+        chlr.setFormatter(formatter)
+        chlr.setLevel('INFO')
+        fhlr = logging.FileHandler(os.path.join(log_path, 'train.log'))
+        fhlr.setFormatter(formatter)
+        logger.addHandler(chlr)
+        logger.addHandler(fhlr)
+        logger.info(args)
 
-    vimeo90k_dir = '/ocean/projects/cis220078p/vjain1/data/vimeo_triplet' # TODO: change to data directory
-    dataset_train = Vimeo90K_Train_Dataset(dataset_dir=vimeo90k_dir, augment=True)
+    dataset_train = Vimeo90K_Train_Dataset(dataset_dir=args.vimeo90k_dir, augment=True)
     sampler = DistributedSampler(dataset_train)
     dataloader_train = DataLoader(dataset_train, batch_size=args.batch_size, num_workers=args.num_workers, pin_memory=True, drop_last=True, sampler=sampler)
     args.iters_per_epoch = dataloader_train.__len__()
     iters = args.resume_epoch * args.iters_per_epoch
     
-    dataset_val = Vimeo90K_Test_Dataset(dataset_dir=vimeo90k_dir)
+    dataset_val = Vimeo90K_Test_Dataset(dataset_dir=args.vimeo90k_dir)
     dataloader_val = DataLoader(dataset_val, batch_size=16, num_workers=2, pin_memory=True, shuffle=False, drop_last=True)
 
     gen_optimizer = optim.AdamW(ddp_generator.parameters(), lr=args.lr_start, weight_decay=0)
@@ -90,44 +89,33 @@ def train(args, ddp_generator,model, ddp_discriminator):
     avg_gan = AverageMeter()
     best_psnr = 0.0
 
+    # Tracked Variables (declaration)
+    psnr = 0
+    img0 = img1 = imgt = imgt_pred = None
+
     for epoch in range(args.resume_epoch, args.epochs):
-        # print(f"Epoch {epoch}:")
         if local_rank == 0:
             logger.info(f"Epoch {epoch}")
         sampler.set_epoch(epoch)
+
         ddp_discriminator.train()
         ddp_generator.train()
+
         if local_rank ==0:
             batch_bar = tqdm(total=len(dataloader_train), dynamic_ncols=True, leave=False, position=0, desc='Train')
         for i, data in enumerate(dataloader_train):
-            # print(f"New iteration {i}")
             if local_rank == 0:
                 logger.info(f"Iteration {i}")
             for l in range(len(data)):
                 data[l] = data[l].to(args.device)
             img0, imgt, img1, flow, embt = data
-            # if epoch == 1: 
-            #     if local_rank == 0:
-            #         logger.info(f"{local_rank}: Getting time...")
-            #     else:
-            #         logger2.info(f"{local_rank}: Getting time...")
             data_time_interval = time.time() - time_stamp
             time_stamp = time.time()
 
-            # if epoch == 1: 
-            #     if local_rank == 0:
-            #         logger.info(f"{local_rank}: Setting LR...")
-            #     else:
-            #         logger2.info(f"{local_rank}: Setting LR...")
             lr = get_lr(args, iters)
             set_lr(gen_optimizer, lr)
             set_lr(disc_optimizer, lr)
 
-            # if epoch == 1: 
-            #     if local_rank == 0:
-            #         logger.info(f"{local_rank}: Zeroing gradients")
-            #     else:
-            #         logger2.info(f"{local_rank}: Zeroing gradients")
             gen_optimizer.zero_grad()
             disc_optimizer.zero_grad()
 
@@ -135,11 +123,6 @@ def train(args, ddp_generator,model, ddp_discriminator):
             # https://www.run.ai/guides/deep-learning-for-computer-vision/pytorch-gan#GAN-Tutorial
             # If run into difficulties: use https://github.com/soumith/ganhacks
             # Generator Training Step
-            # if epoch == 1: 
-            #     if local_rank == 0:
-            #         logger.info(f"{local_rank}: Generator Training Step...")
-            #     else:
-            #         logger2.info(f"{local_rank}: Generator Training Step...")
             # with torch.cuda.amp.autocast():    
             imgt_pred, loss_rec, loss_kl = ddp_generator(img0, img1, embt, imgt, flow, ret_loss = True)
             label_size = imgt_pred.size(0)
@@ -148,11 +131,6 @@ def train(args, ddp_generator,model, ddp_discriminator):
             loss_adv = GAN_loss(true_labels, discriminator_logits)
             generator_loss = loss_rec + loss_kl + loss_adv
 
-            # if epoch == 1: 
-            #     if local_rank == 0:
-            #         logger.info(f"{local_rank}: Generator Training Backward...")
-            #     else:
-            #         logger.info(f"{local_rank}: Generator Training Backward...")
             generator_loss.backward()
             gen_optimizer.step()
             # scaler1.scale(generator_loss).backward()
@@ -160,11 +138,6 @@ def train(args, ddp_generator,model, ddp_discriminator):
             # scaler1.update()
 
             # Discriminator Training Step
-            # if epoch == 1: 
-            #     if local_rank == 0:
-            #         logger.info(f"{local_rank}: Discriminator Training Step...")
-            #     else:
-            #         logger2.info(f"{local_rank}: Discriminator Training Step...")
             disc_optimizer.zero_grad()
             # gen_optimizer.zero_grad()
 
@@ -191,27 +164,6 @@ def train(args, ddp_generator,model, ddp_discriminator):
             avg_vae.update(loss_kl.cpu().data)
             avg_gan.update(loss_disc.cpu().data)
             train_time_interval = time.time() - time_stamp
-            
-
-            if (iters+1) % args.iters_per_epoch == 0 and local_rank == 0:
-                wandb.log({
-                    "loss_rec": loss_rec,
-                    "loss_kl": loss_kl,
-                    "loss_dis": loss_disc,
-                    # "loss": loss,
-                    "example": [wandb.Image(img0[0]), wandb.Image(imgt[0]), wandb.Image(img1[0]), wandb.Image(imgt_pred[0])],
-                    "flow": [wandb.Image(flow[0])],#, wandb.Image(embt[0])],
-                    "epoch": epoch+1,
-                    "iter": iters+1,
-                    "lr" : lr,
-                })
-                logger.info('epoch:{}/{} iter:{}/{} time:{:.2f}+{:.2f} lr:{:.5e} loss_rec:{:.4e} loss_geo:{:.4e} loss_dis:{:.4e}'.format(
-                    epoch+1, args.epochs, iters+1, args.epochs * args.iters_per_epoch,
-                    data_time_interval, train_time_interval, lr, 
-                    avg_rec.avg, avg_vae.avg, avg_gan.avg))
-                avg_rec.reset()
-                avg_vae.reset()
-                avg_gan.reset()
 
             iters += 1
             if local_rank ==0:
@@ -226,6 +178,8 @@ def train(args, ddp_generator,model, ddp_discriminator):
             batch_bar.close()
         print(f"Rank: {local_rank}, Closed batch bar")
         
+        # Evaluation
+        psnr = 0
         if (epoch+1) % args.eval_interval == 0:
             psnr = evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, epoch, logger)
             if local_rank == 0 and psnr > best_psnr:
@@ -234,9 +188,29 @@ def train(args, ddp_generator,model, ddp_discriminator):
                 torch.save(ddp_discriminator.module.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'best_disc'))
             torch.save(ddp_generator.module.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'latest_gen'))
             torch.save(ddp_discriminator.module.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'latest_disc'))
-        print(f"Rank: {local_rank}, Finished evaluation")
-        dist.barrier() # Rank 1 will wait for Rank 0 to finish evaland then come here
-        print(f"Rank: {local_rank}, Passed Barrier")
+
+        # Wandb logging
+        if local_rank == 0:
+            wandb.log({
+                "loss_rec": avg_rec.avg,
+                "loss_kl": avg_vae.avg,
+                "loss_dis": avg_gan.avg,
+                "psnr": psnr,
+                "example": [wandb.Image(img0[0]), wandb.Image(imgt[0]), wandb.Image(img1[0]), wandb.Image(imgt_pred[0])],
+                "flow": [wandb.Image(flow[0])],#, wandb.Image(embt[0])],
+                "epoch": epoch+1,
+                "iter": iters+1,
+                "lr" : lr,
+            })
+            logger.info('epoch:{}/{} iter:{}/{} time:{:.2f}+{:.2f} lr:{:.5e} loss_rec:{:.4e} loss_geo:{:.4e} loss_dis:{:.4e}'.format(
+                epoch+1, args.epochs, iters+1, args.epochs * args.iters_per_epoch,
+                data_time_interval, train_time_interval, lr, 
+                avg_rec.avg, avg_vae.avg, avg_gan.avg))
+            avg_rec.reset()
+            avg_vae.reset()
+            avg_gan.reset()
+
+        dist.barrier()
 
 
 def evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, epoch, logger):
@@ -288,7 +262,7 @@ def main(args):
     dist.init_process_group(backend='nccl', world_size=args.world_size)
     torch.cuda.set_device(args.local_rank)
     args.device = torch.device('cuda', args.local_rank)
-    
+
     seed = 1234
     random.seed(seed)
     np.random.seed(seed)
@@ -339,6 +313,7 @@ if __name__ == '__main__':
     parser.add_argument('--resume_epoch', default=0, type=int)
     parser.add_argument('--resume_path', default=None, type=str)
     parser.add_argument('--label_smoothing', default=0, type=float)
+    parser.add_argument('--vimeo90k_dir', default='/ocean/projects/cis220078p/vjain1/data/vimeo_triplet', type=str) # TODO: change to data directory)
     args = parser.parse_args()
 
     main(args)
