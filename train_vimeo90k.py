@@ -50,7 +50,7 @@ def train(args, ddp_generator,model, ddp_discriminator):
 
     # if local_rank == 0:
     os.makedirs(args.log_path, exist_ok=True)
-    log_path = os.path.join(args.log_path, time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()))
+    log_path = os.path.join(args.log_path, time.strftime('%Y%m%d_%H%M%S', time.localtime()))
     os.makedirs(log_path, exist_ok=True)
     logger = logging.getLogger()
     logger.setLevel('INFO')
@@ -353,5 +353,5 @@ if __name__ == '__main__':
     dist.init_process_group(backend='nccl', world_size=args.world_size)
     torch.cuda.set_device(args.local_rank)
     args.device = torch.device('cuda', args.local_rank)
-    
+
     main(args)
