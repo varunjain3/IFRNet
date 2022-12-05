@@ -154,24 +154,24 @@ def train(args, ddp_generator,model, ddp_discriminator):
             #         logger.info(f"{local_rank}: Generator Training Step...")
             #     else:
             #         logger2.info(f"{local_rank}: Generator Training Step...")
-            with torch.cuda.amp.autocast():    
-                imgt_pred, loss_rec, loss_kl = ddp_generator(img0, img1, embt, imgt, flow, ret_loss = True)
-                label_size = imgt_pred.size(0)
-                discriminator_logits = ddp_discriminator(imgt_pred)
-                true_labels = generate_true_labels(label_size, args.label_smoothing).to(args.device).float()
-                loss_adv = GAN_loss(true_labels, discriminator_logits)
-                generator_loss = loss_rec + loss_kl + loss_adv
+            # with torch.cuda.amp.autocast():    
+            imgt_pred, loss_rec, loss_kl = ddp_generator(img0, img1, embt, imgt, flow, ret_loss = True)
+            label_size = imgt_pred.size(0)
+            discriminator_logits = ddp_discriminator(imgt_pred)
+            true_labels = generate_true_labels(label_size, args.label_smoothing).to(args.device).float()
+            loss_adv = GAN_loss(true_labels, discriminator_logits)
+            generator_loss = loss_rec + loss_kl + loss_adv
 
             # if epoch == 1: 
             #     if local_rank == 0:
             #         logger.info(f"{local_rank}: Generator Training Backward...")
             #     else:
             #         logger.info(f"{local_rank}: Generator Training Backward...")
-            # generator_loss.backward()
-            # gen_optimizer.step()
-            scaler1.scale(generator_loss).backward()
-            scaler1.step(gen_optimizer)
-            scaler1.update()
+            generator_loss.backward()
+            gen_optimizer.step()
+            # scaler1.scale(generator_loss).backward()
+            # scaler1.step(gen_optimizer)
+            # scaler1.update()
 
             # Discriminator Training Step
             # if epoch == 1: 
@@ -190,16 +190,16 @@ def train(args, ddp_generator,model, ddp_discriminator):
             full_training_set = torch.concat([imgt, imgt_pred.detach()])
             full_training_labels = torch.concat([true_labels2, false_labels])
 
-            with torch.cuda.amp.autocast():
-                discriminator_out = ddp_discriminator(full_training_set)
-                loss_disc = GAN_loss(full_training_labels, discriminator_out)
+            # with torch.cuda.amp.autocast():
+            discriminator_out = ddp_discriminator(full_training_set)
+            loss_disc = GAN_loss(full_training_labels, discriminator_out)
             # TODO: Check if this is the correct order of the arguments.
             
-            # loss_disc.backward()
-            # disc_optimizer.step()
-            scaler1.scale(loss_disc).backward()
-            scaler1.step(disc_optimizer)
-            scaler1.update()
+            loss_disc.backward()
+            disc_optimizer.step()
+            # scaler1.scale(loss_disc).backward()
+            # scaler1.step(disc_optimizer)
+            # scaler1.update()
 
             avg_rec.update(loss_rec.cpu().data)
             avg_vae.update(loss_kl.cpu().data)
@@ -207,7 +207,7 @@ def train(args, ddp_generator,model, ddp_discriminator):
             train_time_interval = time.time() - time_stamp
             
 
-            if (iters+1) == args.iters_per_epoch and local_rank == 0:
+            if (iters+1) % args.iters_per_epoch == 0 and local_rank == 0:
                 wandb.log({
                     "loss_rec": loss_rec,
                     "loss_kl": loss_kl,
@@ -244,8 +244,10 @@ def train(args, ddp_generator,model, ddp_discriminator):
             psnr = evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, epoch, logger)
             if local_rank == 0 and psnr > best_psnr:
                 best_psnr = psnr
-                torch.save(ddp_generator.module.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'best'))
-            torch.save(ddp_generator.module.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'latest'))
+                torch.save(ddp_generator.module.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'best_gen'))
+                torch.save(ddp_discriminator.module.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'best_disc'))
+            torch.save(ddp_generator.module.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'latest_gen'))
+            torch.save(ddp_discriminator.module.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'latest_disc'))
         print(f"Rank: {local_rank}, Finished evaluation")
         dist.barrier() # Rank 1 will wait for Rank 0 to finish evaland then come here
         print(f"Rank: {local_rank}, Passed Barrier")
@@ -335,16 +337,18 @@ if __name__ == '__main__':
     args.num_workers = 4#10 #args.batch_size
 
     model = Generator().to(args.device)
-    
+    discriminator = ConvNeXt(96, [3,3,9,3], [0.0,0.0,0.0,0.0]).to(args.device)
     if args.local_rank == 0:
         wandb.init(name="VAN1", project="IDL Project", entity="11785_cmu")
         wandb.watch(model)
     
     if args.resume_epoch != 0:
-        model.load_state_dict(torch.load(args.resume_path, map_location='cpu'))
+        model.load_state_dict(torch.load(args.resume_path + f"/{args.model_name}_best_gen.pth", map_location='cpu'))
+        discriminator.load_state_dict(torch.load(args.resume_path + f"/{args.model_name}_best_disc.pth", map_location='cpu'))
+
     # TODO: Will DDP react well to being used as a non-distributed model
     ddp_generator = DDP(model, device_ids=[args.local_rank], output_device=args.local_rank)#, find_unused_parameters=True)
-    discriminator = ConvNeXt(96, [3,3,9,3], [0.0,0.0,0.0,0.0]).to(args.device)
+    
     ddp_discriminator = DDP(discriminator, device_ids=[args.local_rank])#, find_unused_parameters=True)
     
     train(args, ddp_generator, model, ddp_discriminator)
