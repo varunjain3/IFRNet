@@ -297,28 +297,7 @@ def evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, e
 
 torch.autograd.set_detect_anomaly(True)
 
-if __name__ == '__main__':
-    
-
-    parser = argparse.ArgumentParser(description='IFRNet')
-    parser.add_argument('--model_name', default='IFRNet', type=str, help='IFRNet, IFRNet_L, IFRNet_S')
-    parser.add_argument('--local_rank', default=1, type=int)
-    parser.add_argument('--world_size', default=4, type=int)
-    parser.add_argument('--epochs', default=300, type=int)
-    parser.add_argument('--eval_interval', default=1, type=int)
-    parser.add_argument('--batch_size', default=6, type=int)
-    parser.add_argument('--lr_start', default=1e-4, type=float)
-    parser.add_argument('--lr_end', default=1e-5, type=float)
-    parser.add_argument('--log_path', default='checkpoint', type=str)
-    parser.add_argument('--resume_epoch', default=0, type=int)
-    parser.add_argument('--resume_path', default=None, type=str)
-    parser.add_argument('--label_smoothing', default=0, type=float)
-    args = parser.parse_args()
-    print(f"{args.local_rank}: before init_process_group")
-    dist.init_process_group(backend='nccl', world_size=args.world_size)
-    torch.cuda.set_device(args.local_rank)
-    args.device = torch.device('cuda', args.local_rank)
-
+def main(args):
     seed = 1234
     random.seed(seed)
     np.random.seed(seed)
@@ -354,3 +333,25 @@ if __name__ == '__main__':
     train(args, ddp_generator, model, ddp_discriminator)
     
     dist.destroy_process_group()
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='IFRNet')
+    parser.add_argument('--model_name', default='IFRNet', type=str, help='IFRNet, IFRNet_L, IFRNet_S')
+    parser.add_argument('--local_rank', default=1, type=int)
+    parser.add_argument('--world_size', default=4, type=int)
+    parser.add_argument('--epochs', default=300, type=int)
+    parser.add_argument('--eval_interval', default=1, type=int)
+    parser.add_argument('--batch_size', default=6, type=int)
+    parser.add_argument('--lr_start', default=1e-4, type=float)
+    parser.add_argument('--lr_end', default=1e-5, type=float)
+    parser.add_argument('--log_path', default='checkpoint', type=str)
+    parser.add_argument('--resume_epoch', default=0, type=int)
+    parser.add_argument('--resume_path', default=None, type=str)
+    parser.add_argument('--label_smoothing', default=0, type=float)
+    args = parser.parse_args()
+    print(f"{args.local_rank}: before init_process_group")
+    dist.init_process_group(backend='nccl', world_size=args.world_size)
+    torch.cuda.set_device(args.local_rank)
+    args.device = torch.device('cuda', args.local_rank)
+    
+    main(args)
