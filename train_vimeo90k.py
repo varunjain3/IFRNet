@@ -284,6 +284,11 @@ def evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, e
 torch.autograd.set_detect_anomaly(True)
 
 def main(args):
+    print(f"{args.local_rank}: before init_process_group")
+    dist.init_process_group(backend='nccl', world_size=args.world_size)
+    torch.cuda.set_device(args.local_rank)
+    args.device = torch.device('cuda', args.local_rank)
+    
     seed = 1234
     random.seed(seed)
     np.random.seed(seed)
@@ -335,9 +340,5 @@ if __name__ == '__main__':
     parser.add_argument('--resume_path', default=None, type=str)
     parser.add_argument('--label_smoothing', default=0, type=float)
     args = parser.parse_args()
-    print(f"{args.local_rank}: before init_process_group")
-    dist.init_process_group(backend='nccl', world_size=args.world_size)
-    torch.cuda.set_device(args.local_rank)
-    args.device = torch.device('cuda', args.local_rank)
 
     main(args)
