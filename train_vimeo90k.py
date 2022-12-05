@@ -65,20 +65,6 @@ def train(args, ddp_generator,model, ddp_discriminator):
     logger.addHandler(chlr)
     logger.addHandler(fhlr)
     logger.info(args)
-    # Rank 1 logger
-    logger2 = logging.getLogger()
-    logger2.setLevel('INFO')
-    BASIC_FORMAT = '%(asctime)s:%(levelname)s:%(message)s'
-    DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
-    formatter = logging.Formatter(BASIC_FORMAT, DATE_FORMAT)
-    chlr = logging.StreamHandler()
-    chlr.setFormatter(formatter)
-    chlr.setLevel('INFO')
-    fhlr = logging.FileHandler(os.path.join(log_path, 'train_rank1.log'))
-    fhlr.setFormatter(formatter)
-    logger2.addHandler(chlr)
-    logger2.addHandler(fhlr)
-    logger2.info(args)
 
     vimeo90k_dir = '/ocean/projects/cis220078p/vjain1/data/vimeo_triplet' # TODO: change to data directory
     dataset_train = Vimeo90K_Train_Dataset(dataset_dir=vimeo90k_dir, augment=True)
