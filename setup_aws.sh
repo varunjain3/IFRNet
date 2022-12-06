@@ -24,8 +24,8 @@ mkdir drive
 google-drive-ocamlfuse drive
 
 # Download and unzip the dataset
-cp drive/.shared/11785_Project/vimeo_triplet.zip /vimeo_triplet.zip
-unzip -q vimeo_triplet.zip
+cp drive/.shared/11785_Project/vimeo_triplet.zip vimeo_triplet.zip
+unzip -q vimeo_triplet.zip # memory issue. 200 GB-220GB VM
 
 # Clone IFRNet
 # git clone https://github.com/varunjain3/IFRNet

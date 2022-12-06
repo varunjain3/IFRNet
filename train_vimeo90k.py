@@ -302,7 +302,7 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='IFRNet')
     parser.add_argument('--model_name', default='IFRNet', type=str, help='IFRNet, IFRNet_L, IFRNet_S')
-    parser.add_argument('--local_rank', default=1, type=int)
+    parser.add_argument('--local_rank', default=0, type=int)
     parser.add_argument('--world_size', default=4, type=int)
     parser.add_argument('--epochs', default=300, type=int)
     parser.add_argument('--eval_interval', default=1, type=int)
