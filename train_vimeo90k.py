@@ -14,6 +14,7 @@ from torch.nn.parallel import DistributedDataParallel as DDP
 from datasets import Vimeo90K_Train_Dataset, Vimeo90K_Test_Dataset
 from metric import calculate_psnr, calculate_ssim
 from utils import AverageMeter
+from models.IFRNet import JSD
 import logging
 import wandb
 from tqdm import tqdm
@@ -271,7 +272,7 @@ def main(args):
     torch.backends.cudnn.benchmark = True
 
     if args.model_name == 'IFRNet':
-        from models.IFRNet import Generator, ConvNeXt, JSD
+        from models.IFRNet import Generator, ConvNeXt
     elif args.model_name == 'IFRNet_L': # not supported
         from models.IFRNet_L import Generator
     elif args.model_name == 'IFRNet_S': # not supported
