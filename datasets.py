@@ -104,8 +104,8 @@ class Vimeo90K_Train_Dataset(Dataset):
         img0 = read(self.img0_list[idx])
         imgt = read(self.imgt_list[idx])
         img1 = read(self.img1_list[idx])
-        flow_t0 = read(self.flow_t0_list[idx])
-        flow_t1 = read(self.flow_t1_list[idx])
+        # flow_t0 = read(self.flow_t0_list[idx])
+        # flow_t1 = read(self.flow_t1_list[idx])
         # flow = np.concatenate((flow_t0, flow_t1), 2).astype(np.float64)
 
         if self.augment == True:
@@ -154,8 +154,8 @@ class Vimeo90K_Test_Dataset(Dataset):
         img0 = read(self.img0_list[idx])
         imgt = read(self.imgt_list[idx])
         img1 = read(self.img1_list[idx])
-        flow_t0 = read(self.flow_t0_list[idx])
-        flow_t1 = read(self.flow_t1_list[idx])
+        # flow_t0 = read(self.flow_t0_list[idx])
+        # flow_t1 = read(self.flow_t1_list[idx])
         # flow = np.concatenate((flow_t0, flow_t1), 2)
 
         img0 = torch.from_numpy(img0.transpose((2, 0, 1)).astype(np.float32) / 255.0)
