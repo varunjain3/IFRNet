@@ -51,7 +51,7 @@ def random_horizontal_flip(img0, imgt, img1, p=0.5):
         img0 = img0[:, ::-1]
         imgt = imgt[:, ::-1]
         img1 = img1[:, ::-1]
-        flow = flow[:, ::-1]
+        # flow = flow[:, ::-1]
         # flow = np.concatenate((-flow[:, :, 0:1], flow[:, :, 1:2], -flow[:, :, 2:3], flow[:, :, 3:4]), 2)
     return img0, imgt, img1#, flow
 
