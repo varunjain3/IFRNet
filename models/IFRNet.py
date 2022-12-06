@@ -337,7 +337,7 @@ class Generator(nn.Module):
         return imgt_pred
 
 
-    def forward(self, img0, img1, embt, imgt, flow=None, ret_loss = False):
+    def forward(self, img0, img1, embt, imgt, ret_loss = False):
         mean_ = torch.cat([img0, img1], 2).mean(1, keepdim=True).mean(2, keepdim=True).mean(3, keepdim=True)
         img0 = img0 - mean_
         img1 = img1 - mean_

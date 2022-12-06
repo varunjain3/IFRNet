@@ -109,7 +109,7 @@ def train(args, ddp_generator,model, ddp_discriminator):
                 logger.info(f"Iteration {i}")
             for l in range(len(data)):
                 data[l] = data[l].to(args.device)
-            img0, imgt, img1, flow, embt = data
+            img0, imgt, img1, embt = data
             data_time_interval = time.time() - time_stamp
             time_stamp = time.time()
 
@@ -125,7 +125,7 @@ def train(args, ddp_generator,model, ddp_discriminator):
             # If run into difficulties: use https://github.com/soumith/ganhacks
             # Generator Training Step
             # with torch.cuda.amp.autocast():    
-            imgt_pred, loss_rec, loss_kl = ddp_generator(img0, img1, embt, imgt, flow, ret_loss = True)
+            imgt_pred, loss_rec, loss_kl = ddp_generator(img0, img1, embt, imgt, ret_loss = True)
             label_size = imgt_pred.size(0)
             discriminator_logits = ddp_discriminator(imgt_pred)
             true_labels = generate_true_labels(label_size, args.label_smoothing).to(args.device).float()
@@ -198,7 +198,7 @@ def train(args, ddp_generator,model, ddp_discriminator):
                 "loss_dis": avg_gan.avg,
                 "psnr": psnr,
                 "example": [wandb.Image(img0[0]), wandb.Image(imgt[0]), wandb.Image(img1[0]), wandb.Image(imgt_pred[0])],
-                "flow": [wandb.Image(flow[0])],#, wandb.Image(embt[0])],
+                # "flow": [wandb.Image(flow[0])],#, wandb.Image(embt[0])],
                 "epoch": epoch+1,
                 "iter": iters+1,
                 "lr" : lr,
@@ -225,10 +225,10 @@ def evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, e
     for i, data in enumerate(dataloader_val):
         for l in range(len(data)):
             data[l] = data[l].to(args.device)
-        img0, imgt, img1, flow, embt = data
+        img0, imgt, img1, embt = data
 
         with torch.inference_mode():
-            imgt_pred, loss_rec, loss_kl = ddp_generator(img0, img1, embt, imgt, flow, ret_loss = True)
+            imgt_pred, loss_rec, loss_kl = ddp_generator(img0, img1, embt, imgt, ret_loss = True)
             true_labels = generate_true_labels(imgt_pred.size(0), 0).to(args.device)
 
             true_discriminator_out = ddp_discriminator(imgt)
