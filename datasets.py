@@ -46,7 +46,7 @@ def random_vertical_flip(img0, imgt, img1, p=0.3):
     return img0, imgt, img1#, flow
 
 
-def random_horizontal_flip(img0, imgt, img1, flow, p=0.5):
+def random_horizontal_flip(img0, imgt, img1, p=0.5):
     if random.uniform(0, 1) < p:
         img0 = img0[:, ::-1]
         imgt = imgt[:, ::-1]
