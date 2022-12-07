@@ -258,7 +258,7 @@ def evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, e
 
             gen_discriminator_out = ddp_discriminator(imgt_pred.detach())
             gen_disc_loss = GAN_loss(1-true_labels, gen_discriminator_out)
-            disc_correct_cnt += (torch.count_nonzero(true_discriminator_out < 0))
+            disc_correct_cnt += (torch.count_nonzero(gen_discriminator_out < 0))
             total += 2 * imgt_pred.size(0)
             
             loss_disc = (true_disc_loss + gen_disc_loss) / 2
