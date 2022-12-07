@@ -80,7 +80,8 @@ def train(args, ddp_generator,model, ddp_discriminator):
     # Additions: Discriminator optimizer
     disc_optimizer = optim.SGD(ddp_discriminator.parameters(), lr=args.lr_start, weight_decay=0)
     GAN_loss = JSD()
-
+    
+    epoch = 0
     if args.evaluate_only:
         psnr = evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, epoch, logger)
         return
