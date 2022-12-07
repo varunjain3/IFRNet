@@ -76,15 +76,15 @@ def train(args, ddp_generator,model, ddp_discriminator):
     dataset_val = Vimeo90K_Test_Dataset(dataset_dir=args.vimeo90k_dir)
     dataloader_val = DataLoader(dataset_val, batch_size=16, num_workers=2, pin_memory=True, shuffle=False, drop_last=True)
 
-    if args.evaluate_only:
-        psnr = evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, epoch, logger)
-        return
-        
     gen_optimizer = optim.AdamW(ddp_generator.parameters(), lr=args.lr_start, weight_decay=0)
     # Additions: Discriminator optimizer
     disc_optimizer = optim.SGD(ddp_discriminator.parameters(), lr=args.lr_start, weight_decay=0)
     GAN_loss = JSD()
 
+    if args.evaluate_only:
+        psnr = evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, epoch, logger)
+        return
+    
     scaler1 = torch.cuda.amp.GradScaler()
     # scaler2 = torch.cuda.amp.GradScaler() # Is a second scaler necessary for a different loss due to different magnitudes?
 
