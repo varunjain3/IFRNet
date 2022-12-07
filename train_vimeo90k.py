@@ -76,6 +76,10 @@ def train(args, ddp_generator,model, ddp_discriminator):
     dataset_val = Vimeo90K_Test_Dataset(dataset_dir=args.vimeo90k_dir)
     dataloader_val = DataLoader(dataset_val, batch_size=16, num_workers=2, pin_memory=True, shuffle=False, drop_last=True)
 
+    if args.evaluate_only:
+        psnr = evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, epoch, logger)
+        return
+        
     gen_optimizer = optim.AdamW(ddp_generator.parameters(), lr=args.lr_start, weight_decay=0)
     # Additions: Discriminator optimizer
     disc_optimizer = optim.SGD(ddp_discriminator.parameters(), lr=args.lr_start, weight_decay=0)
@@ -295,7 +299,7 @@ def main(args):
     ddp_generator = DDP(model, device_ids=[args.local_rank], output_device=args.local_rank)#, find_unused_parameters=True)
     
     ddp_discriminator = DDP(discriminator, device_ids=[args.local_rank])#, find_unused_parameters=True)
-    
+
     train(args, ddp_generator, model, ddp_discriminator)
     
     dist.destroy_process_group()
@@ -315,6 +319,7 @@ if __name__ == '__main__':
     parser.add_argument('--resume_path', default=None, type=str)
     parser.add_argument('--label_smoothing', default=0, type=float)
     parser.add_argument('--vimeo90k_dir', default='/ocean/projects/cis220078p/vjain1/data/vimeo_triplet', type=str) # TODO: change to data directory)
+    parser.add_argument('--evaluate_only', default=False, type=bool)
     args = parser.parse_args()
 
     main(args)
