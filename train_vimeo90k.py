@@ -169,8 +169,8 @@ def train(args, ddp_generator,model, ddp_discriminator):
             # scaler1.update()
 
             # Record statistics
-            total_disc_correct += (torch.count_nonzero(discriminator_out[:label_size] > 0)).numpy()
-            total_disc_correct += (torch.count_nonzero(discriminator_out[label_size:] < 0)).numpy()
+            total_disc_correct += (torch.count_nonzero(discriminator_out[:label_size] > 0))
+            total_disc_correct += (torch.count_nonzero(discriminator_out[label_size:] < 0))
             total += 2 * label_size
 
             avg_rec.update(loss_rec.cpu().data)
@@ -254,11 +254,11 @@ def evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, e
 
             true_discriminator_out = ddp_discriminator(imgt)
             true_disc_loss = GAN_loss(true_labels, true_discriminator_out)
-            disc_correct_cnt += (torch.count_nonzero(true_discriminator_out > 0)).numpy()
+            disc_correct_cnt += (torch.count_nonzero(true_discriminator_out > 0))
 
             gen_discriminator_out = ddp_discriminator(imgt_pred.detach())
             gen_disc_loss = GAN_loss(1-true_labels, gen_discriminator_out)
-            disc_correct_cnt += (torch.count_nonzero(true_discriminator_out < 0)).numpy()
+            disc_correct_cnt += (torch.count_nonzero(true_discriminator_out < 0))
             total += 2 * imgt_pred.size(0)
             
             loss_disc = (true_disc_loss + gen_disc_loss) / 2
