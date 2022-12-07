@@ -19,15 +19,14 @@ import logging
 import wandb
 from tqdm import tqdm
 
-WARM_UP = 20
 # Implements Cosine Annealing Scheduler
 def get_lr(args, iters):
     epoch = iters / args.iters_per_epoch
     lr = 0
-    if epoch < WARM_UP: # Linear warm-up from 1e-8
+    if epoch < args.warm_up: # Linear warm-up from 1e-8
         lr = epoch * (args.lr_start - 1e-8) / 20 + 1e-8
     else:
-        iters -= WARM_UP * args.iters_per_epoch
+        iters -= args.warm_up * args.iters_per_epoch
         ratio = 0.5 * (1.0 + np.cos(iters / (args.epochs * args.iters_per_epoch) * math.pi))
         lr = (args.lr_start - args.lr_end) * ratio + args.lr_end
     return lr
@@ -83,7 +82,7 @@ def train(args, ddp_generator,model, ddp_discriminator):
     
     epoch = 0
     if args.evaluate_only:
-        psnr = evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, epoch, logger)
+        evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, epoch, logger)
         return
     
     scaler1 = torch.cuda.amp.GradScaler()
@@ -103,6 +102,9 @@ def train(args, ddp_generator,model, ddp_discriminator):
         if local_rank == 0:
             logger.info(f"Epoch {epoch}")
         sampler.set_epoch(epoch)
+
+        total_disc_correct = 0
+        total = 0
 
         ddp_discriminator.train()
         ddp_generator.train()
@@ -166,6 +168,11 @@ def train(args, ddp_generator,model, ddp_discriminator):
             # scaler1.step(disc_optimizer)
             # scaler1.update()
 
+            # Record statistics
+            total_disc_correct += (torch.count_nonzero(discriminator_out[:label_size] > 0)).numpy()
+            total_disc_correct += (torch.count_nonzero(discriminator_out[label_size:] < 0)).numpy()
+            total += 2 * label_size
+
             avg_rec.update(loss_rec.cpu().data)
             avg_vae.update(loss_kl.cpu().data)
             avg_gan.update(loss_disc.cpu().data)
@@ -187,7 +194,7 @@ def train(args, ddp_generator,model, ddp_discriminator):
         # Evaluation
         psnr = 0
         if (epoch+1) % args.eval_interval == 0:
-            psnr = evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, epoch, logger)
+            psnr, disc_accuracy = evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, epoch, logger)
             if local_rank == 0 and psnr > best_psnr:
                 best_psnr = psnr
                 torch.save(ddp_generator.module.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'best_gen'))
@@ -202,19 +209,25 @@ def train(args, ddp_generator,model, ddp_discriminator):
                 "loss_kl": avg_vae.avg,
                 "loss_dis": avg_gan.avg,
                 "psnr": psnr,
+                "disc_accuracy": disc_accuracy,
                 "example": [wandb.Image(img0[0]), wandb.Image(imgt[0]), wandb.Image(img1[0]), wandb.Image(imgt_pred[0])],
                 # "flow": [wandb.Image(flow[0])],#, wandb.Image(embt[0])],
                 "epoch": epoch+1,
                 "iter": iters+1,
                 "lr" : lr,
             })
-            logger.info('epoch:{}/{} iter:{}/{} time:{:.2f}+{:.2f} lr:{:.5e} loss_rec:{:.4e} loss_geo:{:.4e} loss_dis:{:.4e}'.format(
+            logger.info('epoch:{}/{} iter:{}/{} time:{:.2f}+{:.2f} lr:{:.5e}'
+                'loss_rec:{:.4e} loss_geo:{:.4e} loss_dis:{:.4e} disc_accuracy:{:.4e}'.format(
                 epoch+1, args.epochs, iters+1, args.epochs * args.iters_per_epoch,
                 data_time_interval, train_time_interval, lr, 
-                avg_rec.avg, avg_vae.avg, avg_gan.avg))
+                avg_rec.avg, avg_vae.avg, avg_gan.avg, 
+                total_disc_correct / total))
             avg_rec.reset()
             avg_vae.reset()
             avg_gan.reset()
+            
+            total_disc_correct = 0
+            total = 0
 
         dist.barrier()
 
@@ -225,6 +238,9 @@ def evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, e
     loss_disc_list = []
     psnr_list = []
     time_stamp = time.time()
+
+    disc_correct_cnt = 0
+    total = 0
     ddp_discriminator.eval()
     ddp_generator.eval()
     for i, data in enumerate(dataloader_val):
@@ -238,9 +254,12 @@ def evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, e
 
             true_discriminator_out = ddp_discriminator(imgt)
             true_disc_loss = GAN_loss(true_labels, true_discriminator_out)
+            disc_correct_count += (torch.count_nonzero(true_discriminator_out > 0)).numpy()
 
             gen_discriminator_out = ddp_discriminator(imgt_pred.detach())
             gen_disc_loss = GAN_loss(1-true_labels, gen_discriminator_out)
+            disc_correct_count += (torch.count_nonzero(true_discriminator_out < 0)).numpy()
+            total += 2 * imgt_pred.size(0)
             
             loss_disc = (true_disc_loss + gen_disc_loss) / 2
 
@@ -253,12 +272,13 @@ def evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, e
             psnr_list.append(psnr)
 
     eval_time_interval = time.time() - time_stamp
-    
-    logger.info('eval epoch:{}/{} time:{:.2f} loss_rec:{:.4e} loss_geo:{:.4e} loss_dis:{:.4e} psnr:{:.3f}'.format(
+    disc_accuracy = disc_correct_cnt / total
+    logger.info('eval epoch:{}/{} time:{:.2f} loss_rec:{:.4e} loss_geo:{:.4e} loss_dis:{:.4e} psnr:{:.3f} disc_acc:{:.3f}'.format(
         epoch+1, args.epochs, eval_time_interval, 
         np.array(loss_rec_list).mean(), np.array(loss_vae_list).mean(), 
-        np.array(loss_disc_list).mean(), np.array(psnr_list).mean()))
-    return np.array(psnr_list).mean()
+        np.array(loss_disc_list).mean(), np.array(psnr_list).mean(),
+        disc_accuracy))
+    return np.array(psnr_list).mean(), disc_accuracy
 
 
 torch.autograd.set_detect_anomaly(True)
@@ -313,6 +333,7 @@ if __name__ == '__main__':
     parser.add_argument('--epochs', default=300, type=int)
     parser.add_argument('--eval_interval', default=1, type=int)
     parser.add_argument('--batch_size', default=6, type=int)
+    parser.add_argument('--warm_up', default=0, type=float)
     parser.add_argument('--lr_start', default=1e-4, type=float)
     parser.add_argument('--lr_end', default=1e-5, type=float)
     parser.add_argument('--log_path', default='checkpoint', type=str)
