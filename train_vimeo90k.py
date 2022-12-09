@@ -14,7 +14,6 @@ from torch.nn.parallel import DistributedDataParallel as DDP
 from datasets import Vimeo90K_Train_Dataset, Vimeo90K_Test_Dataset
 from metric import calculate_psnr, calculate_ssim
 from utils import AverageMeter
-from models.IFRNet import JSD
 import logging
 import wandb
 from tqdm import tqdm
@@ -43,7 +42,7 @@ def generate_true_labels(batch_size, label_smoothing):
         smoothing.random_(to=label_smoothing)
     return labels + smoothing
 
-def train(args, ddp_generator,model, ddp_discriminator):
+def train(args, ddp_generator,model):
     # ddp_generator.train()
     local_rank = args.local_rank
     print('Distributed Data Parallel Training IFRNet on Rank {}'.format(local_rank))
@@ -76,22 +75,19 @@ def train(args, ddp_generator,model, ddp_discriminator):
     dataloader_val = DataLoader(dataset_val, batch_size=16, num_workers=2, pin_memory=True, shuffle=False, drop_last=True)
 
     gen_optimizer = optim.AdamW(ddp_generator.parameters(), lr=args.lr_start, weight_decay=0)
-    # Additions: Discriminator optimizer
-    disc_optimizer = optim.SGD(ddp_discriminator.parameters(), lr=args.lr_start, weight_decay=0)
-    GAN_loss = JSD()
+    # Additions: Beta Scaling for Beta-VAE
+    Beta = args.beta
     
     epoch = 0
     if args.evaluate_only:
-        evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, epoch, logger)
+        evaluate(args, ddp_generator, dataloader_val, epoch, logger)
         return
     
     scaler1 = torch.cuda.amp.GradScaler()
-    # scaler2 = torch.cuda.amp.GradScaler() # Is a second scaler necessary for a different loss due to different magnitudes?
-
+    
     time_stamp = time.time()
     avg_rec = AverageMeter()
     avg_vae = AverageMeter()
-    avg_gan = AverageMeter()
     best_psnr = 0.0
 
     # Tracked Variables (declaration)
@@ -106,7 +102,6 @@ def train(args, ddp_generator,model, ddp_discriminator):
         total_disc_correct = 0
         total = 0
 
-        ddp_discriminator.train()
         ddp_generator.train()
 
         if local_rank ==0:
@@ -122,22 +117,16 @@ def train(args, ddp_generator,model, ddp_discriminator):
 
             lr = get_lr(args, iters)
             set_lr(gen_optimizer, lr)
-            set_lr(disc_optimizer, lr)
-
+            
             gen_optimizer.zero_grad()
-            disc_optimizer.zero_grad()
-
+            
             # GAN Training Flow derived from 
             # https://www.run.ai/guides/deep-learning-for-computer-vision/pytorch-gan#GAN-Tutorial
             # If run into difficulties: use https://github.com/soumith/ganhacks
             # Generator Training Step
             # with torch.cuda.amp.autocast():    
             imgt_pred, loss_rec, loss_kl = ddp_generator(img0, img1, embt, imgt, ret_loss = True)
-            label_size = imgt_pred.size(0)
-            discriminator_logits = ddp_discriminator(imgt_pred)
-            true_labels = generate_true_labels(label_size, args.label_smoothing).to(args.device).float()
-            loss_adv = GAN_loss(true_labels, discriminator_logits)
-            generator_loss = loss_rec + loss_kl + loss_adv
+            generator_loss = loss_rec + loss_kl * Beta
 
             generator_loss.backward()
             gen_optimizer.step()
@@ -145,45 +134,15 @@ def train(args, ddp_generator,model, ddp_discriminator):
             # scaler1.step(gen_optimizer)
             # scaler1.update()
 
-            # Discriminator Training Step
-            disc_optimizer.zero_grad()
-            # gen_optimizer.zero_grad()
-
-            # One-sided label-smoothing
-            true_labels2 = generate_true_labels(label_size, args.label_smoothing).to(args.device)
-            false_labels = 1-generate_true_labels(label_size, 0).to(args.device)
-
-            # Training set
-            full_training_set = torch.concat([imgt, imgt_pred.detach()])
-            full_training_labels = torch.concat([true_labels2, false_labels])
-
-            # with torch.cuda.amp.autocast():
-            discriminator_out = ddp_discriminator(full_training_set)
-            loss_disc = GAN_loss(full_training_labels, discriminator_out)
-            # TODO: Check if this is the correct order of the arguments.
-            
-            loss_disc.backward()
-            disc_optimizer.step()
-            # scaler1.scale(loss_disc).backward()
-            # scaler1.step(disc_optimizer)
-            # scaler1.update()
-
-            # Record statistics
-            total_disc_correct += (torch.count_nonzero(discriminator_out[:label_size] > 0))
-            total_disc_correct += (torch.count_nonzero(discriminator_out[label_size:] < 0))
-            total += 2 * label_size
-
             avg_rec.update(loss_rec.cpu().data)
             avg_vae.update(loss_kl.cpu().data)
-            avg_gan.update(loss_disc.cpu().data)
             train_time_interval = time.time() - time_stamp
 
             iters += 1
             if local_rank ==0:
                 batch_bar.set_postfix(
                     rec_loss = f"{avg_rec.avg: .6f}",
-                    vae_loss = f"{avg_vae.avg: .6f}",
-                    gan_loss = f"{avg_gan.avg: .6f}"
+                    vae_loss = f"{avg_vae.avg: .6f}"
                     )
                 batch_bar.update()
             time_stamp = time.time()
@@ -194,20 +153,17 @@ def train(args, ddp_generator,model, ddp_discriminator):
         # Evaluation
         psnr = 0
         if (epoch+1) % args.eval_interval == 0:
-            psnr, disc_accuracy = evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, epoch, logger)
+            psnr, disc_accuracy = evaluate(args, ddp_generator, dataloader_val, epoch, logger)
             if local_rank == 0 and psnr > best_psnr:
                 best_psnr = psnr
                 torch.save(ddp_generator.module.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'best_gen'))
-                torch.save(ddp_discriminator.module.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'best_disc'))
             torch.save(ddp_generator.module.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'latest_gen'))
-            torch.save(ddp_discriminator.module.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'latest_disc'))
 
         # Wandb logging
         if local_rank == 0:
             wandb.log({
                 "loss_rec": avg_rec.avg,
                 "loss_kl": avg_vae.avg,
-                "loss_dis": avg_gan.avg,
                 "psnr": psnr,
                 "disc_accuracy": disc_accuracy,
                 "example": [wandb.Image(img0[0]), wandb.Image(imgt[0]), wandb.Image(img1[0]), wandb.Image(imgt_pred[0])],
@@ -220,11 +176,10 @@ def train(args, ddp_generator,model, ddp_discriminator):
                 'loss_rec:{:.4e} loss_geo:{:.4e} loss_dis:{:.4e} disc_accuracy:{:.4e}'.format(
                 epoch+1, args.epochs, iters+1, args.epochs * args.iters_per_epoch,
                 data_time_interval, train_time_interval, lr, 
-                avg_rec.avg, avg_vae.avg, avg_gan.avg, 
+                avg_rec.avg, avg_vae.avg,
                 total_disc_correct / total))
             avg_rec.reset()
             avg_vae.reset()
-            avg_gan.reset()
             
             total_disc_correct = 0
             total = 0
@@ -232,7 +187,7 @@ def train(args, ddp_generator,model, ddp_discriminator):
         dist.barrier()
 
 
-def evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, epoch, logger):
+def evaluate(args, ddp_generator, dataloader_val, epoch, logger):
     loss_rec_list = []
     loss_vae_list = []
     loss_disc_list = []
@@ -241,7 +196,6 @@ def evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, e
 
     disc_correct_cnt = 0
     total = 0
-    ddp_discriminator.eval()
     ddp_generator.eval()
     for i, data in enumerate(dataloader_val):
         for l in range(len(data)):
@@ -250,22 +204,9 @@ def evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, e
 
         with torch.inference_mode():
             imgt_pred, loss_rec, loss_kl = ddp_generator(img0, img1, embt, imgt, ret_loss = True)
-            true_labels = generate_true_labels(imgt_pred.size(0), 0).to(args.device)
-
-            true_discriminator_out = ddp_discriminator(imgt)
-            true_disc_loss = GAN_loss(true_labels, true_discriminator_out)
-            disc_correct_cnt += (torch.count_nonzero(true_discriminator_out > 0))
-
-            gen_discriminator_out = ddp_discriminator(imgt_pred.detach())
-            gen_disc_loss = GAN_loss(1-true_labels, gen_discriminator_out)
-            disc_correct_cnt += (torch.count_nonzero(gen_discriminator_out < 0))
-            total += 2 * imgt_pred.size(0)
-            
-            loss_disc = (true_disc_loss + gen_disc_loss) / 2
 
         loss_rec_list.append(loss_rec.cpu().numpy())
         loss_vae_list.append(loss_kl.cpu().numpy())
-        loss_disc_list.append(loss_disc.cpu().numpy())
 
         for j in range(img0.shape[0]):
             psnr = calculate_psnr(imgt_pred[j].unsqueeze(0), imgt[j].unsqueeze(0)).cpu().data
@@ -307,21 +248,17 @@ def main(args):
     args.num_workers = 4#10 #args.batch_size
 
     model = Generator().to(args.device)
-    discriminator = ConvNeXt(96, [3,3,9,3], [0.0,0.0,0.0,0.0]).to(args.device)
     if args.local_rank == 0:
         wandb.init(name="VAN1", project="IDL Project", entity="11785_cmu")
         wandb.watch(model)
     
     if args.resume_epoch != 0:
         model.load_state_dict(torch.load(args.resume_path + f"/{args.model_name}_best_gen.pth", map_location='cpu'))
-        discriminator.load_state_dict(torch.load(args.resume_path + f"/{args.model_name}_best_disc.pth", map_location='cpu'))
 
     # TODO: Will DDP react well to being used as a non-distributed model
     ddp_generator = DDP(model, device_ids=[args.local_rank], output_device=args.local_rank)#, find_unused_parameters=True)
     
-    ddp_discriminator = DDP(discriminator, device_ids=[args.local_rank])#, find_unused_parameters=True)
-
-    train(args, ddp_generator, model, ddp_discriminator)
+    train(args, ddp_generator, model)
     
     dist.destroy_process_group()
 
@@ -341,6 +278,7 @@ if __name__ == '__main__':
     parser.add_argument('--resume_path', default=None, type=str)
     parser.add_argument('--label_smoothing', default=0, type=float)
     parser.add_argument('--vimeo90k_dir', default='/ocean/projects/cis220078p/vjain1/data/vimeo_triplet', type=str) # TODO: change to data directory)
+    parser.add_argument('--beta', default=1, type=int)
     parser.add_argument('--evaluate_only', default=False, type=bool)
     args = parser.parse_args()
 
