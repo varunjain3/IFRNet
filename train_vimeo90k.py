@@ -39,6 +39,7 @@ def train(args, ddp_generator,model):
     # ddp_generator.train()
     local_rank = args.local_rank
     print('Distributed Data Parallel Training IFRNet on Rank {}'.format(local_rank))
+    print(f"wandb run id is {args.resume_run_id}")
 
     if local_rank == 0:
         os.makedirs(args.log_path, exist_ok=True)
@@ -229,7 +230,11 @@ def main(args):
 
     model = Generator().to(args.device)
     if args.local_rank == 0:
-        wandb.init(name="VAE1", project="IDL Project", entity="11785_cmu")
+        if args.resume_epoch > 0:
+            wandb.init(name="VAE1", run_id = args.resume_run_id, resume="must", project="IDL Project", entity="11785_cmu")
+        else:
+            args.resume_run_id = wandb.util.generate_id()
+            wandb.init(name="VAE1", project="IDL Project", entity="11785_cmu")
         wandb.watch(model)
     
     if args.resume_epoch != 0:
