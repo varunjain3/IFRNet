@@ -230,7 +230,7 @@ def main(args):
 
     model = Generator().to(args.device)
     if args.local_rank == 0:
-        if args.resume_epoch > 0:
+        if args.resume_epoch > 0 and args.resume_run_id:
             wandb.init(name="VAE1", run_id = args.resume_run_id, resume="must", project="IDL Project", entity="11785_cmu")
         else:
             args.resume_run_id = wandb.util.generate_id()
@@ -265,6 +265,7 @@ if __name__ == '__main__':
     parser.add_argument('--vimeo90k_dir', default='/ocean/projects/cis220078p/vjain1/data/vimeo_triplet', type=str) # TODO: change to data directory)
     parser.add_argument('--beta', default=1, type=int)
     parser.add_argument('--evaluate_only', default=False, type=bool)
+    parser.add_argument('--resume_run_id', default='', type=str)
     args = parser.parse_args()
 
     main(args)
