@@ -35,13 +35,6 @@ def set_lr(optimizer, lr):
     for param_group in optimizer.param_groups:
         param_group['lr'] = lr
 
-def generate_true_labels(batch_size, label_smoothing):
-    labels = torch.ones((batch_size,1))
-    smoothing = torch.zeros((batch_size,1))
-    if label_smoothing > 0:
-        smoothing.random_(to=label_smoothing)
-    return labels + smoothing
-
 def train(args, ddp_generator,model):
     # ddp_generator.train()
     local_rank = args.local_rank
@@ -236,7 +229,7 @@ def main(args):
 
     model = Generator().to(args.device)
     if args.local_rank == 0:
-        wandb.init(name="VAN1", project="IDL Project", entity="11785_cmu")
+        wandb.init(name="VAE1", project="IDL Project", entity="11785_cmu")
         wandb.watch(model)
     
     if args.resume_epoch != 0:
