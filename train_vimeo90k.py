@@ -99,9 +99,6 @@ def train(args, ddp_generator,model):
             logger.info(f"Epoch {epoch}")
         sampler.set_epoch(epoch)
 
-        total_disc_correct = 0
-        total = 0
-
         ddp_generator.train()
 
         if local_rank ==0:
@@ -153,7 +150,7 @@ def train(args, ddp_generator,model):
         # Evaluation
         psnr = 0
         if (epoch+1) % args.eval_interval == 0:
-            psnr, disc_accuracy = evaluate(args, ddp_generator, dataloader_val, epoch, logger)
+            psnr = evaluate(args, ddp_generator, dataloader_val, epoch, logger)
             if local_rank == 0 and psnr > best_psnr:
                 best_psnr = psnr
                 torch.save(ddp_generator.module.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'best_gen'))
@@ -165,7 +162,6 @@ def train(args, ddp_generator,model):
                 "loss_rec": avg_rec.avg,
                 "loss_kl": avg_vae.avg,
                 "psnr": psnr,
-                "disc_accuracy": disc_accuracy,
                 "example": [wandb.Image(img0[0]), wandb.Image(imgt[0]), wandb.Image(img1[0]), wandb.Image(imgt_pred[0])],
                 # "flow": [wandb.Image(flow[0])],#, wandb.Image(embt[0])],
                 "epoch": epoch+1,
@@ -173,16 +169,12 @@ def train(args, ddp_generator,model):
                 "lr" : lr,
             })
             logger.info('epoch:{}/{} iter:{}/{} time:{:.2f}+{:.2f} lr:{:.5e}'
-                'loss_rec:{:.4e} loss_geo:{:.4e} loss_dis:{:.4e} disc_accuracy:{:.4e}'.format(
+                'loss_rec:{:.4e} loss_vae:{:.4e} '.format(
                 epoch+1, args.epochs, iters+1, args.epochs * args.iters_per_epoch,
                 data_time_interval, train_time_interval, lr, 
-                avg_rec.avg, avg_vae.avg,
-                total_disc_correct / total))
+                avg_rec.avg, avg_vae.avg))
             avg_rec.reset()
             avg_vae.reset()
-            
-            total_disc_correct = 0
-            total = 0
 
         dist.barrier()
 
@@ -190,12 +182,9 @@ def train(args, ddp_generator,model):
 def evaluate(args, ddp_generator, dataloader_val, epoch, logger):
     loss_rec_list = []
     loss_vae_list = []
-    loss_disc_list = []
     psnr_list = []
     time_stamp = time.time()
 
-    disc_correct_cnt = 0
-    total = 0
     ddp_generator.eval()
     for i, data in enumerate(dataloader_val):
         for l in range(len(data)):
@@ -213,13 +202,11 @@ def evaluate(args, ddp_generator, dataloader_val, epoch, logger):
             psnr_list.append(psnr)
 
     eval_time_interval = time.time() - time_stamp
-    disc_accuracy = disc_correct_cnt / total
-    logger.info('eval epoch:{}/{} time:{:.2f} loss_rec:{:.4e} loss_geo:{:.4e} loss_dis:{:.4e} psnr:{:.3f} disc_acc:{:.3f}'.format(
+    logger.info('eval epoch:{}/{} time:{:.2f} loss_rec:{:.4e} loss_vae:{:.4e} psnr:{:.3f}'.format(
         epoch+1, args.epochs, eval_time_interval, 
         np.array(loss_rec_list).mean(), np.array(loss_vae_list).mean(), 
-        np.array(loss_disc_list).mean(), np.array(psnr_list).mean(),
-        disc_accuracy))
-    return np.array(psnr_list).mean(), disc_accuracy
+         np.array(psnr_list).mean()))
+    return np.array(psnr_list).mean()
 
 
 torch.autograd.set_detect_anomaly(True)
