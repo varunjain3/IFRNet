@@ -218,7 +218,7 @@ def main(args):
     torch.backends.cudnn.benchmark = True
 
     if args.model_name == 'IFRNet':
-        from models.IFRNet import Generator, ConvNeXt
+        from models.IFRNet import Generator
     elif args.model_name == 'IFRNet_L': # not supported
         from models.IFRNet_L import Generator
     elif args.model_name == 'IFRNet_S': # not supported
