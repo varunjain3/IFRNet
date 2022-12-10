@@ -139,7 +139,7 @@ def train(args, ddp_generator,model, ddp_discriminator):
             loss_disc = torch.mean(discriminator_out ) + gp
             # TODO: Check if this is the correct order of the arguments.
             
-            loss_disc.backward()
+            loss_disc.backward(retain_graph = True)
             disc_optimizer.step()
 
             # ddp_discriminator.zero_grad()
