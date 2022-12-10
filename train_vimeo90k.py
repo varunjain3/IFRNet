@@ -133,20 +133,20 @@ def train(args, ddp_generator,model, ddp_discriminator):
             mask[:label_size] = -1
             full_training_set = torch.concat([imgt, imgt_pred.detach()])
 
-            with torch.cuda.amp.autocast():
-                discriminator_out = ddp_discriminator(full_training_set) * mask
-                gp = args.lambda_gp * gradient_penalty(ddp_discriminator, imgt.clone(), imgt_pred.clone(), args.device)
-                loss_disc = torch.mean(discriminator_out ) + gp
+            # with torch.cuda.amp.autocast():
+            discriminator_out = ddp_discriminator(full_training_set) * mask
+            gp = args.lambda_gp * gradient_penalty(ddp_discriminator, imgt.clone(), imgt_pred.clone(), args.device)
+            loss_disc = torch.mean(discriminator_out ) + gp
             # TODO: Check if this is the correct order of the arguments.
             
-            # loss_disc.backward()
-            # disc_optimizer.step()
+            loss_disc.backward()
+            disc_optimizer.step()
 
             # ddp_discriminator.zero_grad()
             # scaler1.scale(gp).backward(retain_graph = True)
-            scaler1.scale(loss_disc).backward(retain_graph = True)
-            scaler1.step(disc_optimizer)
-            scaler1.update()
+            # scaler1.scale(loss_disc).backward(retain_graph = True)
+            # scaler1.step(disc_optimizer)
+            # scaler1.update()
 
             # Generator Training Step
             if i % args.n_critic == 0:
