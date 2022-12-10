@@ -6,6 +6,7 @@ import numpy as np
 from utils import read
 from metric import calculate_psnr, calculate_ssim
 from models.IFRNet import Generator
+import argparse
 # from models.IFRNet_L import Model
 # from models.IFRNet_S import Model
 
