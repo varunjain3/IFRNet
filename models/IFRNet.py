@@ -161,13 +161,13 @@ class ConvNeXt_Block(torch.nn.Module):
             torch.nn.GELU(), # TODO: Consider Prelu/LeakyReLU?
             torch.nn.Conv2d(in_channels = chan_ct * 4, out_channels = chan_ct, kernel_size = 1, bias = True),
         )
-        # self.conv.apply(self.init_blocks)
+        self.conv.apply(self.init_blocks)
 
         self.StochDepth = torchvision.ops.StochasticDepth(p = prob, mode ='batch')
 
         if downsample:
             self.shortcut = torch.nn.Conv2d(in_channels = chan_ct // 2, out_channels = chan_ct, kernel_size = 2, stride = stride, groups = chan_ct // 2, bias = False)
-            # self.shortcut.apply(self.init_blocks)
+            self.shortcut.apply(self.init_blocks)
         else:
             self.shortcut = torch.nn.Identity()
 
@@ -190,7 +190,7 @@ class ConvNeXt(torch.nn.Module):
         # Init backbone: stem and body
         # Stem layer
         self.stem = torch.nn.Conv2d(in_channels = 3, out_channels = root_channels, kernel_size = 4, stride = 4, bias = True)
-        # self.stem.apply(self.init_conv)
+        self.stem.apply(self.init_conv)
 
         self.stem_norm = torch.nn.BatchNorm2d(root_channels)
 
@@ -218,7 +218,7 @@ class ConvNeXt(torch.nn.Module):
         self.flatten = torch.nn.Flatten()
         
         self.cls_layer = torch.nn.Linear(chan_ct, num_classes)
-        # self.cls_layer.apply(self.init_linear)
+        self.cls_layer.apply(self.init_linear)
 
     def init_conv(self, m):
         if isinstance(m, torch.nn.Conv2d):
