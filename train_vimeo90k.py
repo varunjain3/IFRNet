@@ -118,9 +118,6 @@ def train(args, ddp_generator,model, ddp_discriminator):
             set_lr(gen_optimizer, lr)
             set_lr(disc_optimizer, lr)
 
-            gen_optimizer.zero_grad()
-            disc_optimizer.zero_grad()
-
             # GAN Training Flow derived from 
             # https://www.run.ai/guides/deep-learning-for-computer-vision/pytorch-gan#GAN-Tutorial
             # If run into difficulties: use https://github.com/soumith/ganhacks
@@ -156,6 +153,7 @@ def train(args, ddp_generator,model, ddp_discriminator):
                 loss_adv = -torch.mean(discriminator_logits)
                 generator_loss = loss_rec + loss_kl + loss_adv
 
+                gen_optimizer.zero_grad()
                 generator_loss.backward()
                 gen_optimizer.step()
                 # scaler1.scale(generator_loss).backward()
