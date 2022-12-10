@@ -289,7 +289,7 @@ def gradient_penalty(critic, real, fake, device):
     gradient_v = gradient.view(gradient.shape[0], -1)
     gradient_norm = gradient_v.norm(2, dim=1)
     gradient_penalty = torch.mean((gradient_norm - 1) ** 2)
-    return gradient_penalty
+    return 0
 
 class Generator(nn.Module):
     def __init__(self, local_rank=-1, lr=1e-4):
