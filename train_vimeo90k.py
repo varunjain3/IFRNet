@@ -14,10 +14,9 @@ from torch.nn.parallel import DistributedDataParallel as DDP
 from datasets import Vimeo90K_Train_Dataset, Vimeo90K_Test_Dataset
 from metric import calculate_psnr, calculate_ssim
 from utils import AverageMeter
-from models.IFRNet import JSD
+from models.IFRNet import gradient_penalty
 import logging
 import wandb
-from tqdm import tqdm
 
 # Implements Cosine Annealing Scheduler
 def get_lr(args, iters):
@@ -75,14 +74,13 @@ def train(args, ddp_generator,model, ddp_discriminator):
     dataset_val = Vimeo90K_Test_Dataset(dataset_dir=args.vimeo90k_dir)
     dataloader_val = DataLoader(dataset_val, batch_size=16, num_workers=2, pin_memory=True, shuffle=False, drop_last=True)
 
-    gen_optimizer = optim.AdamW(ddp_generator.parameters(), lr=args.lr_start, weight_decay=0)
+    gen_optimizer = optim.Adam(ddp_generator.parameters(), lr=args.lr_start, betas=(0.0, 0.9))
     # Additions: Discriminator optimizer
-    disc_optimizer = optim.SGD(ddp_discriminator.parameters(), lr=args.lr_start, weight_decay=0)
-    GAN_loss = JSD()
+    disc_optimizer = optim.Adam(ddp_discriminator.parameters(), lr=args.lr_start, betas=(0.0, 0.9))
     
     epoch = 0
     if args.evaluate_only:
-        evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, epoch, logger)
+        evaluate(args, ddp_generator, ddp_discriminator, dataloader_val, epoch, logger)
         return
     
     scaler1 = torch.cuda.amp.GradScaler()
@@ -109,11 +107,7 @@ def train(args, ddp_generator,model, ddp_discriminator):
         ddp_discriminator.train()
         ddp_generator.train()
 
-        if local_rank ==0:
-            batch_bar = tqdm(total=len(dataloader_train), dynamic_ncols=True, leave=False, position=0, desc='Train')
         for i, data in enumerate(dataloader_train):
-            if local_rank == 0:
-                logger.info(f"Iteration {i}")
             for l in range(len(data)):
                 data[l] = data[l].to(args.device)
             img0, imgt, img1, embt = data
@@ -130,43 +124,41 @@ def train(args, ddp_generator,model, ddp_discriminator):
             # GAN Training Flow derived from 
             # https://www.run.ai/guides/deep-learning-for-computer-vision/pytorch-gan#GAN-Tutorial
             # If run into difficulties: use https://github.com/soumith/ganhacks
-            # Generator Training Step
-            # with torch.cuda.amp.autocast():    
+            
+            # with torch.cuda.amp.autocast():
             imgt_pred, loss_rec, loss_kl = ddp_generator(img0, img1, embt, imgt, ret_loss = True)
             label_size = imgt_pred.size(0)
-            discriminator_logits = ddp_discriminator(imgt_pred)
-            true_labels = generate_true_labels(label_size, args.label_smoothing).to(args.device).float()
-            loss_adv = GAN_loss(true_labels, discriminator_logits)
-            generator_loss = loss_rec + loss_kl + loss_adv
-
-            generator_loss.backward()
-            gen_optimizer.step()
-            # scaler1.scale(generator_loss).backward()
-            # scaler1.step(gen_optimizer)
-            # scaler1.update()
 
             # Discriminator Training Step
             disc_optimizer.zero_grad()
-            # gen_optimizer.zero_grad()
 
-            # One-sided label-smoothing
-            true_labels2 = generate_true_labels(label_size, args.label_smoothing).to(args.device)
-            false_labels = 1-generate_true_labels(label_size, 0).to(args.device)
-
-            # Training set
+            mask = torch.ones((label_size * 2,)).to(args.device)
+            mask[:label_size] = -1
             full_training_set = torch.concat([imgt, imgt_pred.detach()])
-            full_training_labels = torch.concat([true_labels2, false_labels])
 
-            # with torch.cuda.amp.autocast():
-            discriminator_out = ddp_discriminator(full_training_set)
-            loss_disc = GAN_loss(full_training_labels, discriminator_out)
+            with torch.cuda.amp.autocast():
+                discriminator_out = ddp_discriminator(full_training_set)
+                gp = gradient_penalty(ddp_discriminator, imgt, imgt_pred, args.device)
+                loss_disc = torch.mean(discriminator_out * mask) + args.lambda_gp * gp
             # TODO: Check if this is the correct order of the arguments.
             
-            loss_disc.backward()
-            disc_optimizer.step()
-            # scaler1.scale(loss_disc).backward()
-            # scaler1.step(disc_optimizer)
-            # scaler1.update()
+            # loss_disc.backward()
+            # disc_optimizer.step()
+            scaler1.scale(loss_disc).backward(retain_graph = True)
+            scaler1.step(disc_optimizer)
+            scaler1.update()
+
+            # Generator Training Step
+            if i % args.n_critic == 0:
+                discriminator_logits = ddp_discriminator(imgt_pred)
+                loss_adv = -torch.mean(discriminator_logits)
+                generator_loss = loss_rec + loss_kl + loss_adv
+
+                generator_loss.backward()
+                gen_optimizer.step()
+                # scaler1.scale(generator_loss).backward()
+                # scaler1.step(gen_optimizer)
+                # scaler1.update()
 
             # Record statistics
             total_disc_correct += (torch.count_nonzero(discriminator_out[:label_size] > 0))
@@ -179,22 +171,19 @@ def train(args, ddp_generator,model, ddp_discriminator):
             train_time_interval = time.time() - time_stamp
 
             iters += 1
-            if local_rank ==0:
-                batch_bar.set_postfix(
-                    rec_loss = f"{avg_rec.avg: .6f}",
-                    vae_loss = f"{avg_vae.avg: .6f}",
-                    gan_loss = f"{avg_gan.avg: .6f}"
-                    )
-                batch_bar.update()
+            if local_rank ==0 and iters % 100 == 0:
+                logger.info('epoch:{}/{} iter:{}/{} time:{:.2f}+{:.2f} lr:{:.5e}'
+                'loss_rec:{:.4e} loss_geo:{:.4e} loss_dis:{:.4e} disc_accuracy:{:.4e}'.format(
+                    epoch+1, args.epochs, iters+1, args.epochs * args.iters_per_epoch,
+                    data_time_interval, train_time_interval, lr, 
+                    avg_rec.avg, avg_vae.avg, avg_gan.avg, 
+                    total_disc_correct / total))
             time_stamp = time.time()
-        if local_rank ==0:
-            batch_bar.close()
-        print(f"Rank: {local_rank}, Closed batch bar")
         
         # Evaluation
         psnr = 0
         if (epoch+1) % args.eval_interval == 0:
-            psnr, disc_accuracy = evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, epoch, logger)
+            psnr, disc_accuracy = evaluate(args, ddp_generator, ddp_discriminator, dataloader_val, epoch, logger)
             if local_rank == 0 and psnr > best_psnr:
                 best_psnr = psnr
                 torch.save(ddp_generator.module.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'best_gen'))
@@ -232,7 +221,7 @@ def train(args, ddp_generator,model, ddp_discriminator):
         dist.barrier()
 
 
-def evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, epoch, logger):
+def evaluate(args, ddp_generator, ddp_discriminator, dataloader_val, epoch, logger):
     loss_rec_list = []
     loss_vae_list = []
     loss_disc_list = []
@@ -250,18 +239,18 @@ def evaluate(args, ddp_generator, ddp_discriminator, GAN_loss, dataloader_val, e
 
         with torch.inference_mode():
             imgt_pred, loss_rec, loss_kl = ddp_generator(img0, img1, embt, imgt, ret_loss = True)
-            true_labels = generate_true_labels(imgt_pred.size(0), 0).to(args.device)
-
+            gp = gradient_penalty(ddp_discriminator, imgt, imgt_pred, args.device)
+            
             true_discriminator_out = ddp_discriminator(imgt)
-            true_disc_loss = GAN_loss(true_labels, true_discriminator_out)
+            true_disc_loss = -torch.mean(true_discriminator_out)
             disc_correct_cnt += (torch.count_nonzero(true_discriminator_out > 0))
 
             gen_discriminator_out = ddp_discriminator(imgt_pred.detach())
-            gen_disc_loss = GAN_loss(1-true_labels, gen_discriminator_out)
+            gen_disc_loss = torch.mean(gen_discriminator_out)
             disc_correct_cnt += (torch.count_nonzero(gen_discriminator_out < 0))
             total += 2 * imgt_pred.size(0)
             
-            loss_disc = (true_disc_loss + gen_disc_loss) / 2
+            loss_disc = (true_disc_loss + gen_disc_loss) / 2 + gp
 
         loss_rec_list.append(loss_rec.cpu().numpy())
         loss_vae_list.append(loss_kl.cpu().numpy())
@@ -303,7 +292,7 @@ def main(args):
     elif args.model_name == 'IFRNet_S': # not supported
         from models.IFRNet_S import Generator
 
-    args.log_path = args.log_path + '/' + args.model_name
+    args.log_path = args.log_path
     args.num_workers = 4#10 #args.batch_size
 
     model = Generator().to(args.device)
@@ -339,7 +328,7 @@ if __name__ == '__main__':
     parser.add_argument('--log_path', default='checkpoint', type=str)
     parser.add_argument('--resume_epoch', default=0, type=int)
     parser.add_argument('--resume_path', default=None, type=str)
-    parser.add_argument('--label_smoothing', default=0, type=float)
+    parser.add_argument('--lambda_gp', default=10, type=float)
     parser.add_argument('--vimeo90k_dir', default='/ocean/projects/cis220078p/vjain1/data/vimeo_triplet', type=str) # TODO: change to data directory)
     parser.add_argument('--evaluate_only', default=False, type=bool)
     args = parser.parse_args()

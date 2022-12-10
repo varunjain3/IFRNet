@@ -269,6 +269,28 @@ class JSD(nn.Module):
         m = (0.5 * (p + q))
         return 0.5 * (self.kl(m, p) + self.kl(m, q))
 
+# Code credit to Aladdin Persson
+# Source: https://www.youtube.com/watch?v=pG0QZ7OddX4&t=3s&ab_channel=AladdinPersson
+def gradient_penalty(critic, real, fake, device):
+    B, C, H, W = real.shape
+    epsilon = torch.rand((B, 1, 1, 1)).repeat(1, C, H, W).to(device)
+    interpolated_images = real * epsilon + fake * (1- epsilon)
+
+    mixed_scores = critic(interpolated_images)
+
+    gradient = torch.autograd.grad(
+        inputs = interpolated_images,
+        outputs = mixed_scores,
+        grad_outputs = torch.ones_like(mixed_scores),
+        create_graph = True,
+        retain_graph = True,
+    )[0]
+
+    gradient = gradient.view(gradient.shape[0], -1)
+    gradient_norm = gradient.norm(2, dim=1)
+    gradient_penalty = torch.mean((gradient_norm - 1) ** 2)
+    return gradient_penalty
+    
 class Generator(nn.Module):
     def __init__(self, local_rank=-1, lr=1e-4):
         super(Generator, self).__init__()
