@@ -11,16 +11,20 @@ from models.IFRNet import Generator
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
+parser = argparse.ArgumentParser(description='IFRNet')
+parser.add_argument('--chkpt_path', default='IFRNet', type=str)
+parser.add_argument('--data_path', default='/content/vimeo_triplets', type=str)
+args = parser.parse_args()
 
 model = Model()
-model.load_state_dict(torch.load('IFRNet_best_gen.pth'))
+model.load_state_dict(torch.load(args.chkpt_path))
 # model.load_state_dict(torch.load('checkpoints/IFRNet_large/IFRNet_L_Vimeo90K.pth'))
 # model.load_state_dict(torch.load('checkpoints/IFRNet_small/IFRNet_S_Vimeo90K.pth'))
 model.eval()
 model.cuda()
 
 # Replace the 'path' with your Vimeo90K dataset absolute path.
-path = '/ocean/projects/cis220078p/vjain1/data/vimeo_triplet'
+path = args.data_path
 f = open(path + 'tri_testlist.txt', 'r')
 
 psnr_list = []
