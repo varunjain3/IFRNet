@@ -129,7 +129,7 @@ def train(args, ddp_generator,model, ddp_discriminator):
             # Discriminator Training Step
             disc_optimizer.zero_grad()
 
-            mask = torch.ones((label_size * 2,)).to(args.device)
+            mask = torch.ones((label_size * 2, 1)).to(args.device)
             mask[:label_size] = -1
             full_training_set = torch.concat([imgt, imgt_pred.detach()])
 
