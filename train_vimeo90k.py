@@ -166,7 +166,7 @@ def train(args, ddp_generator,model, ddp_discriminator):
             total_disc_correct += (torch.count_nonzero(discriminator_out[:label_size] > 0))
             total_disc_correct += (torch.count_nonzero(discriminator_out[label_size:] < 0))
             total += 2 * label_size
-            print(f"For iter{i}, batch was {label_size}")
+            print(f"For iter{i}, batch was {label_size}, total_correct is {total_disc_correct}")
 
             avg_rec.update(loss_rec.cpu().data)
             avg_vae.update(loss_kl.cpu().data)
