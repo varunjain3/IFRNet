@@ -108,6 +108,7 @@ def train(args, ddp_generator,model, ddp_discriminator):
         ddp_generator.train()
 
         for i, data in enumerate(dataloader_train):
+            print(f"Iter {i}")
             for l in range(len(data)):
                 data[l] = data[l].to(args.device)
             img0, imgt, img1, embt = data
@@ -128,33 +129,33 @@ def train(args, ddp_generator,model, ddp_discriminator):
 
             # Discriminator Training Step
             disc_optimizer.zero_grad()
-            gen_optimizer.zero_grad()
 
             mask = torch.ones((label_size * 2,)).to(args.device)
             mask[:label_size] = -1
             full_training_set = torch.concat([imgt, imgt_pred.detach()])
 
             with torch.cuda.amp.autocast():
-                gp = gradient_penalty(ddp_discriminator, imgt, imgt_pred, args.device)
-                discriminator_out = ddp_discriminator(full_training_set)
-                loss_disc = torch.mean(discriminator_out * mask) + args.lambda_gp * gp
+                gp = args.lambda_gp * gradient_penalty(ddp_discriminator, imgt, imgt_pred, args.device)
+                discriminator_out = ddp_discriminator(full_training_set) * mask
+                loss_disc = torch.mean(discriminator_out ) + gp
             # TODO: Check if this is the correct order of the arguments.
             
             # loss_disc.backward()
             # disc_optimizer.step()
 
-            ddp_discriminator.zero_grad()
+            # ddp_discriminator.zero_grad()
             scaler1.scale(loss_disc).backward(retain_graph = True)
             scaler1.step(disc_optimizer)
             scaler1.update()
 
             # Generator Training Step
             if i % args.n_critic == 0:
+                gen_optimizer.zero_grad()
                 discriminator_logits = ddp_discriminator(imgt_pred)
                 loss_adv = -torch.mean(discriminator_logits)
                 generator_loss = loss_rec + loss_kl + loss_adv
 
-                ddp_generator.zero_grad()
+                # ddp_generator.zero_grad()
                 generator_loss.backward()
                 gen_optimizer.step()
                 # scaler1.scale(generator_loss).backward()
