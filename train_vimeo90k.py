@@ -108,7 +108,6 @@ def train(args, ddp_generator,model, ddp_discriminator):
         ddp_generator.train()
 
         for i, data in enumerate(dataloader_train):
-            print(f"Iter {i}")
             for l in range(len(data)):
                 data[l] = data[l].to(args.device)
             img0, imgt, img1, embt = data
