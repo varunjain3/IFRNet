@@ -173,12 +173,12 @@ class ConvNeXt_Block(torch.nn.Module):
 
     def init_blocks(self, m):
         if isinstance(m, torch.nn.Conv2d):
-            torch.nn.init.xavier_uniform_(m.weight)#, mode = 'fan_out')
+            torch.nn.init.xavier_uniform_(m.weight, gain = 0.5 ** 0.5)#, mode = 'fan_out')
 
     # Initialize the projections to identity (theoretical ideal for residual learning).
     def init_shortcuts(self, m):
         if isinstance(m, torch.nn.Conv2d):
-            torch.nn.init.xavier_uniform_(m.weight, gain = 2 ** 0.5)
+            torch.nn.init.xavier_uniform_(m.weight, gain = 0.5 ** 0.5)
     
     def forward(self, x):
         return self.shortcut(x) + self.StochDepth(self.conv(x))
@@ -222,11 +222,11 @@ class ConvNeXt(torch.nn.Module):
 
     def init_conv(self, m):
         if isinstance(m, torch.nn.Conv2d):
-            torch.nn.init.xavier_uniform_(m.weight)
+            torch.nn.init.xavier_uniform_(m.weight, gain = 0.5 ** 0.5)
 
     def init_linear(self, m):
         if isinstance(m, torch.nn.Linear):
-            torch.nn.init.xavier_uniform_(m.weight)
+            torch.nn.init.xavier_uniform_(m.weight, gain = 0.5 ** 0.5)
 
     def forward(self, x):
         # Pass through backbone
