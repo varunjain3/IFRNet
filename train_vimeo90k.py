@@ -108,7 +108,6 @@ def train(args, ddp_generator,model, ddp_discriminator):
         ddp_generator.train()
 
         for i, data in enumerate(dataloader_train):
-            print(f"Epoch {i}")
             for l in range(len(data)):
                 data[l] = data[l].to(args.device)
             img0, imgt, img1, embt = data
@@ -136,8 +135,8 @@ def train(args, ddp_generator,model, ddp_discriminator):
             full_training_set = torch.concat([imgt, imgt_pred.detach()])
 
             with torch.cuda.amp.autocast():
-                discriminator_out = ddp_discriminator(full_training_set)
                 gp = gradient_penalty(ddp_discriminator, imgt, imgt_pred, args.device)
+                discriminator_out = ddp_discriminator(full_training_set)
                 loss_disc = torch.mean(discriminator_out * mask) + args.lambda_gp * gp
             # TODO: Check if this is the correct order of the arguments.
             
