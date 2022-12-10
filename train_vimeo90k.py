@@ -166,6 +166,7 @@ def train(args, ddp_generator,model, ddp_discriminator):
             total_disc_correct += (torch.count_nonzero(discriminator_out[:label_size] > 0))
             total_disc_correct += (torch.count_nonzero(discriminator_out[label_size:] < 0))
             total += 2 * label_size
+            print(f"For iter{i}, batch was {label_size}")
 
             avg_rec.update(loss_rec.cpu().data)
             avg_vae.update(loss_kl.cpu().data)
@@ -241,7 +242,7 @@ def evaluate(args, ddp_generator, ddp_discriminator, dataloader_val, epoch, logg
 
         with torch.inference_mode():
             imgt_pred, loss_rec, loss_kl = ddp_generator(img0, img1, embt, imgt, ret_loss = True)
-            gp = gradient_penalty(ddp_discriminator, imgt, imgt_pred, args.device)
+            # gp = gradient_penalty(ddp_discriminator, imgt, imgt_pred, args.device)
             
             true_discriminator_out = ddp_discriminator(imgt)
             true_disc_loss = -torch.mean(true_discriminator_out)
@@ -252,7 +253,7 @@ def evaluate(args, ddp_generator, ddp_discriminator, dataloader_val, epoch, logg
             disc_correct_cnt += (torch.count_nonzero(gen_discriminator_out < 0))
             total += 2 * imgt_pred.size(0)
             
-            loss_disc = (true_disc_loss + gen_disc_loss) / 2 + gp
+            loss_disc = (true_disc_loss + gen_disc_loss) / 2
 
         loss_rec_list.append(loss_rec.cpu().numpy())
         loss_vae_list.append(loss_kl.cpu().numpy())
