@@ -17,7 +17,7 @@ parser.add_argument('--chkpt_path', default='IFRNet', type=str)
 parser.add_argument('--data_path', default='/content/vimeo_triplets', type=str)
 args = parser.parse_args()
 
-model = Model()
+model = Generator()
 model.load_state_dict(torch.load(args.chkpt_path))
 # model.load_state_dict(torch.load('checkpoints/IFRNet_large/IFRNet_L_Vimeo90K.pth'))
 # model.load_state_dict(torch.load('checkpoints/IFRNet_small/IFRNet_S_Vimeo90K.pth'))
