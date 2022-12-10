@@ -188,10 +188,10 @@ def train(args, ddp_generator,model, ddp_discriminator):
             psnr, disc_accuracy = evaluate(args, ddp_generator, ddp_discriminator, dataloader_val, epoch, logger)
             if local_rank == 0 and psnr > best_psnr:
                 best_psnr = psnr
-                torch.save(ddp_generator.module.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'best_gen'))
-                torch.save(ddp_discriminator.module.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'best_disc'))
-            torch.save(ddp_generator.module.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'latest_gen'))
-            torch.save(ddp_discriminator.module.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'latest_disc'))
+                torch.save(ddp_generator.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'best_gen'))
+                torch.save(ddp_discriminator.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'best_disc'))
+            torch.save(ddp_generator.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'latest_gen'))
+            torch.save(ddp_discriminator.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'latest_disc'))
 
         # Wandb logging
         if local_rank == 0:
