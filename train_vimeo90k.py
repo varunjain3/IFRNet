@@ -220,7 +220,7 @@ def train(args, ddp_generator,model, ddp_discriminator):
             total_disc_correct = 0
             total = 0
 
-        dist.barrier()
+        # dist.barrier()
 
 
 def evaluate(args, ddp_generator, ddp_discriminator, dataloader_val, epoch, logger):
@@ -275,10 +275,10 @@ def evaluate(args, ddp_generator, ddp_discriminator, dataloader_val, epoch, logg
 torch.autograd.set_detect_anomaly(True)
 
 def main(args):
-    print(f"{args.local_rank}: before init_process_group")
-    dist.init_process_group(backend='nccl', world_size=args.world_size)
-    torch.cuda.set_device(args.local_rank)
-    args.device = torch.device('cuda', args.local_rank)
+    # print(f"{args.local_rank}: before init_process_group")
+    # dist.init_process_group(backend='nccl', world_size=args.world_size)
+    # torch.cuda.set_device(args.local_rank)
+    args.device =  torch.device("cuda" if torch.cuda.is_available() else "cpu") #torch.device('cuda', args.local_rank)
 
     seed = 1234
     random.seed(seed)
@@ -314,7 +314,7 @@ def main(args):
 
     train(args, ddp_generator, model, ddp_discriminator)
     
-    dist.destroy_process_group()
+    # dist.destroy_process_group()
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='IFRNet')
