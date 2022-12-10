@@ -329,6 +329,7 @@ if __name__ == '__main__':
     parser.add_argument('--resume_epoch', default=0, type=int)
     parser.add_argument('--resume_path', default=None, type=str)
     parser.add_argument('--lambda_gp', default=10, type=float)
+    parser.add_argument('--n_critic', default=5, type=int)
     parser.add_argument('--vimeo90k_dir', default='/ocean/projects/cis220078p/vjain1/data/vimeo_triplet', type=str) # TODO: change to data directory)
     parser.add_argument('--evaluate_only', default=False, type=bool)
     args = parser.parse_args()
