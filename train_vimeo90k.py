@@ -137,7 +137,7 @@ def train(args, ddp_generator,model, ddp_discriminator):
             with torch.cuda.amp.autocast():
                 gp = args.lambda_gp * gradient_penalty(ddp_discriminator, imgt, imgt_pred, args.device)
                 discriminator_out = ddp_discriminator(full_training_set) * mask
-                loss_disc = torch.mean(discriminator_out ) + gp
+                loss_disc = torch.mean(discriminator_out )
             # TODO: Check if this is the correct order of the arguments.
             
             # loss_disc.backward()
@@ -145,6 +145,7 @@ def train(args, ddp_generator,model, ddp_discriminator):
 
             # ddp_discriminator.zero_grad()
             scaler1.scale(loss_disc).backward(retain_graph = True)
+            scaler1.scale(gp).backward(retain_graph = True)
             scaler1.step(disc_optimizer)
             scaler1.update()
 
