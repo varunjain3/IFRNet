@@ -138,7 +138,7 @@ def train(args, ddp_generator,model, ddp_discriminator):
 
             with torch.cuda.amp.autocast():
                 discriminator_out = ddp_discriminator(full_training_set)
-                gp = gradient_penalty(ddp_discriminator, imgt, imgt_pred, args.device)
+                # gp = gradient_penalty(ddp_discriminator, imgt, imgt_pred, args.device)
                 loss_disc = torch.mean(discriminator_out * mask) + args.lambda_gp * gp
             # TODO: Check if this is the correct order of the arguments.
             
