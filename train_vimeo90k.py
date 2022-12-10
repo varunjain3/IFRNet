@@ -66,8 +66,8 @@ def train(args, ddp_generator,model, ddp_discriminator):
         logger.info(args)
 
     dataset_train = Vimeo90K_Train_Dataset(dataset_dir=args.vimeo90k_dir, augment=True)
-    sampler = DistributedSampler(dataset_train)
-    dataloader_train = DataLoader(dataset_train, batch_size=args.batch_size, num_workers=args.num_workers, pin_memory=True, drop_last=True, sampler=sampler)
+    # sampler = DistributedSampler(dataset_train)
+    dataloader_train = DataLoader(dataset_train, batch_size=args.batch_size, num_workers=args.num_workers, pin_memory=True, drop_last=True)#, sampler=sampler)
     args.iters_per_epoch = dataloader_train.__len__()
     iters = args.resume_epoch * args.iters_per_epoch
     
