@@ -309,9 +309,9 @@ def main(args):
         discriminator.load_state_dict(torch.load(args.resume_path + f"/{args.model_name}_best_disc.pth", map_location='cpu'))
 
     # TODO: Will DDP react well to being used as a non-distributed model
-    ddp_generator = DDP(model, device_ids=[args.local_rank], output_device=args.local_rank)#, find_unused_parameters=True)
+    ddp_generator = model#, find_unused_parameters=True)
     
-    ddp_discriminator = DDP(discriminator, device_ids=[args.local_rank])#, find_unused_parameters=True)
+    ddp_discriminator = discriminator#, find_unused_parameters=True)
 
     train(args, ddp_generator, model, ddp_discriminator)
     
