@@ -99,7 +99,7 @@ def train(args, ddp_generator,model, ddp_discriminator):
     for epoch in range(args.resume_epoch, args.epochs):
         if local_rank == 0:
             logger.info(f"Epoch {epoch}")
-        sampler.set_epoch(epoch)
+        # sampler.set_epoch(epoch)
 
         total_disc_correct = 0
         total = 0
