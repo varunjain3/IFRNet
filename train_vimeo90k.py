@@ -144,8 +144,8 @@ def train(args, ddp_generator,model, ddp_discriminator):
             # disc_optimizer.step()
 
             # ddp_discriminator.zero_grad()
-            scaler1.scale(loss_disc).backward(retain_graph = True)
             scaler1.scale(gp).backward(retain_graph = True)
+            scaler1.scale(loss_disc).backward(retain_graph = True)
             scaler1.step(disc_optimizer)
             scaler1.update()
 
