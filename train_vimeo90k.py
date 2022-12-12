@@ -84,7 +84,7 @@ def train(args, ddp_generator,model, ddp_discriminator):
         return
     
     scaler1 = torch.cuda.amp.GradScaler()
-    # scaler2 = torch.cuda.amp.GradScaler() # Is a second scaler necessary for a different loss due to different magnitudes?
+    scaler2 = torch.cuda.amp.GradScaler() # Is a second scaler necessary for a different loss due to different magnitudes?
 
     time_stamp = time.time()
     avg_rec = AverageMeter()
@@ -122,45 +122,45 @@ def train(args, ddp_generator,model, ddp_discriminator):
             # https://www.run.ai/guides/deep-learning-for-computer-vision/pytorch-gan#GAN-Tutorial
             # If run into difficulties: use https://github.com/soumith/ganhacks
             
-            # with torch.cuda.amp.autocast():
-            imgt_pred, loss_rec, loss_kl = ddp_generator(img0, img1, embt, imgt, ret_loss = True)
-            label_size = imgt_pred.size(0)
+            with torch.cuda.amp.autocast():
+                imgt_pred, loss_rec, loss_kl = ddp_generator(img0, img1, embt, imgt, ret_loss = True)
+                label_size = imgt_pred.size(0)
 
-            # Discriminator Training Step
-            disc_optimizer.zero_grad()
+                # Discriminator Training Step
+                disc_optimizer.zero_grad()
 
-            mask = torch.ones((label_size * 2, 1)).to(args.device)
-            mask[:label_size] = -1
-            full_training_set = torch.concat([imgt, imgt_pred.detach()])
+                mask = torch.ones((label_size * 2, 1)).to(args.device)
+                mask[:label_size] = -1
+                full_training_set = torch.concat([imgt, imgt_pred.detach()])
 
-            # with torch.cuda.amp.autocast():
-            discriminator_out = ddp_discriminator(full_training_set) * mask
-            gp = args.lambda_gp * gradient_penalty(ddp_discriminator, imgt.clone(), imgt_pred.clone(), args.device)
-            loss_disc = torch.mean(discriminator_out ) + gp
-            # TODO: Check if this is the correct order of the arguments.
+                # with torch.cuda.amp.autocast():
+                discriminator_out = ddp_discriminator(full_training_set) * mask
+                gp = args.lambda_gp * gradient_penalty(ddp_discriminator, imgt.clone(), imgt_pred.clone(), args.device)
+                loss_disc = torch.mean(discriminator_out ) + gp
+                # TODO: Check if this is the correct order of the arguments.
             
-            loss_disc.backward(retain_graph = True)
-            disc_optimizer.step()
+            # loss_disc.backward(retain_graph = True)
+            # disc_optimizer.step()
 
             # ddp_discriminator.zero_grad()
-            # scaler1.scale(gp).backward(retain_graph = True)
-            # scaler1.scale(loss_disc).backward(retain_graph = True)
-            # scaler1.step(disc_optimizer)
-            # scaler1.update()
+            scaler1.scale(loss_disc).backward(retain_graph = True)
+            scaler1.step(disc_optimizer)
+            scaler1.update()
 
             # Generator Training Step
             if i % args.n_critic == 0:
                 gen_optimizer.zero_grad()
-                discriminator_logits = ddp_discriminator(imgt_pred)
-                loss_adv = -torch.mean(discriminator_logits)
-                generator_loss = loss_rec + loss_kl + loss_adv
+                with torch.cuda.amp.autocast():
+                    discriminator_logits = ddp_discriminator(imgt_pred)
+                    loss_adv = -torch.mean(discriminator_logits)
+                    generator_loss = loss_rec + loss_kl + loss_adv
 
                 # ddp_generator.zero_grad()
-                generator_loss.backward()
-                gen_optimizer.step()
-                # scaler1.scale(generator_loss).backward()
-                # scaler1.step(gen_optimizer)
-                # scaler1.update()
+                # generator_loss.backward()
+                # gen_optimizer.step()
+                scaler2.scale(generator_loss).backward()
+                scaler2.step(gen_optimizer)
+                scaler2.update()
 
             # Record statistics
             total_disc_correct += (torch.count_nonzero(discriminator_out[:label_size] > 0))
