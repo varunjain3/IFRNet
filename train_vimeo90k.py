@@ -163,8 +163,7 @@ def train(args, ddp_generator,model, ddp_discriminator):
                 # scaler2.update()
 
             # Record statistics
-            total_disc_correct += (torch.count_nonzero(discriminator_out[:label_size] > 0))
-            total_disc_correct += (torch.count_nonzero(discriminator_out[label_size:] < 0))
+            total_disc_correct += (torch.count_nonzero(discriminator_out < 0))
             total += 2 * label_size
 
             avg_rec.update(loss_rec.cpu().data)
@@ -175,7 +174,7 @@ def train(args, ddp_generator,model, ddp_discriminator):
             iters += 1
             if local_rank ==0 and iters % 100 == 0:
                 logger.info('epoch:{}/{} iter:{}/{} time:{:.2f}+{:.2f} lr:{:.5e}'
-                'loss_rec:{:.4e} loss_geo:{:.4e} loss_dis:{:.4e} disc_accuracy:{:.4e}'.format(
+                'loss_rec:{:.4e} loss_vae:{:.4e} loss_dis:{:.4e} disc_accuracy:{:.4e}'.format(
                     epoch+1, args.epochs, iters+1, args.epochs * args.iters_per_epoch,
                     data_time_interval, train_time_interval, lr, 
                     avg_rec.avg, avg_vae.avg, avg_gan.avg, 
