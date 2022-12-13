@@ -155,7 +155,6 @@ def train(args, ddp_generator,model, ddp_discriminator):
                 loss_adv = -torch.mean(discriminator_logits)
                 generator_loss = loss_rec + loss_kl + loss_adv
 
-                ddp_generator.zero_grad()
                 generator_loss.backward()
                 gen_optimizer.step()
                 # scaler2.scale(generator_loss).backward()
@@ -303,8 +302,8 @@ def main(args):
         wandb.watch(model)
     
     if args.resume_epoch != 0:
-        model.load_state_dict(torch.load(args.resume_path + f"/{args.model_name}_best_gen.pth", map_location='cpu'))
-        discriminator.load_state_dict(torch.load(args.resume_path + f"/{args.model_name}_best_disc.pth", map_location='cpu'))
+        model.load_state_dict(torch.load(args.resume_path + f"/{args.model_name}_latest_gen.pth", map_location='cpu'))
+        discriminator.load_state_dict(torch.load(args.resume_path + f"/{args.model_name}_latest_disc.pth", map_location='cpu'))
 
     # TODO: Will DDP react well to being used as a non-distributed model
     ddp_generator = model#, find_unused_parameters=True)
