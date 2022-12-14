@@ -153,11 +153,11 @@ def main(args):
     torch.cuda.manual_seed_all(seed)
     torch.backends.cudnn.benchmark = True
 
-    if args.model_name == 'IFRNet':
-        from models.IFRNet import IFRNet
-    elif args.model_name == 'IFRNet_GB': # not supported
-        from models.IFRNet_GB import IFRNet_GB
-    elif args.model_name == 'IFRVAE': # not supported
+    # if args.model_name == 'IFRNet':
+    #     from models.IFRNet import IFRNet
+    # elif args.model_name == 'IFRNet_GB': # not supported
+    #     from models.IFRNet_GB import IFRNet_GB
+    if args.model_name == 'IFRVAE': # not supported
         from models.IFRVAE import IFRVAE
 
     args.log_path = args.log_path
