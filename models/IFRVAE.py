@@ -399,24 +399,33 @@ class IFRVAE(nn.Module):
         # It should take both images in at once and then output information that is decoded into an intermediate frame
         kl = (ft_3_var ** 2 + ft_3_mean ** 2 - torch.log(ft_3_var) - 1/2).mean()
 
+        # Unsqueeze everything else to match dimensions
+        f0_3 = f0_3.unsqueeze(1)
+        f1_3 = f1_3.unsqueeze(1)
+        up_flow0_4 = up_flow0_4.unsqueeze(1)
+        up_flow1_4 = up_flow1_4.unsqueeze(1)
+
         out3 = self.decoder3(ft_3_, f0_3, f1_3, up_flow0_4, up_flow1_4)
-        up_flow0_3 = out3[:, 0:2] + 2.0 * resize(up_flow0_4, scale_factor=2.0)
-        up_flow1_3 = out3[:, 2:4] + 2.0 * resize(up_flow1_4, scale_factor=2.0)
+        up_flow0_3 = out3[:, :, 0:2] + 2.0 * resize(up_flow0_4, scale_factor=2.0)
+        print(up_flow0_3.shape, "Expect this flow to be (B x 7 x 2 x W x H)")
+        up_flow1_3 = out3[:, :, 2:4] + 2.0 * resize(up_flow1_4, scale_factor=2.0)
         ft_2_ = out3[:, 4:]
 
         out2 = self.decoder2(ft_2_, f0_2, f1_2, up_flow0_3, up_flow1_3)
-        up_flow0_2 = out2[:, 0:2] + 2.0 * resize(up_flow0_3, scale_factor=2.0)
-        up_flow1_2 = out2[:, 2:4] + 2.0 * resize(up_flow1_3, scale_factor=2.0)
+        up_flow0_2 = out2[:, :, 0:2] + 2.0 * resize(up_flow0_3, scale_factor=2.0)
+        up_flow1_2 = out2[:, :, 2:4] + 2.0 * resize(up_flow1_3, scale_factor=2.0)
         ft_1_ = out2[:, 4:]
 
         out1 = self.decoder1(ft_1_, f0_1, f1_1, up_flow0_2, up_flow1_2)
-        up_flow0_1 = out1[:, 0:2] + 2.0 * resize(up_flow0_2, scale_factor=2.0)
-        up_flow1_1 = out1[:, 2:4] + 2.0 * resize(up_flow1_2, scale_factor=2.0)
-        up_mask_1 = torch.sigmoid(out1[:, 4:5])
-        up_res_1 = out1[:, 5:]
+        up_flow0_1 = out1[:, :, 0:2] + 2.0 * resize(up_flow0_2, scale_factor=2.0)
+        up_flow1_1 = out1[:, :, 2:4] + 2.0 * resize(up_flow1_2, scale_factor=2.0)
+        up_mask_1 = torch.sigmoid(out1[:, :, 4:5])
+        up_res_1 = out1[:, :, 5:]
         
-        img0_warp = warp(img0, up_flow0_1)
-        img1_warp = warp(img1, up_flow1_1)
+        img0_warp = warp(img0.unsqueeze(1), up_flow0_1)
+        img1_warp = warp(img1.unsqueeze(1), up_flow1_1)
+
+        print(mean_.shape, "Expect this mean to be (B x 7 x 1 x W x H)")
         imgt_merge = up_mask_1 * img0_warp + (1 - up_mask_1) * img1_warp + mean_
         imgt_pred = imgt_merge + up_res_1
         imgt_pred = torch.clamp(imgt_pred, 0, 1)
@@ -424,7 +433,4 @@ class IFRVAE(nn.Module):
         loss_rec = self.l1_loss(imgt_pred - imgt) + self.tr_loss(imgt_pred, imgt)
 
         # return imgt_pred, loss_rec, loss_geo, loss_dis
-        if ret_loss:
-            return imgt_pred, loss_rec, kl
-        else:
-            return imgt_pred
+        return imgt_pred
