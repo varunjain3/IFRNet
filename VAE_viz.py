@@ -70,7 +70,7 @@ def visualize_VAE(args, model):
             if i == 0:
                 img_arr = imgt[j].numpy(force = True).transpose(1, 2, 0)
             else:
-                img_arr = imgt_pred[j, i - 1].numpy(force = True).transpose(1, 2, 0)
+                img_arr = result[j, i - 1].numpy(force = True).transpose(1, 2, 0)
             imgplot = plt.imshow(img_arr)
             # Column labels
             if j == 0:
