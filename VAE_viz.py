@@ -68,9 +68,9 @@ def visualize_VAE(args, model):
             # Plot ground truth or the data samples
             ax = fig.add_subplot(B, 8, i * 8 + j + 1)
             if i == 0:
-                img_arr = imgt.numpy(force = True)
+                img_arr = imgt[j].numpy(force = True)
             else:
-                img_arr = imgt_pred[j, i].numpy(force = True)
+                img_arr = imgt_pred[j, i - 1].numpy(force = True)
             imgplot = plt.imshow(img_arr)
             # Column labels
             if j == 0:
