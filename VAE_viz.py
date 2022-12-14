@@ -54,7 +54,8 @@ def visualize_VAE(args, model):
     result = torch.empty((args.batch_size, 7, 3, img0.shape[2], img0.shape[3]))
     with torch.inference_mode():
         for i in range(7):
-            imgt_pred, _, _ = model(img0, img1, embt, imgt, DIM, i - 3)
+            imgt_pred = model(img0, img1, embt, imgt, DIM, i - 3)
+            print(f"Batch shape: {imgt_pred.shape}")
             result[:, i, :, :, :] = imgt_pred
         # imgt_pred should be (B x 7 x W x H)
 
