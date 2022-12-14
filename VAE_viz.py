@@ -82,7 +82,7 @@ def visualize_VAE(args, model):
                 ax.set_ylabel(f"Image {j}")
 
     # fig.tight_layout()
-    plt.show()
+    # plt.show()
     
     # Evaluation
     # psnr = 0
