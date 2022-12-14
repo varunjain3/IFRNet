@@ -293,7 +293,7 @@ def gradient_penalty(critic, real, fake, device):
 
 class IFRVAE(nn.Module):
     def __init__(self, local_rank=-1, lr=1e-4):
-        super(Generator, self).__init__()
+        super(IFRVAE, self).__init__()
         self.encoder = Encoder()
         self.decoder4 = Decoder4()
         self.decoder3 = Decoder3()
