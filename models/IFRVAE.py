@@ -380,6 +380,7 @@ class IFRVAE(nn.Module):
         # Modify the sample
         sample = self.N.sample(ft_3_mean.shape) # (B x C x W x H)
         sample[:, dim] = z
+        print(sample[0, dim])
 
         # (B x 7 x C x W x H)
         ft_3_ = ft_3_mean + ft_3_var * sample
