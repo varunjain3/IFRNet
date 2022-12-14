@@ -159,7 +159,6 @@ def main(args):
     if args.model_name == 'IFRVAE': # not supported
         from models.IFRVAE import IFRVAE
 
-    args.log_path = args.log_path
     args.num_workers = 4#10 #args.batch_size
 
     model = IFRVAE().to(args.device)
