@@ -330,21 +330,28 @@ class IFRVAE(nn.Module):
         ft_3_var = torch.exp(out4[:, 4+72:4+72*2]) # snap to positive values
         ft_3_ = ft_3_mean + ft_3_var * self.N.sample(ft_3_mean.shape)
 
+        # Unsqueeze everything else to match dimensions
+        f0_3 = f0_3.unsqueeze(1)
+        f1_3 = f1_3.unsqueeze(1)
+        up_flow0_4 = up_flow0_4.unsqueeze(1)
+        up_flow1_4 = up_flow1_4.unsqueeze(1)
+
         out3 = self.decoder3(ft_3_, f0_3, f1_3, up_flow0_4, up_flow1_4)
-        up_flow0_3 = out3[:, 0:2] + 2.0 * resize(up_flow0_4, scale_factor=2.0)
-        up_flow1_3 = out3[:, 2:4] + 2.0 * resize(up_flow1_4, scale_factor=2.0)
-        ft_2_ = out3[:, 4:]
+        up_flow0_3 = out3[:, :, 0:2] + 2.0 * resize(up_flow0_4, scale_factor=2.0)
+        print(up_flow0_3.shape, "Expect this flow to be (B x 7 x 2 x W x H)")
+        up_flow1_3 = out3[:, :, 2:4] + 2.0 * resize(up_flow1_4, scale_factor=2.0)
+        ft_2_ = out3[:, :, 4:]
 
         out2 = self.decoder2(ft_2_, f0_2, f1_2, up_flow0_3, up_flow1_3)
-        up_flow0_2 = out2[:, 0:2] + 2.0 * resize(up_flow0_3, scale_factor=2.0)
-        up_flow1_2 = out2[:, 2:4] + 2.0 * resize(up_flow1_3, scale_factor=2.0)
-        ft_1_ = out2[:, 4:]
+        up_flow0_2 = out2[:, :, 0:2] + 2.0 * resize(up_flow0_3, scale_factor=2.0)
+        up_flow1_2 = out2[:, :, 2:4] + 2.0 * resize(up_flow1_3, scale_factor=2.0)
+        ft_1_ = out2[:, :, 4:]
 
         out1 = self.decoder1(ft_1_, f0_1, f1_1, up_flow0_2, up_flow1_2)
-        up_flow0_1 = out1[:, 0:2] + 2.0 * resize(up_flow0_2, scale_factor=2.0)
-        up_flow1_1 = out1[:, 2:4] + 2.0 * resize(up_flow1_2, scale_factor=2.0)
-        up_mask_1 = torch.sigmoid(out1[:, 4:5])
-        up_res_1 = out1[:, 5:]
+        up_flow0_1 = out1[:, :, 0:2] + 2.0 * resize(up_flow0_2, scale_factor=2.0)
+        up_flow1_1 = out1[:, :, 2:4] + 2.0 * resize(up_flow1_2, scale_factor=2.0)
+        up_mask_1 = torch.sigmoid(out1[:, :, 4:5])
+        up_res_1 = out1[:, :, 5:]
 
         up_flow0_1 = resize(up_flow0_1, scale_factor=(1.0/scale_factor)) * (1.0/scale_factor)
         up_flow1_1 = resize(up_flow1_1, scale_factor=(1.0/scale_factor)) * (1.0/scale_factor)
@@ -353,6 +360,8 @@ class IFRVAE(nn.Module):
 
         img0_warp = warp(img0, up_flow0_1)
         img1_warp = warp(img1, up_flow1_1)
+        
+        print(mean_.shape, "Expect this flow to be (B x 7 x 2 x W x H)")
         imgt_merge = up_mask_1 * img0_warp + (1 - up_mask_1) * img1_warp + mean_
         imgt_pred = imgt_merge + up_res_1
         imgt_pred = torch.clamp(imgt_pred, 0, 1)
