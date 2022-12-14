@@ -62,7 +62,7 @@ def visualize_VAE(args, model):
     # Result will be B x 8 grid of images. First column is ground truth
     # Subsequent columns walk along the Gaussian for one channel
     B = args.batch_size
-    fig, = plt.figure()
+    fig = plt.figure()
     for i in range(7 + 1):
         for j in range(B):
             # Plot ground truth or the data samples
