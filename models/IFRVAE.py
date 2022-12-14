@@ -310,16 +310,63 @@ class IFRVAE(nn.Module):
         self.N.scale = self.N.scale.cuda()
         self.kl = 0
         
-    def inference(self, img0, img1, embt, scale_factor=1.0):
+    # def inference(self, img0, img1, embt, scale_factor=1.0):
+    #     mean_ = torch.cat([img0, img1], 2).mean(1, keepdim=True).mean(2, keepdim=True).mean(3, keepdim=True)
+    #     img0 = img0 - mean_
+    #     img1 = img1 - mean_
+
+    #     img0_ = resize(img0, scale_factor=scale_factor)
+    #     img1_ = resize(img1, scale_factor=scale_factor)
+
+    #     f0_1, f0_2, f0_3, f0_4 = self.encoder(img0_)
+    #     f1_1, f1_2, f1_3, f1_4 = self.encoder(img1_)
+
+    #     out4 = self.decoder4(f0_4, f1_4, embt)
+    #     up_flow0_4 = out4[:, 0:2]
+    #     up_flow1_4 = out4[:, 2:4]
+    #     # MODIFIED: VAE Variational Reparametrization
+    #     # Source: https://medium.com/dataseries/variational-autoencoder-with-pytorch-2d359cbf027b
+    #     ft_3_mean = out4[:, 4:4+72]
+    #     ft_3_var = torch.exp(out4[:, 4+72:4+72*2]) # snap to positive values
+    #     ft_3_ = ft_3_mean + ft_3_var * self.N.sample(ft_3_mean.shape)
+
+    #     out3 = self.decoder3(ft_3_, f0_3, f1_3, up_flow0_4, up_flow1_4)
+    #     up_flow0_3 = out3[:, 0:2] + 2.0 * resize(up_flow0_4, scale_factor=2.0)
+    #     up_flow1_3 = out3[:, 2:4] + 2.0 * resize(up_flow1_4, scale_factor=2.0)
+    #     ft_2_ = out3[:, 4:]
+
+    #     out2 = self.decoder2(ft_2_, f0_2, f1_2, up_flow0_3, up_flow1_3)
+    #     up_flow0_2 = out2[:, 0:2] + 2.0 * resize(up_flow0_3, scale_factor=2.0)
+    #     up_flow1_2 = out2[:, 2:4] + 2.0 * resize(up_flow1_3, scale_factor=2.0)
+    #     ft_1_ = out2[:, 4:]
+
+    #     out1 = self.decoder1(ft_1_, f0_1, f1_1, up_flow0_2, up_flow1_2)
+    #     up_flow0_1 = out1[:, 0:2] + 2.0 * resize(up_flow0_2, scale_factor=2.0)
+    #     up_flow1_1 = out1[:, 2:4] + 2.0 * resize(up_flow1_2, scale_factor=2.0)
+    #     up_mask_1 = torch.sigmoid(out1[:, 4:5])
+    #     up_res_1 = out1[:, 5:]
+
+    #     up_flow0_1 = resize(up_flow0_1, scale_factor=(1.0/scale_factor)) * (1.0/scale_factor)
+    #     up_flow1_1 = resize(up_flow1_1, scale_factor=(1.0/scale_factor)) * (1.0/scale_factor)
+    #     up_mask_1 = resize(up_mask_1, scale_factor=(1.0/scale_factor))
+    #     up_res_1 = resize(up_res_1, scale_factor=(1.0/scale_factor))
+
+    #     img0_warp = warp(img0, up_flow0_1)
+    #     img1_warp = warp(img1, up_flow1_1)
+    #     imgt_merge = up_mask_1 * img0_warp + (1 - up_mask_1) * img1_warp + mean_
+    #     imgt_pred = imgt_merge + up_res_1
+    #     imgt_pred = torch.clamp(imgt_pred, 0, 1)
+    #     return imgt_pred
+
+    def inference(self, img0, img1, embt, imgt, dim, z):
         mean_ = torch.cat([img0, img1], 2).mean(1, keepdim=True).mean(2, keepdim=True).mean(3, keepdim=True)
         img0 = img0 - mean_
         img1 = img1 - mean_
+        # imgt_ = imgt - mean_
 
-        img0_ = resize(img0, scale_factor=scale_factor)
-        img1_ = resize(img1, scale_factor=scale_factor)
-
-        f0_1, f0_2, f0_3, f0_4 = self.encoder(img0_)
-        f1_1, f1_2, f1_3, f1_4 = self.encoder(img1_)
+        f0_1, f0_2, f0_3, f0_4 = self.encoder(img0)
+        f1_1, f1_2, f1_3, f1_4 = self.encoder(img1)
+        # ft_1, ft_2, ft_3, ft_4 = self.encoder(imgt_)
 
         out4 = self.decoder4(f0_4, f1_4, embt)
         up_flow0_4 = out4[:, 0:2]
@@ -328,7 +375,20 @@ class IFRVAE(nn.Module):
         # Source: https://medium.com/dataseries/variational-autoencoder-with-pytorch-2d359cbf027b
         ft_3_mean = out4[:, 4:4+72]
         ft_3_var = torch.exp(out4[:, 4+72:4+72*2]) # snap to positive values
-        ft_3_ = ft_3_mean + ft_3_var * self.N.sample(ft_3_mean.shape)
+
+        # Modify the sample
+        sample = self.N.sample(ft_3_mean.shape) # (B x C x W x H)
+        sample[:, dim] = z
+        print(sample[0, dim])
+        print(f"Variance is {ft_3_var[0, dim]}")
+
+        # (B x 7 x C x W x H)
+        ft_3_ = ft_3_mean + ft_3_var * sample
+
+        # KL Loss: Constrain intermediate features to look like standard Normal distributions
+        # New paradigm: the encoder should not just condense information about the input images but also fuse them
+        # It should take both images in at once and then output information that is decoded into an intermediate frame
+        # kl = (ft_3_var ** 2 + ft_3_mean ** 2 - torch.log(ft_3_var) - 1/2).mean()
 
         out3 = self.decoder3(ft_3_, f0_3, f1_3, up_flow0_4, up_flow1_4)
         up_flow0_3 = out3[:, 0:2] + 2.0 * resize(up_flow0_4, scale_factor=2.0)
@@ -345,19 +405,17 @@ class IFRVAE(nn.Module):
         up_flow1_1 = out1[:, 2:4] + 2.0 * resize(up_flow1_2, scale_factor=2.0)
         up_mask_1 = torch.sigmoid(out1[:, 4:5])
         up_res_1 = out1[:, 5:]
-
-        up_flow0_1 = resize(up_flow0_1, scale_factor=(1.0/scale_factor)) * (1.0/scale_factor)
-        up_flow1_1 = resize(up_flow1_1, scale_factor=(1.0/scale_factor)) * (1.0/scale_factor)
-        up_mask_1 = resize(up_mask_1, scale_factor=(1.0/scale_factor))
-        up_res_1 = resize(up_res_1, scale_factor=(1.0/scale_factor))
-
+        
         img0_warp = warp(img0, up_flow0_1)
         img1_warp = warp(img1, up_flow1_1)
         imgt_merge = up_mask_1 * img0_warp + (1 - up_mask_1) * img1_warp + mean_
         imgt_pred = imgt_merge + up_res_1
         imgt_pred = torch.clamp(imgt_pred, 0, 1)
-        return imgt_pred
+        # Reconstruction Loss: Enforces closeness between the target image and the predicted
+        loss_rec = self.l1_loss(imgt_pred - imgt) + self.tr_loss(imgt_pred, imgt)
 
+        # return imgt_pred, loss_rec, loss_geo, loss_dis
+        return imgt_pred
 
     def forward(self, img0, img1, embt, imgt, dim, z):
         mean_ = torch.cat([img0, img1], 2).mean(1, keepdim=True).mean(2, keepdim=True).mean(3, keepdim=True)
