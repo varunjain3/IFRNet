@@ -415,7 +415,7 @@ class IFRVAE(nn.Module):
         loss_rec = self.l1_loss(imgt_pred - imgt) + self.tr_loss(imgt_pred, imgt)
 
         # return imgt_pred, loss_rec, loss_geo, loss_dis
-        return imgt_pred
+        return imgt_pred, sample[0, dim], ft_3_var[0, dim]
 
     def forward(self, img0, img1, embt, imgt, dim, z):
         mean_ = torch.cat([img0, img1], 2).mean(1, keepdim=True).mean(2, keepdim=True).mean(3, keepdim=True)
