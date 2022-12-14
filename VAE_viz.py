@@ -66,7 +66,7 @@ def visualize_VAE(args, model):
     for i in range(7 + 1):
         for j in range(B):
             # Plot ground truth or the data samples
-            ax = fig.add_subplot(B, 7, i * 8 + j)
+            ax = fig.add_subplot(B, 8, i * 8 + j + 1)
             if i == 0:
                 img_arr = imgt.numpy(force = True)
             else:
