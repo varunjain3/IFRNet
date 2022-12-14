@@ -51,8 +51,11 @@ def visualize_VAE(args, model):
         # with torch.cuda.amp.autocast():
 
     DIM = 0 # channel to be analyzed
+    result = torch.empty((args.batch_size, 7, 3, img0.shape[2], img0.shape[3]))
     with torch.inference_mode():
-        imgt_pred, loss_rec, loss_kl = model(img0, img1, embt, imgt, DIM)
+        for i in range(7):
+            imgt_pred, _, _ = model(img0, img1, embt, imgt, DIM, i - 3)
+            result[:, i, :, :, :] = imgt_pred
         # imgt_pred should be (B x 7 x W x H)
 
     # Result will be B x 8 grid of images. First column is ground truth
@@ -85,59 +88,6 @@ def visualize_VAE(args, model):
     # if (epoch+1) % args.eval_interval == 0:
     #     psnr, disc_accuracy = evaluate(args, ddp_generator, ddp_discriminator, dataloader_val, epoch, logger)
     #     # TODO: run ssim test here
-
-
-
-def evaluate(args, ddp_generator, ddp_discriminator, dataloader_val, epoch, logger):
-    loss_rec_list = []
-    loss_vae_list = []
-    loss_disc_list = []
-    psnr_list = []
-    time_stamp = time.time()
-
-    disc_correct_cnt = 0
-    total = 0
-    ddp_discriminator.eval()
-    ddp_generator.eval()
-    for i, data in enumerate(dataloader_val):
-        for l in range(len(data)):
-            data[l] = data[l].to(args.device)
-        img0, imgt, img1, embt = data
-
-        with torch.inference_mode():
-            imgt_pred, loss_rec, loss_kl = ddp_generator(img0, img1, embt, imgt, ret_loss = True)
-            # gp = gradient_penalty(ddp_discriminator, imgt, imgt_pred, args.device)
-            
-            true_discriminator_out = ddp_discriminator(imgt)
-            true_disc_loss = -torch.mean(true_discriminator_out)
-            disc_correct_cnt += (torch.count_nonzero(true_discriminator_out > 0))
-
-            gen_discriminator_out = ddp_discriminator(imgt_pred.detach())
-            gen_disc_loss = torch.mean(gen_discriminator_out)
-            disc_correct_cnt += (torch.count_nonzero(gen_discriminator_out < 0))
-            total += 2 * imgt_pred.size(0)
-            
-            loss_disc = (true_disc_loss + gen_disc_loss) / 2
-
-        loss_rec_list.append(loss_rec.cpu().numpy())
-        loss_vae_list.append(loss_kl.cpu().numpy())
-        loss_disc_list.append(loss_disc.cpu().numpy())
-
-        for j in range(img0.shape[0]):
-            psnr = calculate_psnr(imgt_pred[j].unsqueeze(0), imgt[j].unsqueeze(0)).cpu().data
-            psnr_list.append(psnr)
-
-    eval_time_interval = time.time() - time_stamp
-    disc_accuracy = disc_correct_cnt / total
-    logger.info('eval epoch:{}/{} time:{:.2f} loss_rec:{:.4e} loss_geo:{:.4e} loss_dis:{:.4e} psnr:{:.3f} disc_acc:{:.3f}'.format(
-        epoch+1, args.epochs, eval_time_interval, 
-        np.array(loss_rec_list).mean(), np.array(loss_vae_list).mean(), 
-        np.array(loss_disc_list).mean(), np.array(psnr_list).mean(),
-        disc_accuracy))
-    return np.array(psnr_list).mean(), disc_accuracy
-
-
-torch.autograd.set_detect_anomaly(True)
 
 def main(args):
     # print(f"{args.local_rank}: before init_process_group")
