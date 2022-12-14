@@ -474,4 +474,4 @@ class IFRVAE(nn.Module):
         loss_rec = self.l1_loss(imgt_pred - imgt) + self.tr_loss(imgt_pred, imgt)
 
         # return imgt_pred, loss_rec, loss_geo, loss_dis
-        return imgt_pred
+        return imgt_pred, sample[0, dim], ft_3_var[0, dim]
