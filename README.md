@@ -1,10 +1,10 @@
-# IFRNet: Intermediate Feature Refine Network for Efficient Frame Interpolation
-The official PyTorch implementation of [IFRNet](https://arxiv.org/abs/2205.14620) (CVPR 2022).
+# Exploring High Resolution Video Frame Interpolation
+A PyTorch adaptation of [IFRNet](https://arxiv.org/abs/2205.14620) (CVPR 2022).
 
-Authors: [Lingtong Kong](https://scholar.google.com.hk/citations?user=KKzKc_8AAAAJ&hl=zh-CN), [Boyuan Jiang](https://byjiang.com/), Donghao Luo, Wenqing Chu, Xiaoming Huang, [Ying Tai](https://tyshiwo.github.io/), Chengjie Wang, [Jie Yang](http://www.pami.sjtu.edu.cn/jieyang)
+Authors: Varun Jain, Kevin Liu, , Aditya Ramakrishnan, Madankumar 
 
-## Highlights
-Existing flow-based frame interpolation methods almost all first estimate or model intermediate optical flow, and then use flow warped context features to synthesize target frame. However, they ignore the mutual promotion of intermediate optical flow and intermediate context feature. Also, their cascaded architecture can substantially increase the inference delay and model parameters, blocking them from lots of mobile and real-time applications. For the first time, we merge above separated flow estimation and context feature refinement into a single encoder-decoder based IFRNet for compactness and fast inference, where these two crucial elements can benefit from each other. Moreover, task-oriented flow distillation loss and feature space geometry consistency loss are newly proposed to promote intermediate motion estimation and intermediate feature reconstruction of IFRNet, respectively. Benchmark results demonstrate that our IFRNet not only achieves state-of-the-art VFI accuracy, but also enjoys fast inference speed and lightweight model size.
+## Abstract
+Over the past decade, a surge in video-based services has been observed in major industries from engineering to entertainment to telecommunications. As a consequence, several highly proficient learning-based video optimization techniques have been devised to meet the demand for optimization solutions. There are a lot of ways to optimize video data. In this work, we focus our experiments towards intermediate frame generation tasks, also known as Video Frame Interpolation (VFI). The goal of Video Frame Interpolation is to produce frame(s) between adjacent frames. Video Frame Interpolation can be used for a variety of applications ranging from video frame rate boosting, frame recovery in video streaming, and slow motion video capture. We take a compact and efficient net, IFRNet\cite{IFRNet}, which is among the State of the Art works for VFI. IFRNet is an encoder-decoder network employing optical flow field paradigms to achieve successful VFI for a variety of standard datasets. We further discuss what makes IFRNet special, and some methods that can be experimented to generate even more consistent frames.
 
 ![](./figures/vimeo90k.png)
 
@@ -19,8 +19,7 @@ Existing flow-based frame interpolation methods almost all first estimate or mod
 
 ## Preparation
 1. PyTorch >= 1.3.0 (We have verified that this repository supports Python 3.6/3.7, PyTorch 1.3.0/1.9.1).
-2. Download training and test datasets: [Vimeo90K](http://toflow.csail.mit.edu/), [UCF101](https://liuziwei7.github.io/projects/VoxelFlow), [SNU-FILM](https://myungsub.github.io/CAIN/), [Middlebury](https://vision.middlebury.edu/flow/data/), [GoPro](https://seungjunnah.github.io/Datasets/gopro.html) and [Adobe240](http://www.cs.ubc.ca/labs/imager/tr/2017/DeepVideoDeblurring/).
-3. Set the right dataset path on your machine.
+2. Download training and test datasets: [Vimeo90K](http://toflow.csail.mit.edu/) - Triplet Dataset.
 
 ## Download Pre-trained Models and Play with Demos
 Figures from left to right are overlaid input frames, 2x and 8x video interpolation results respectively.
@@ -99,16 +98,3 @@ Each video has 9 frames, where the first and the last frames are input, and the 
   <img src=./figures/fig1_2.gif width=270 />
   <img src=./figures/fig1_3.gif width=270 /> 
 </p>
-
-## ncnn Implementation of IFRNet
-
-[ifrnet-ncnn-vulkan](https://github.com/nihui/ifrnet-ncnn-vulkan) uses [ncnn project](https://github.com/Tencent/ncnn) as the universal neural network inference framework. This package includes all the binaries and models required. It is portable, so no CUDA or PyTorch runtime environment is needed.
-
-## Citation
-When using any parts of the Software or the Paper in your work, please cite the following paper:
-<pre><code>@InProceedings{Kong_2022_CVPR, 
-  author = {Kong, Lingtong and Jiang, Boyuan and Luo, Donghao and Chu, Wenqing and Huang, Xiaoming and Tai, Ying and Wang, Chengjie and Yang, Jie}, 
-  title = {IFRNet: Intermediate Feature Refine Network for Efficient Frame Interpolation}, 
-  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)}, 
-  year = {2022},
-}</code></pre>
