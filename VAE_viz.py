@@ -14,7 +14,6 @@ from torch.nn.parallel import DistributedDataParallel as DDP
 from datasets import Vimeo90K_Train_Dataset, Vimeo90K_Test_Dataset
 from metric import calculate_psnr, calculate_ssim
 from utils import AverageMeter
-from models.IFRNet import gradient_penalty
 import matplotlib.pyplot as plt
 import logging
 import wandb
