@@ -81,7 +81,7 @@ def visualize_VAE(args, model):
             if i == 0:
                 ax.set_ylabel(f"Image {j}")
 
-    fig.tight_layout()
+    # fig.tight_layout()
     plt.show()
     
     # Evaluation
