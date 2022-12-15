@@ -358,7 +358,7 @@ class IFRVAE(nn.Module):
     #     imgt_pred = torch.clamp(imgt_pred, 0, 1)
     #     return imgt_pred
 
-    def inference(self, img0, img1, embt, imgt, dim, z):
+    def inference(self, img0, img1, embt, imgt, dim, z, replace = False):
         mean_ = torch.cat([img0, img1], 2).mean(1, keepdim=True).mean(2, keepdim=True).mean(3, keepdim=True)
         img0 = img0 - mean_
         img1 = img1 - mean_
@@ -378,7 +378,8 @@ class IFRVAE(nn.Module):
 
         # Modify the sample
         sample = self.N.sample(ft_3_mean.shape) # (B x C x W x H)
-        sample[:, dim] = z
+        if replace:
+            sample[:, dim] = z
 
         # (B x 7 x C x W x H)
         ft_3_ = ft_3_mean + ft_3_var * sample
