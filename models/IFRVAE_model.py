@@ -416,7 +416,7 @@ class IFRVAE(nn.Module):
         # return imgt_pred, loss_rec, loss_geo, loss_dis
         return [imgt_pred, sample[0, dim], ft_3_var[0, dim]]
 
-    def forward(self, img0, img1, embt, imgt, dim, z):
+    def forward(self, img0, img1, embt, imgt, dim, z, replace = False):
         mean_ = torch.cat([img0, img1], 2).mean(1, keepdim=True).mean(2, keepdim=True).mean(3, keepdim=True)
         img0 = img0 - mean_
         img1 = img1 - mean_
@@ -436,7 +436,8 @@ class IFRVAE(nn.Module):
 
         # Modify the sample
         sample = self.N.sample(ft_3_mean.shape) # (B x C x W x H)
-        sample[:, dim] = z
+        if replace:
+            sample[:, dim] = z
 
         # (B x 7 x C x W x H)
         ft_3_ = ft_3_mean + ft_3_var * sample
